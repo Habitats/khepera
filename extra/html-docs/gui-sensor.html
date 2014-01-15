@@ -1,0 +1,70 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>GUI Components: Sensor-Robot Display</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<TABLE>
+<TR><TH><IMG SRC="logo-small.gif"></TH>
+    <TH WIDTH=10></TH>
+    <TH><H2><FONT FACE="Arial,Bold">Sensor-Robot Display</FONT></H2></TH>
+</TR>
+</TABLE>
+<HR>
+
+<P>The sensor display area of the interface provides information concerning
+light & distance sensor readings, gripper arm position, gripper position
+and gripper sensor readings. Light and distance readings are displayed 
+adjacent to the actual sensor they pertain to on the Khepera top view 
+image. Use the radio buttons above this image to select or disable sensor
+display updates. Disabling sensor updates can <EM>greatly</EM> improve the
+overall performance of the simulator. All of the images and text displayed
+in this panel are only updated when the simulator is running a controller.
+<BR>
+<HR>
+
+<CENTER>
+<H3><FONT FACE="Arial"><B>Light and Distance Sensor Display</B></FONT></H3>
+</CENTER>
+<P><CENTER><IMG SRC="sensor-display.gif"></CENTER>
+<P><I>The actual sensors are depicted as red rectangles around the perimeter
+of the robot image. Sensors are numbered from 1 to 8 (0-7 when accessing them
+through the Sensor[] array), starting from the sensor on the far left side
+and traversing the sensors clock-wise around the robot.</I>
+
+<P>At the bottom of the display area, you will find a row of three images.
+These provide information on the state of the Khepera gripper turret. The
+image (far right) shows the state of the gripper arm. The arm can be up or
+down. The next image (middle) shows the state of the gripper. This is 
+either open or closed. The last image describes the gripper sensor: this 
+sensor returns true when an object is between the grippers, and false
+otherwise. If no object is detected between the grippers, you will see an 
+empty circle. If an object is detected between the grippers, you will see a 
+red circle. 
+
+<P>
+<CENTER>
+<H3><FONT FACE="Arial"><B>Arm and Gripper State Display</B></FONT></H3>
+</CENTER>
+<P><CENTER><IMG SRC="gripper-state_normal.gif">
+<BR><I>Default state: arm is up, gripper is open, and no object is present.
+</I>
+</CENTER>
+<P><CENTER><IMG SRC="gripper-state_opposite.gif">
+<BR><I>Opposite state: arm is down, gripper is closed, and an object is present.
+</I>
+</CENTER>
+<BR>
+
+<HR>
+<CENTER>
+<TABLE>
+<TR>
+<TH><A HREF="gui.html">Back</A></TH>
+<TH WIDTH=10></TH>
+<TH><A HREF="index.html">Home</A></TH>
+</TR>
+</TABLE>	
+</CENTER>
+</BODY>
+</HTML>

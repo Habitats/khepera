@@ -63,8 +63,8 @@ public class HelpDialog extends JDialog implements ActionListener {
     htmlWindow.setEditable(false);
     htmlWindow.setContentType("text/html");
     scrollPane = new JScrollPane(htmlWindow,
-                                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scrollPane.setPreferredSize(new Dimension(500, 500));
 
     try {
@@ -73,7 +73,8 @@ public class HelpDialog extends JDialog implements ActionListener {
       System.err.println(ioe);
     }
     htmlWindow.addHyperlinkListener(new HyperlinkListener() {
-      public void hyperlinkUpdate(HyperlinkEvent e) {
+      @Override
+	public void hyperlinkUpdate(HyperlinkEvent e) {
         if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
           try {
             htmlWindow.setPage(e.getURL()); // ?????
@@ -97,7 +98,8 @@ public class HelpDialog extends JDialog implements ActionListener {
    * invisible, disposes of its self, and retruns.
    * @see java.awt.event.ActionListener
    */
-  public void actionPerformed(ActionEvent e) {
+  @Override
+public void actionPerformed(ActionEvent e) {
     setVisible(false);
     dispose();
     parent.repaint();

@@ -24,13 +24,8 @@
 
 package edu.wsu.KheperaSimulator;
 
-import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import javax.swing.*;
-import java.awt.geom.*;
-import java.io.*;
-import java.util.Calendar;
 
 /**
  * A <code>WorldDrawManager</code> class provides the main thread to run the
@@ -76,7 +71,8 @@ public class WorldDrawManager implements Runnable {
 
     // Set-up world drawing routine
     ActionListener paintListener = new ActionListener (){
-      public void actionPerformed (ActionEvent e){
+      @Override
+	public void actionPerformed (ActionEvent e){
         int x = rState.currentPos.x;
         int y = rState.currentPos.y;
         //frame.worldPanel.repaint(x-40,y-40,x+40,y+40);  original
@@ -339,7 +335,8 @@ public class WorldDrawManager implements Runnable {
   /**
    * @see java.lang.Runnable
    */
-  public void run() {
+  @Override
+public void run() {
     int hit   = 0;
     while (active) {
       if( !active ) break;
@@ -354,7 +351,7 @@ public class WorldDrawManager implements Runnable {
 
       // essential for effeciency
       try {
-        thread.sleep(5);
+        Thread.sleep(5);
         } catch (Exception e) {}
     }
   } // run

@@ -57,8 +57,9 @@ public class DirectoryClassLoader extends ClassLoader {
    * @param className the name of the class to load
    * @return A new defined <code>Class</code>
    */
-  public Class findClass(String className) {
-	  byte[] b = loadClassData(className);
+  @Override
+public Class findClass(String className) {
+    byte[] b = loadClassData(className);
     return defineClass(className, b, 0, b.length);
   } // findClass
 
@@ -75,7 +76,6 @@ public class DirectoryClassLoader extends ClassLoader {
       in.read(b);
       return b;
     } catch (Exception e) {
-    	System.err.println(e.getMessage());
       return null;
     }
   } // loadClassData

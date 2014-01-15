@@ -60,7 +60,8 @@ public class AboutWindow extends JDialog implements ActionListener {
     getContentPane().setLayout(new BorderLayout());
     background = Toolkit.getDefaultToolkit().getImage("images/about.gif");
     mainPanel = new JPanel() {
-      public void paint(Graphics g) {
+      @Override
+	public void paint(Graphics g) {
         super.paint(g);
         g.drawImage(background,0,0,this);
       }
@@ -77,7 +78,8 @@ public class AboutWindow extends JDialog implements ActionListener {
    * @param e
    * @see java.awt.event.ActionListener
    */
-  public void actionPerformed(ActionEvent e) {
+  @Override
+public void actionPerformed(ActionEvent e) {
     setVisible(false);
     dispose();
     parent.repaint();

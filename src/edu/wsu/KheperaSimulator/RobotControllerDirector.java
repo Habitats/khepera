@@ -195,7 +195,8 @@ public class RobotControllerDirector {
  */
 class ClassFileFilter implements FilenameFilter {
 	
-  public boolean accept(File dir, String name)
+  @Override
+public boolean accept(File dir, String name)
   {
   	if ( name.indexOf('$') > -1 )
   		return false;

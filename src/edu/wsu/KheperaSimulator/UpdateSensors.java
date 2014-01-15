@@ -24,7 +24,6 @@
 
 package edu.wsu.KheperaSimulator;
 
-import java.math.*;
 import java.util.*;
 import java.awt.*;
 import javax.swing.*;
@@ -108,7 +107,8 @@ public class UpdateSensors {
      * by a swing timer at regular intervals.
      */
     ActionListener sensorDisplayUpdate = new ActionListener (){
-      public void actionPerformed (ActionEvent e){
+      @Override
+	public void actionPerformed (ActionEvent e){
         for(int i = 0; i < 8; i++) {
           if(display.equals("light")) {
             labelValues[i] = Integer.toString(sensorArray[i].getLightValue());
@@ -415,7 +415,7 @@ public class UpdateSensors {
         else {
             //value = (int)(value * (0.90f + (float)(randGen.nextInt(2000)/10000.0f)));
             //lessened innaccuracy for Robot project - MS
-            value = (int)(value * (0.98f + (float)(randGen.nextInt(400)/10000.0f)));
+            value = (int)(value * (0.98f + randGen.nextInt(400)/10000.0f));
             if (value > 1023) value = 1023;
         }
         return(value);
@@ -438,8 +438,8 @@ public class UpdateSensors {
             // need to see if "light" is in the obstructed list -
             //   if so, then continue
 
-            dx = (float)((light.xPos+7) - x);   // - x
-            dy = (float)((light.yPos+7) - y);  // - y
+            dx = (light.xPos+7) - x;   // - x
+            dy = (light.yPos+7) - y;  // - y
             d = (float)(250 - Math.sqrt(dx*dx + dy*dy))/250.0f;
             if (d>0) {
                 //angle = Math.atan2(-dy,dx) - alpha;           // o

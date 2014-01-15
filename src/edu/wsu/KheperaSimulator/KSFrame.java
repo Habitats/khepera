@@ -26,11 +26,9 @@ package edu.wsu.KheperaSimulator;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.lang.*;
 import java.io.*;
 
 /**
@@ -259,7 +257,8 @@ public class KSFrame extends JFrame {
     jMItemOpenMap.addActionListener(loadFileListener);
     jMItemSaveMap.addActionListener(saveFileListener);
     jMItemExit.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
+      @Override
+	public void actionPerformed(ActionEvent e) {
         jMExitPerformed();
       }
     });
@@ -272,7 +271,8 @@ public class KSFrame extends JFrame {
     jMItemRewind.addActionListener(RewindListener);
     jMItemPause.addActionListener(PauseRecordListener);
     jMItemOptions.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
+      @Override
+	public void actionPerformed(ActionEvent e) {
         optionDialog = new OptionsWindow(parent,distLevel,lightLevel, speedLevel);
         optionDialog.setLocationRelativeTo(parent);
         optionDialog.pack();
@@ -282,14 +282,16 @@ public class KSFrame extends JFrame {
 
     // Action Listener's and Control Alt-Masks for Help Menu pulldown
     jMItemHelp.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
+      @Override
+	public void actionPerformed(ActionEvent e) {
         HelpDialog help = new HelpDialog(parent);
         help.setLocationRelativeTo(parent);
         help.setVisible(true);
       }
     });
     jMItemAbout.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
+      @Override
+	public void actionPerformed(ActionEvent e) {
         aboutWindow = new AboutWindow(parent);
         aboutWindow.setLocationRelativeTo(parent);
         aboutWindow.setVisible(true);
@@ -301,7 +303,8 @@ public class KSFrame extends JFrame {
     * If there is not a server running then initialize the server port.
     */
     jMItemStartServer.addActionListener( new ActionListener()  {
-      public void actionPerformed(ActionEvent e) {
+      @Override
+	public void actionPerformed(ActionEvent e) {
         if (!server.isListening()) {
           server.initialize(parent, parent.defaultPort);
         }
@@ -313,7 +316,8 @@ public class KSFrame extends JFrame {
     * If there is a server running then drop all the clients kill the server.
     */
     jMItemStopServer.addActionListener( new ActionListener()  {
-      public void actionPerformed(ActionEvent e) {
+      @Override
+	public void actionPerformed(ActionEvent e) {
         server.dropAllClients();
         server.kill();
       }
@@ -324,7 +328,8 @@ public class KSFrame extends JFrame {
     * If there is a server running then drop all the clients kill the server.
     */
     jMItemDropClient.addActionListener( new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
+      @Override
+	public void actionPerformed(ActionEvent e) {
         try {
           String name = (String)JOptionPane.showInputDialog(parent,
               "Select a Client to drop.", "Drop a Clinet",
@@ -344,7 +349,8 @@ public class KSFrame extends JFrame {
     * Pull up a JOptionPanel to connect to a server port and Initialize the client.
     */
     jMItemStartClient.addActionListener( new ActionListener()  {
-      public void actionPerformed(ActionEvent e) {
+      @Override
+	public void actionPerformed(ActionEvent e) {
         if (!client.isStarted()) {
           try {
             String s = JOptionPane.showInputDialog(parent, "Server and " +
@@ -364,7 +370,8 @@ public class KSFrame extends JFrame {
     * If a client is started then kill the client
     */
     jMItemStopClient.addActionListener( new ActionListener()  {
-      public void actionPerformed(ActionEvent e) {
+      @Override
+	public void actionPerformed(ActionEvent e) {
         if (client.isStarted()) {
           client.kill();
         }
@@ -373,7 +380,8 @@ public class KSFrame extends JFrame {
 
     // Button Clear Method
     buttonWClear.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
+      @Override
+	public void actionPerformed(ActionEvent e) {
         if(!running) {
           worldPanel.clearObjects();
           drawManager.clearWorldImage();
@@ -386,7 +394,8 @@ public class KSFrame extends JFrame {
 
     // Button Rotate Method
     buttonCRotate.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
+      @Override
+	public void actionPerformed(ActionEvent e) {
         if(!running) {
           worldPanel.rotateRobot();
         }
@@ -398,7 +407,8 @@ public class KSFrame extends JFrame {
 
     // Button Clear Action
     buttonTAClear.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
+      @Override
+	public void actionPerformed(ActionEvent e) {
         textArea.setText(null);
       }
     });
@@ -570,7 +580,7 @@ public class KSFrame extends JFrame {
     robotDisplayPanel.setBackground(Color.white);
     robotImageLabel.setIcon(new ImageIcon(
         Toolkit.getDefaultToolkit().getImage("images/khep_trans_top.gif")));
-    robotImageLabel.setHorizontalAlignment(JLabel.CENTER);
+    robotImageLabel.setHorizontalAlignment(SwingConstants.CENTER);
     robotImageLabel.setBounds(80,35, 115, 115);
     robotDisplayPanel.add(robotImageLabel);
 
@@ -692,7 +702,8 @@ public class KSFrame extends JFrame {
    * load a map setworldObjects and repaint those objects.
    */
   class MyLoadFileListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
       if (!running) {
         JFileChooser chooser = new JFileChooser("./maps");
         chooser.setDialogTitle("Load Map File");
@@ -731,7 +742,8 @@ public class KSFrame extends JFrame {
    * save a map world file and pull up the appropriate dialog for save.
    */
   class MySaveFileListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
       if(!running) {
         JFileChooser chooser = new JFileChooser("./maps");
         chooser.setDialogTitle("Save World File");
@@ -769,7 +781,8 @@ public class KSFrame extends JFrame {
    * if there is not a server currently running then start the server transmission.
    */
   class MyRunListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
       if(!running) {
         String name = (String)JOptionPane.showInputDialog(parent,
             "Select a Controller to Run", "Select",
@@ -802,7 +815,8 @@ public class KSFrame extends JFrame {
    * If there is a controller running then stop the robot and the server.
    */
   class MyHaltListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
       if(running)  {
         running = false;
         rcd.stopAll();
@@ -823,7 +837,8 @@ public class KSFrame extends JFrame {
    * the appropriate event.
    */
   class MyObjectListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
       if(running) {
         buttonWRem.setSelected(false);
         buttonCSet.setSelected(false);
@@ -863,7 +878,8 @@ public class KSFrame extends JFrame {
    * gets updated with recording data as the status.
    */
   class MyLoadRecorderListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
       if(running) {
         if(!(writer.isReady())){
           writer.initialize(parent, recordRate);
@@ -885,7 +901,8 @@ public class KSFrame extends JFrame {
    * gets updated with Stopped data as the status.
    */
   class MyStopRecorderListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
       if(writer.isRecording()) {
         writer.setRecord(false);
         StatusBar.setCenterStatus("Play Record Status: Stopped");
@@ -907,7 +924,8 @@ public class KSFrame extends JFrame {
    * gets updated with Playing data as the status.
    */
   class MyPlayRecorderListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
       if(reader.isPaused()) {
         reader.setPause(false);
       }
@@ -932,7 +950,8 @@ public class KSFrame extends JFrame {
    * gets updated with Pausing Record as the status.
    */
   class MyPauseRecorderListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
       if(reader.isPlaying()) {
         reader.setPause(true);
         StatusBar.setCenterStatus("Play Record Status: Paused");
@@ -947,7 +966,8 @@ public class KSFrame extends JFrame {
    * gets updated with Fast Forward as the status.
    */
   class MyFastForwardRecorderListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
       if(reader.isPlaying()) {
         reader.fastForward();
         StatusBar.setCenterStatus("Play Record Status: Fast Forward");
@@ -962,7 +982,8 @@ public class KSFrame extends JFrame {
    * gets updated with Rewind as the status.
    */
   class MyRewindRecorderListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
       if(reader.isPlaying()) {
         reader.setRewind(true);
         StatusBar.setCenterStatus("Play Record Status: Rewinding");
@@ -975,7 +996,8 @@ public class KSFrame extends JFrame {
    * Get the appropriate action and update the appropriate display mode.
    */
   class RadioEListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
       String action = e.getActionCommand();
       if (action.equals("displayLight"))
         sensorDisplayMode = "light";
@@ -1022,7 +1044,8 @@ public class KSFrame extends JFrame {
   /**
    * Overridden so we can exit when window is closed.
    */
-  protected void processWindowEvent(WindowEvent e) {
+  @Override
+protected void processWindowEvent(WindowEvent e) {
     super.processWindowEvent(e);
     if (e.getID() == WindowEvent.WINDOW_CLOSING) {
       jMExitPerformed();

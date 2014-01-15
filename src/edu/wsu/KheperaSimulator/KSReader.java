@@ -25,7 +25,6 @@
 package edu.wsu.KheperaSimulator;
 
 import java.io.*;
-import java.net.*;
 import java.util.*;
 import javax.swing.JFileChooser;
 
@@ -94,7 +93,8 @@ public class KSReader implements Runnable{
   /**
    * @see java.lang.Runnable
    */
-  public void run() {
+  @Override
+public void run() {
     try {
       while (!stop) {
         isPlaying = true;
@@ -128,7 +128,7 @@ public class KSReader implements Runnable{
         currObject = in.readObject();
         readObjects++;
         while(!(currObject.equals("EOF"))) {
-          allObjects.add((Object)currObject);
+          allObjects.add(currObject);
           readObjects++;
           currObject = in.readObject();
         }
@@ -179,7 +179,7 @@ public class KSReader implements Runnable{
             frame.drawManager.rState.getRobotCoordinates().setCoordinates((int)data[16],(int)data[17], data[18], data[19], data[20]);
             frame.drawManager.rState.setGripperState((int)data[21]);
             frame.drawManager.rState.setArmState((int)data[22]);
-            thread.sleep(delayTime);
+            Thread.sleep(delayTime);
             i = i -1;
             if(i == 0) {
               waitNow();
@@ -207,7 +207,7 @@ public class KSReader implements Runnable{
           frame.drawManager.rState.getRobotCoordinates().setCoordinates((int)data[16],(int)data[17], data[18], data[19], data[20]);
           frame.drawManager.rState.setGripperState((int)data[21]);
           frame.drawManager.rState.setArmState((int)data[22]);
-          thread.sleep(delayTime);
+          Thread.sleep(delayTime);
         }
       }
       }catch(Exception b){}

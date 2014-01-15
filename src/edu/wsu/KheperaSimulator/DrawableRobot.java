@@ -24,9 +24,6 @@
 
 package edu.wsu.KheperaSimulator;
 
-import java.awt.*;
-import java.awt.geom.*;
-
 /**
  * A <code>DrawableRobot</code> class provides methods to calculate a new
  * position of the robot based on the current state of the robot
@@ -159,7 +156,7 @@ public class DrawableRobot {
     }
 
     /* first update the angle and store angle (int) and theta (double) */
-    direction = (float)(lSpeed - rSpeed);
+    direction = lSpeed - rSpeed;
     direction = (float)Math.toRadians(direction);
     //direction /= (950-(turnLevel*35));
     //direction /= (1050 + turnLevel);

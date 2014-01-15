@@ -60,7 +60,8 @@ public class ObjectPanel extends JPanel {
      * @see javax.swing.JComponent
      * @see java.awt.Graphics
      */
-    public void paint(Graphics g) {
+    @Override
+	public void paint(Graphics g) {
 	super.paint(g); // do the default paint routine first
 	//super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
@@ -100,9 +101,9 @@ public class ObjectPanel extends JPanel {
     private void initialize() {
         this.setPreferredSize(new Dimension(60,60));
         angle = 0;
-        theta = (float)Math.toRadians((double)angle);
-        rotDirection = this.CW;
-        objectType = this.WALL;
+        theta = (float)Math.toRadians(angle);
+        rotDirection = ObjectPanel.CW;
+        objectType = ObjectPanel.WALL;
     }
 
     /**
@@ -139,7 +140,7 @@ public class ObjectPanel extends JPanel {
           angle = 270;
         else
           angle = 0;
-        theta = (float)Math.toRadians((double)angle);
+        theta = (float)Math.toRadians(angle);
         repaint();
     }
 } // ObjectPanel

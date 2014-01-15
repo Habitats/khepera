@@ -69,8 +69,8 @@ public class RobotCoordinates implements java.io.Serializable{
     x = 250;
     y = 250;
     alpha = 0.0f;
-    dx = (float)x;
-    dy = (float)y;
+    dx = x;
+    dy = y;
   }
 
   /**

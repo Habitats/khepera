@@ -1,0 +1,58 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>The Robo Sim API: Sensor class</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<TABLE>
+<TR><TH><IMG SRC="logo-small.gif"></TH>
+    <TH WIDTH=10></TH>
+    <TH><H2><FONT FACE="Arial,Bold">Sensor class</FONT></H2></TH>
+</TR>
+</TABLE>
+<HR>
+
+<BR>The Sensor class defines a simple IR sensor that can be used to both detect
+relative proximity to objects, and detect relative light levels. Since controllers
+only need to query the current distance and light value per sensor, the interface
+to this class is very simple. This class only defines one sensor, so your
+controller needs to loop through some or all of the Sensor objects in the array 
+reference obtained from the CurrentRobotState class.
+<BR><BR>
+<HR>
+
+<CENTER>
+<H3><FONT FACE="Arial,Bold"><U>Methods</U></FONT></H3>
+</CENTER>
+
+<TABLE>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>int getDistValue()</B></FONT>
+      </TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>returns the current value from distance sensing. This value ranges
+   from 0 - 1023; 1023 being closest proximity.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>int getLightValue()</B>
+      </FONT></TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>returns the current value from light sensing. This value ranges
+   from 50 - 510; where 500 - 510 corresponds to a complete lack of light.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+</TABLE>
+
+<HR>
+<CENTER>
+<TABLE>
+<TR>
+<TH><A HREF="api.html">Back</A></TH>
+<TH WIDTH=10></TH>
+<TH><A HREF="index.html">Home</A></TH>
+</TR>
+</TABLE>	
+</CENTER>
+</BODY>
+</HTML>

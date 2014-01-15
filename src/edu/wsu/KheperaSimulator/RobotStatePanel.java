@@ -25,7 +25,6 @@
 package edu.wsu.KheperaSimulator;
 
 import javax.swing.*;
-import javax.swing.border.*;
 import java.awt.*;
 
 /**
@@ -81,7 +80,8 @@ public class RobotStatePanel extends JPanel {
    * @see javax.swing.JComponent
    * @see java.awt.Graphics
    */
-  public void paintComponent(Graphics g) {
+  @Override
+public void paintComponent(Graphics g) {
     super.paintComponent(g); //paint background
 
     //Draw image at its natural size first.

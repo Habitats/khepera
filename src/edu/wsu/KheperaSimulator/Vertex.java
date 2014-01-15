@@ -135,7 +135,7 @@ public class Vertex implements Serializable {
 
         g2.setColor(vertexColor);
         switch(objType) {
-            case WorldPanel.WALL: g2.rotate(theta, (double)xPos, (double)yPos);
+            case WorldPanel.WALL: g2.rotate(theta, xPos, yPos);
                                   g2.fillRect(xPos,yPos,8,50);
                                   g2.setTransform(new AffineTransform());
                                   break;
@@ -150,7 +150,7 @@ public class Vertex implements Serializable {
                                   break;
             case WorldPanel.ROBOT:rcX = xPos+10;
                                   rcY = yPos+10;
-                                  g2.rotate(theta, (double)rcX, (double)rcY);
+                                  g2.rotate(theta, rcX, rcY);
                                   g2.drawImage(robotI,xPos-3,yPos-3,null);
                                   g2.setTransform(new AffineTransform());
                                   /*

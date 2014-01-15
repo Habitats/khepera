@@ -1,0 +1,116 @@
+================================
+RemoteControl Kephera Controller
+ for WSU Kephera Simulator
+================================
+Author: 	Duane Bolick
+Date:		12 JUN 2004
+Version:	1.0
+================================
+
+-=Description=-
+
+RemoteControl is a controller written for the WSU KSim Kephera Simulator.  While running, this controller simulates a real-time remote controller for the Kephera robot.  
+
+
+-=Installation=-
+
+To install RemoteControl, copy the RemoteControl.class file to the directory where your other simulator robot controller class files reside.
+
+This should be a directory called 'controllers'.
+
+
+-=Usage=-
+
+Start the Kephera Simulator program.
+Click the 'Run' button
+Select 'RemoteControl' from the list of controllers
+
+When the controller begins running, it will open a console window that simulates the real Kephera Serial Interface console window.
+
+You will see two text boxes.  The larger box on the top is the console output text area, where status, help, and error messages will be displayed.  You may scroll up and down using the scrollbar on the right. 
+
+Upon starting, the larger text box at the top of the console should display the message:
+
+
+========================================
+Khepera Remote Control Console Simulator
+========================================
+Type help for a list of commands.
+
+
+
+
+Below this output text area, you will see the message:
+
+
+
+----Type commands below:----------
+
+
+
+
+and a single-lined text field.  This field is where you will input each command to the simulated Kephera.
+
+Try using it now by selecting the lower field by clicking in it with your mouse, typing:
+
+
+
+ver
+
+
+
+and pressing the enter key.  You should see the message:
+
+
+
+Current Version: v1.0
+
+
+
+displayed in the output text area.  You will enter all commands to the simulated Kephera in this way.  Now try moving the Kephera.  Type the following command in the text field, press enter, and watch the Kephera in the simulator window:
+
+
+forward long
+
+
+You will see the robot move forward a short distance and stop.  Here is a list of commands that the remote control console will accept.  If there is a shortcut listed, you may also type the shortcut character or characters to perform the same action.
+
+NOTE:  You must include a space when entering the arm and gripper shortcuts.
+
+
+Command		Shortcut		Action
+
+help					Displays a list of commands
+quit		q			Quits the remote control simulator
+ver					Displays the current version
+
+arm up		a u			Raises the robot's arm
+arm down	a d			Lowers the robot's arm
+
+grip open	g o			Opens the gripper
+grip close	g c			Closes the gripper
+
+forward		f			Moves the robot forward
+back		b			Moves the robot backward
+right		r			Turns the robot to the right
+left		l			Turns the robot to the left
+
+All of the above movement commands (forward, back, right, and left) may be followed by a length.  Enter the movement command, press space, type one of the following modifiers, and press enter.
+
+Modifier	Shortcut
+
+short		s
+med		m
+long		l
+
+EXAMPLES: 	forward long
+		f long
+		back m
+
+
+
+-=Quitting=-
+
+Type quit in the text field and press enter.  The console window will close.  You should then click the 'Halt' button on the simulator to end the contoller's run.
+
+Alternately, you may just click the 'Halt' button on the simulator, which will close the console window and end the controller's run.

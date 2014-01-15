@@ -124,7 +124,8 @@ public class KSClient implements Runnable{
   /**
    * @see java.lang.Runnable
    */
-  public void run() {
+  @Override
+public void run() {
     try {
       // set up connection
       clientSocket = new Socket(host, port);
@@ -181,7 +182,7 @@ public class KSClient implements Runnable{
         else if (inData.startsWith("360")) {
           frame.worldPanel.setWorldObjects((Vector)in.readObject());
           // NEW 8/3/03 - sp
-          frame.worldPanel.setHeldId((int)in.readInt());
+          frame.worldPanel.setHeldId(in.readInt());
           // END NEW
           frame.drawManager.startPlayback(); // prepare local sim for playback
         }

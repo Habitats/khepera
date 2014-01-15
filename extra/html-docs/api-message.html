@@ -1,0 +1,61 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>The Robo Sim API: MessagePasser class</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<TABLE>
+<TR><TH><IMG SRC="logo-small.gif"></TH>
+    <TH WIDTH=10></TH>
+    <TH><H2><FONT FACE="Arial,Bold">MessagePasser class</FONT></H2></TH>
+</TR>
+</TABLE>
+<HR>
+
+<BR>This class enables the passing of String objects (i.e. messages, commands, etc.)
+to and from an instantiation of the Robot class. This allows you to interact with
+your controller when its being executed in the simulator, without having to mess
+around with standard I/O streams to and from a terminal window (although you can
+use this method if you like). 
+<BR><BR>
+<HR>
+
+<CENTER>
+<H3><FONT FACE="Arial,Bold"><U>Methods</U></FONT></H3>
+</CENTER>
+<TABLE>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>void postMessage(String message)
+      </B></FONT></TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>accepts a valid String, which is then appended to the Output text area
+   on the simulator GUI. Strings can be literals or references to existing
+   String objects. The String argument need not be terminated with a newline
+   character. This method returns immediately.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>String getMessage()</B>
+      </FONT></TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>returns a String represention of the text entered in the Input text 
+   field on the simulator GUI. This value may be null if no text is entered.
+   This method only returns when the Enter key is pressed while the Input text 
+   field has focus. In this way it behaves much like BufferedReader's readline()
+   method, which blocks until the user hits Enter.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+</TABLE>
+
+<HR>
+<CENTER>
+<TABLE>
+<TR>
+<TH><A HREF="api.html">Back</A></TH>
+<TH WIDTH=10></TH>
+<TH><A HREF="index.html">Home</A></TH>
+</TR>
+</TABLE>	
+</CENTER>
+</BODY>
+</HTML>

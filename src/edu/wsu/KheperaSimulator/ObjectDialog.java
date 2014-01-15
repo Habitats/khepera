@@ -113,14 +113,16 @@ public class ObjectDialog extends JPanel {
         rbBall.addActionListener(rbObjectListener);
 
         rbCWise.addActionListener(new ActionListener() {
-           public void actionPerformed(ActionEvent e) {
+           @Override
+		public void actionPerformed(ActionEvent e) {
                if (rbCWise.isSelected())
                    objectPanel.setRotateDirection(ObjectPanel.CW);
            }
         });
 
         rbCCWise.addActionListener(new ActionListener() {
-           public void actionPerformed(ActionEvent e) {
+           @Override
+		public void actionPerformed(ActionEvent e) {
                if (rbCCWise.isSelected())
                    objectPanel.setRotateDirection(ObjectPanel.CCW);
            }
@@ -128,7 +130,8 @@ public class ObjectDialog extends JPanel {
 
         // regular button -> rotates object
         rotateButton.addActionListener(new ActionListener() {
-           public void actionPerformed(ActionEvent e) {
+           @Override
+		public void actionPerformed(ActionEvent e) {
                objectPanel.rotateObject();
                worldPanel.setRotationAngle(objectPanel.getRotationAngle());
            }
@@ -163,7 +166,8 @@ public class ObjectDialog extends JPanel {
 
      /** Listens to the radio buttons. */
     class RadioListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
+        @Override
+		public void actionPerformed(ActionEvent e) {
             String action = e.getActionCommand();
 
             if (action.equals("wall")) {

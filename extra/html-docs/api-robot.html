@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>The Robo Sim API: Robot class</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<TABLE>
+<TR><TH><IMG SRC="logo-small.gif"></TH>
+    <TH WIDTH=10></TH>
+    <TH><H2><FONT FACE="Arial,Bold">Robot class</FONT></H2></TH>
+</TR>
+</TABLE>
+<HR>
+
+<P>Although the Robot class is not formally a part of the simulator API, it should
+provide a public interface whose components are those relied upon by the rest of the
+program. For example, in order for this class to obtain references to the Motor
+and Sensor objects, it needs to accept a CurrentRobotState reference in its 
+contstructor's argument list. Likewise, a reference to the MessagePasser object needs
+to be accepted as well (as the second, and final argument to the constructor). These
+references <EM>will</EM> be passed to the Robot class constructor, so if you do not
+define the constructor appropriately there will be exeptions thrown at runtime. It is
+also important that the <CODE>public boolean active field</CODE>, and the 
+<CODE>killControl()</CODE> method be present; these allow the program to cleanly 
+terminate the Robot thread. The Robot constructor and the <CODE>killControl()</CODE>
+method mentioned above are crucial to the successful creation and termination of the
+Robot thread. If you see errors generated when you run your controller, or if it 
+does not halt (in the case the entire program may freeze), double check these 
+methods in your code.
+<P>Because this class extends the Thread class, it is important that you implement a 
+run() method: <CODE>public void run() {your code here}</CODE>. If you are unfamiliar
+with Java threads, you may want read some reference material to gain a better 
+understanding of how the Robot.class functions at an abstract level within the 
+simulator program.
+<P><EM><B>NOTE:</B> See the Controller section off the main help window for
+specific Robot.class implemenation details.</EM>
+<BR>
+<HR>
+<CENTER>
+<TABLE>
+<TR>
+<TH><A HREF="api.html">Back</A></TH>
+<TH WIDTH=10></TH>
+<TH><A HREF="index.html">Home</A></TH>
+</TR>
+</TABLE>	
+</CENTER>
+</BODY>
+</HTML>

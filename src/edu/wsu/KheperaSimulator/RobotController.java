@@ -56,6 +56,7 @@ public abstract class RobotController implements Controller
 	}
 
 
+	@Override
 	public void run() 
 	{
 		running = true;
@@ -94,7 +95,7 @@ public abstract class RobotController implements Controller
 	{
 		try 
 		{
-			thread.sleep(timeout);
+			Thread.sleep(timeout);
 		}
 	
 		catch (Exception e) 

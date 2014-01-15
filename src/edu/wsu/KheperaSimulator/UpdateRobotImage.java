@@ -26,7 +26,6 @@ package edu.wsu.KheperaSimulator;
 
 import java.awt.*;
 import java.awt.geom.*;
-import java.util.*;
 
 /**
  * An <code>UpdateRobotImage</code> class provides the functionality to

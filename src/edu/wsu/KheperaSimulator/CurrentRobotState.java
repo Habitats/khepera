@@ -204,6 +204,6 @@ public class CurrentRobotState {
    * @param a the angle theta of directional orientation of the robot
    */
   protected void setRobotCoordinates(int x, int y, float a) {
-    currentPos.setCoordinates(x, y, a, (float)x, (float)y);
+    currentPos.setCoordinates(x, y, a, x, y);
   }
 } // CurrentRobotState

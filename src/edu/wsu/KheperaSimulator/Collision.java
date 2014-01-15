@@ -24,7 +24,6 @@
 
 package edu.wsu.KheperaSimulator;
 
-import java.awt.*;
 import java.util.*;
 
 /**

@@ -1,0 +1,79 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>User Control Code</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+<TABLE>
+<TR><TH><IMG SRC="logo-small.gif"></TH>
+    <TH WIDTH=10></TH>
+    <TH><H2><FONT FACE="Arial,Bold">User Control Code</FONT></H2></TH>
+</TR>
+</TABLE>
+<HR>
+
+<BR><CENTER>
+<H3><FONT FACE="Arial"><B>Robot class Requirements</B></FONT></H3>
+</CENTER>
+
+<P>The minimum requirements for the Robot class can be found 
+<A HREF="template.html">here</A>. This template file should be used as the
+starting point when creating your own controllers. You can simply add your
+own methods and fields to this class definition to define your behaviors.
+You should try to put as many of your repetitive routines as possible into
+the <CODE>run()</CODE> method. Calling methods that may loop indefinitely 
+from within the <CODE>run()</CODE> method, may cause this thread to continue
+executing after the thread was halted from the interface. To avoid these 
+potential problems, you should insert statements within potentially endless
+loops that test the termination variable <CODE>boolean active</CODE>. When
+<CODE>(active == false)</CODE>, a termination &quot;request&quot; has been
+sent to the Robot thread via its <CODE>killControl()</CODE> method. By testing
+this condition within pieces of code that may take control away from the main
+<CODE>while(active)</CODE> loop (in <CODE>run()</CODE>) for long periods of 
+time, and breaking or returning when <CODE>(active == false)</CODE>, you will
+insure the timely termination of this thread.
+
+<BR>
+<BR>
+<CENTER>
+<H3><FONT FACE="Arial"><B>A Simple Controller</B></FONT></H3>
+</CENTER>
+
+<P>Almost all of the controllers you develop will involve some form of sensor
+polling coupled with setting motor speeds. A recommended  &quot;first 
+controller&quot; to get you started programming, is one that defines a simple
+reactive behavior: move the robot around the world and avoid obstacles. The
+first step in developing this control, is to create a &quot;dummy&quot; 
+Robot.java file that either does nothing at all (e.g. the template file) or 
+one that just sets both motor speeds to 1 and loops indefinitely. Compile
+and then execute this code in the simulator, making note of the distance sensor
+readings at various distances as it runs. If your code does nothing at all, you
+will need to place the robot at different distances from a wall, run the code,
+note the sensor readings, halt the run, re-set the robot at a different 
+distance, etc. - repeating these steps until you understand how sensor readings
+generally correspond to distance. The data collected from this phase helps you
+determine the safe sensor value thresholds you will need when polling the 
+sensors in the reactive controller. During polling you will need to compare 
+these threshold value(s) to the current sensor values to determine when the 
+robot may be &quot;too close&quot; to an obstacle. When this occurs, set the 
+motor speeds accordingly so that the robot turns or backs away from the 
+obstacle. To allow the robot a greater range of exploration, you will want to
+set your motor speeds based on the specific sensor or set of sensors that 
+returned value(s) above the threshold. See the Robot_Example.java file in the
+controller subdirectory for code specific examples of polling, etc.   
+ 
+<BR>
+
+<HR>
+<CENTER>
+<TABLE>
+<TR>
+<TH><A HREF="index.html">Back</A></TH>
+<TH WIDTH=10></TH>
+<TH><A HREF="index.html">Home</A></TH>
+</TR>
+</TABLE>	
+</CENTER>
+</BODY>
+</HTML>

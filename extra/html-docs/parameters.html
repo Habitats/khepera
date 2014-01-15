@@ -1,0 +1,92 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>Adjustable Program Parameters</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+<TABLE>
+<TR><TH><IMG SRC="logo-small.gif"></TH>
+    <TH WIDTH=10></TH>
+    <TH><H2><FONT FACE="Arial,Bold">Adjustable Program Parameters</FONT></H2></TH>
+</TR>
+</TABLE>
+<HR>
+
+<P>Under the Tools menu you will find the Parameters menu item. Clicking on this
+menu item (or pressing Alt-P) brings up the Adjustable Parameters dialog window.
+Within this window you can adjust four different program variables - distance sensor
+sensitivity, light sensor sensitivity, and speed dampening by adjusting the 
+appropriate slider bar. To view the slider for a variable,click on the tags at the top 
+of the window. 
+<BR>
+<HR>
+
+<CENTER>
+<H3><FONT FACE="Arial"><B>Adustable Parameters Window</B></FONT></H3>
+</CENTER>
+<P><CENTER><IMG SRC="parameters.gif">
+<BR><I>Distance sensitivity panel.</I>
+</CENTER>
+<BR>
+
+<TABLE>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>Distance</B></FONT></TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>in our experience with the Khepera robot, we have found that no two robots
+   exhibit identical sensor readings at a given distance from an object - even 
+   under identical situations. Sensors may get damaged or degrade over time, 
+   which may effect their sensitivity (by sensitivity I mean that one set of sensors
+   may return higher values (on average) than another set when at an equal distance
+   from a sensed object. I call the set returning the higher values more sensitive).
+   Given this observation, I felt that it would be appropriate to add a level of
+   flexability to the sensor simulations, rather than hard code the values used
+   to determine distance sensor readings. If you use a real Khepera robot in 
+   conjunction with the simulator, you may need to adjust these parameters if 
+   significant differences are found when calibrating. Sliding the bar on this
+   panel will increase or decrease sensitivity.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>Light</B></FONT></TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>sensor readings from light sources can variate because of sensor 
+   idiocyncracies (as noted above), or because of variations in the light source
+   itself. The latter form of variation is the main reason for providing variable
+   adjustments to light sensing. In real environments, the actual Khepera robot
+   may be presented with light sources that may generate a wide range of energy
+   based on battery power, bulb type, etc. By adjusting this parameter, you can
+   indirectly alter the type of light used in simulation - to better reflect the
+   properties of those used in real Khepera testing.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>Speed</B></FONT></TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>speed parameters were made variable to account for the differences in speeds 
+   between the machines the simulator may be run on. Given a motor speed of 2 assigned 
+   to each motor, for example, one might notice the robot traveling at speeds 
+   proportional to 4 or 5 when on a fast machine, while on a slow machine the robot may 
+   be traveling at speeds proportional to 1 or less. Provided you have access to a real 
+   Khepera robot, you can adjust the speed parameters to roughly emulate the distance 
+   covered by the real robot at given speeds. The slider bar for this panel modifies 
+   several variables that determine turn and non-turn speeds, so all movement is kept
+   proportional.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+
+</TABLE> 
+
+<HR>
+<CENTER>
+<TABLE>
+<TR>
+<TH><A HREF="index.html">Back</A></TH>
+<TH WIDTH=10></TH>
+<TH><A HREF="index.html">Home</A></TH>
+</TR>
+</TABLE>	
+</CENTER>
+</BODY>
+</HTML>

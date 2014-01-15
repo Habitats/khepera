@@ -26,7 +26,6 @@ package edu.wsu.KheperaSimulator;
 
 import java.io.*;
 import java.net.*;
-import java.util.Vector;
 
 /**
  * A <code>KSServerWorker</code> provides the functionality to service a client.
@@ -173,7 +172,8 @@ public class KSServerWorker extends Thread {
   /**
    * @see java.lang.Runnable
    */
-  public void run() {
+  @Override
+public void run() {
     try {
       initializeStreams();
       verifyConnection();

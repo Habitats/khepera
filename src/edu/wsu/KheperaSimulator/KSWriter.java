@@ -25,8 +25,6 @@
 package edu.wsu.KheperaSimulator;
 
 import java.io.*;
-import java.net.*;
-import java.util.Calendar;
 import java.util.*;
 
 /**
@@ -92,12 +90,12 @@ public class KSWriter implements Runnable {
   protected void startRecording() {
     String name = null;
     Calendar nDate = Calendar.getInstance();
-    day = nDate.get(nDate.DATE);
-    month = nDate.get(nDate.MONTH);
-    year = nDate.get(nDate.YEAR);
-    int hour = nDate.get(nDate.HOUR);
-    int min = nDate.get(nDate.MINUTE);
-    int sec = nDate.get(nDate.SECOND);
+    day = nDate.get(Calendar.DATE);
+    month = nDate.get(Calendar.MONTH);
+    year = nDate.get(Calendar.YEAR);
+    int hour = nDate.get(Calendar.HOUR);
+    int min = nDate.get(Calendar.MINUTE);
+    int sec = nDate.get(Calendar.SECOND);
     month++;
     ArrayList control = nFrame.rcd.runningControllers();
     current = (String)control.get(0);
@@ -131,7 +129,8 @@ public class KSWriter implements Runnable {
   /**
    * @see java.lang.Runnable
    */
-  public void run() {
+  @Override
+public void run() {
     while(record) {
       if(notWritten) {
         try{
@@ -196,7 +195,7 @@ public class KSWriter implements Runnable {
         // END NEW
         writtenObjects++;
         out.flush();
-        thread.sleep(delayTime);
+        Thread.sleep(delayTime);
         } catch (Exception a){ System.out.println("error 1");}
     }
     try{

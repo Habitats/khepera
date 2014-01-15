@@ -1,0 +1,73 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>The Robo Sim API: Motor class</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<TABLE>
+<TR><TH><IMG SRC="logo-small.gif"></TH>
+    <TH WIDTH=10></TH>
+    <TH><H2><FONT FACE="Arial,Bold">Motor class</FONT></H2></TH>
+</TR>
+</TABLE>
+<HR>
+
+<BR>The Motor class defines an interface that allows access to both motors
+on the robot. Each motor has two pieces of data associated with it: a speed
+and a wheel position. Unlike the Sensor class that defines one of the eight 
+sensors, the Motor class encapsulates <EM>both</EM> motors. Motor speeds for 
+each motor can range from -9 to 9. Setting speeds to initiate certain forms of
+movement is fairly intuitive; setting both motors to equal, positve values
+causes the robot to go straight forward, setting both motors to equal, negative 
+values causes the robot to go straight backward, setting both motors to equal
+absolute values, where one is positive and the other negative, causes the robot
+to pivot turn, etc. The wheel position is incremented for each wheel when the it
+rotates forward (i.e. its motor speed is greater than zero), and the rate of 
+incrementation is proportional to the actual speed. For negative speeds, the 
+wheel position is decremented. The only time a wheel position is not updated is
+when the motor speed is zero or the robot is running into an immovable object. 
+<BR><BR>
+<HR>
+
+<CENTER>
+<H3><FONT FACE="Arial,Bold"><U>Methods</U></FONT></H3>
+</CENTER>
+
+<TABLE>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>void setMotorSpeeds(int lSpeed, int rSpeed)</B></FONT>
+      </TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>accepts two integers that are within the legal speed range; illegal speed
+   values are ignored. The arguments need to be in the following order: left speed,   right speed.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>long getLeftPosition()</B>
+      </FONT></TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>returns a long int that refers to the current left wheel position.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>long getRightPosition()</B></FONT>
+      </TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>returns a long int that refers to the current right wheel position.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+</TABLE>
+
+
+<HR>
+<CENTER>
+<TABLE>
+<TR>
+<TH><A HREF="api.html">Back</A></TH>
+<TH WIDTH=10></TH>
+<TH><A HREF="index.html">Home</A></TH>
+</TR>
+</TABLE>	
+</CENTER>
+</BODY>
+</HTML>

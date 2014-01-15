@@ -28,7 +28,6 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.awt.geom.*;
 import java.util.*;
 
 /**
@@ -94,9 +93,9 @@ public class WorldPanel extends JPanel implements MouseListener, MouseMotionList
     protected void initialize() {
 	worldObjects = new Vector();
         lightObjects = new Vector();
-        drawObj = this.WALL;
-        previousDrawObj = this.WALL;
-        buttonClicked = this.NONE;
+        drawObj = WorldPanel.WALL;
+        previousDrawObj = WorldPanel.WALL;
+        buttonClicked = WorldPanel.NONE;
         theta = 0.0f;
         idNum = 5;
         setPreferredSize(new Dimension(500, 500));
@@ -133,7 +132,8 @@ public class WorldPanel extends JPanel implements MouseListener, MouseMotionList
      * @see javax.swing.JComponent
      * @see java.awt.Graphics
      */
-    public void paint(Graphics g) {
+    @Override
+	public void paint(Graphics g) {
 	super.paint(g);  // do the default paint routine first
         //Graphics2D g2 = (Graphics2D)g;
         wg2 = (Graphics2D)g;
@@ -155,8 +155,8 @@ public class WorldPanel extends JPanel implements MouseListener, MouseMotionList
 	    }
             if(!running && setRobot != null)
                 setRobot.drawVertex(tempg2);
-            if((dragObject != null) && (buttonClicked == this.ADD ||
-                                    buttonClicked == this.ROBOT))
+            if((dragObject != null) && (buttonClicked == WorldPanel.ADD ||
+                                    buttonClicked == WorldPanel.ROBOT))
                 dragObject.drawVertex(tempg2);
             wg2.drawImage(tempImage,0,0,this);
         }
@@ -179,7 +179,8 @@ public class WorldPanel extends JPanel implements MouseListener, MouseMotionList
      * @see javax.swing.JComponent
      * @see java.awt.Graphics
      */
-    public void update(Graphics g) {
+    @Override
+	public void update(Graphics g) {
         paint(g);
     }
 
@@ -279,15 +280,15 @@ public class WorldPanel extends JPanel implements MouseListener, MouseMotionList
      * to the named constants ROBOT, ADD, NONE)
      */
     protected void setEventType(int button) {
-        if((buttonClicked == this.ROBOT && button == this.ADD) ||
-        (buttonClicked == this.NONE && button == this.ADD)) {
-            if(drawObj == this.ROBOT)
+        if((buttonClicked == WorldPanel.ROBOT && button == WorldPanel.ADD) ||
+        (buttonClicked == WorldPanel.NONE && button == WorldPanel.ADD)) {
+            if(drawObj == WorldPanel.ROBOT)
                 drawObj = previousDrawObj;
         }
         buttonClicked = button;
-        if(button == this.ROBOT) {
+        if(button == WorldPanel.ROBOT) {
             previousDrawObj = drawObj;
-            drawObj = this.ROBOT;
+            drawObj = WorldPanel.ROBOT;
         }
     }
 
@@ -326,7 +327,7 @@ public class WorldPanel extends JPanel implements MouseListener, MouseMotionList
 
             if(drawObj == v.objType) {
                 // walls == 8 X 50
-                if(drawObj == this.WALL) {
+                if(drawObj == WorldPanel.WALL) {
                     if(v.theta == 0.0f) {    // note: change rotation to 90 or 0
                         if(mouseX >= objX && mouseX <= (objX + 7) &&
                            mouseY >= objY && mouseY <= (objY +49)) {
@@ -343,14 +344,14 @@ public class WorldPanel extends JPanel implements MouseListener, MouseMotionList
                     }
                 } // end wall
                 // balls, caps: 15 X 15
-                if(drawObj == this.CAP || drawObj == this.BALL) {
+                if(drawObj == WorldPanel.CAP || drawObj == WorldPanel.BALL) {
                     if(mouseX >= objX && mouseX <= (objX + 10) &&
                        mouseY >= objY && mouseY <= (objY + 10)) {
                            worldObjects.removeElement(v);
                            return;
                     }
                 }
-                if(drawObj == this.LIGHT) {
+                if(drawObj == WorldPanel.LIGHT) {
                     if(mouseX >= objX && mouseX <= (objX + 15) &&
                        mouseY >= objY && mouseY <= (objY + 15)) {
                            worldObjects.removeElement(v);
@@ -390,14 +391,15 @@ public class WorldPanel extends JPanel implements MouseListener, MouseMotionList
      * @param e
      * @see java.awt.event.MouseListener
      */
-    public void mouseClicked(MouseEvent e){
+    @Override
+	public void mouseClicked(MouseEvent e){
 	int x = e.getX();
   	int y = e.getY();
 
         switch(buttonClicked) {
             case ADD    : Vertex objectNode = new Vertex(drawObj,x,y,theta,idNum);
   	                  worldObjects.add(objectNode);
-                          if(drawObj == this.LIGHT)
+                          if(drawObj == WorldPanel.LIGHT)
                               lightObjects.add(objectNode);
                           idNum++;
                           repaint();
@@ -405,7 +407,7 @@ public class WorldPanel extends JPanel implements MouseListener, MouseMotionList
                           break;
             case REMOVE : deleteObject(x,y);
                           break;
-            case ROBOT  : setRobot = new Vertex(this.ROBOT,x,y,0.0f,-1);
+            case ROBOT  : setRobot = new Vertex(WorldPanel.ROBOT,x,y,0.0f,-1);
                           repaint();
                           //writeToBuffer();
                           break;
@@ -415,13 +417,15 @@ public class WorldPanel extends JPanel implements MouseListener, MouseMotionList
     /**
      * @see java.awt.event.MouseListener
      */
-    public void mouseEntered(MouseEvent e){ }
+    @Override
+	public void mouseEntered(MouseEvent e){ }
 
     /**
      * Stop painting any object being dragged around.
      * @see java.awt.event.MouseListener
      */
-    public void mouseExited(MouseEvent e){
+    @Override
+	public void mouseExited(MouseEvent e){
         dragObject = null;
         repaint();
     }
@@ -429,35 +433,39 @@ public class WorldPanel extends JPanel implements MouseListener, MouseMotionList
     /**
      * @see java.awt.event.MouseListener
      */
-    public void mousePressed(MouseEvent e){ }
+    @Override
+	public void mousePressed(MouseEvent e){ }
 
     /**
      * @see java.awt.event.MouseListener
      */
-    public void mouseReleased(MouseEvent e){ }
+    @Override
+	public void mouseReleased(MouseEvent e){ }
 
     /**
      * @see java.awt.event.MouseMotionListener
      */
-    public void mouseDragged(MouseEvent e) { }
+    @Override
+	public void mouseDragged(MouseEvent e) { }
 
     /**
      * Draw any object being dragged by the mouse at the cursor coordinates.
      * @see java.awt.event.MouseMotionListener
      */
-    public void mouseMoved(MouseEvent e) {
+    @Override
+	public void mouseMoved(MouseEvent e) {
         int x = e.getX();
   	int y = e.getY();
         //
-        if(buttonClicked == this.ADD || buttonClicked == this.ROBOT) {
+        if(buttonClicked == WorldPanel.ADD || buttonClicked == WorldPanel.ROBOT) {
             if(dragObject == null || dragObject.objType != drawObj) {
-                if(drawObj == this.ROBOT)
+                if(drawObj == WorldPanel.ROBOT)
                     dragObject = new Vertex(drawObj,x,y,0.0f,-1);
                 else
                     dragObject = new Vertex(drawObj,x,y,theta,-1);
             }
             else {
-                if(drawObj == this.ROBOT)
+                if(drawObj == WorldPanel.ROBOT)
                     dragObject.setVertexCoordinates(x,y,0.0f);
                 else
                     dragObject.setVertexCoordinates(x,y,theta);

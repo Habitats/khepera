@@ -1,0 +1,128 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>The Robo Sim API: CurrentRobotState class</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<TABLE>
+<TR><TH><IMG SRC="logo-small.gif"></TH>
+    <TH WIDTH=10></TH>
+    <TH><H2><FONT FACE="Arial,Bold">CurrentRobotState class</FONT></H2></TH>
+</TR>
+</TABLE>
+<HR>
+
+<BR>The CurrentRobotState class provides a small interface that provides access
+to the robot. Through a reference to this class, you can obtain references to
+Motor and Sensor objects, and directly set and query components of the gripper
+arm unit. A set of class fields define contstant legal values for arm and 
+gripper positions.
+<BR>
+<BR>
+<HR>
+
+<CENTER>
+<H3><FONT FACE="Arial,Bold"><U>Class Fields</U></FONT></H3>
+</CENTER>
+
+<TABLE>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>public static final int ARM_UP
+      </B></FONT></TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>public static final int ARM_DOWN
+      </B></FONT></TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>public static final int GRIP_OPEN      </B></FONT></TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>public static final int GRIP_CLOSED    </B></FONT></TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+</TABLE> 
+<HR>
+
+<CENTER>
+<H3><FONT FACE="Arial,Bold"><U>Methods</U></FONT></H3>
+</CENTER>
+
+<TABLE>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>Motor getMotorState()</B></FONT>
+      </TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>returns a reference to the current Motor object. Use this returned
+   reference to set motor speeds, etc.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>Sensor[] getSensorValues()</B>
+      </FONT></TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>returns a reference to an array of 8 Sensor objects. Each Sensor object
+   in the array refers to 1 of the 8 IR sensors on the robot. The array indexes
+   (0-7) access the sensors starting at the leftmost sensor (i.e. Sensor[0]) as
+   you look at the top of the robot with its front facing up. The rest are 
+   indexed going clock-wise around the robot from this perspective.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>int getArmState()</B></FONT></TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>returns one of the two arm constants as defined above. Provides 
+   information on the gripper arm's current position.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>void setArmState(int arm)</B>
+      </FONT></TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>accepts one of the two arm constants as defined above. This will 
+   move the gripper arm to the specified position.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>int getGripperState()</B>
+      </FONT></TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>returns one of the two gripper constants as defined above. Provides 
+   information on the grippers' current position.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>void setGripperState(int grip)
+      </B></FONT></TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>accepts one of the two gripper constants as defined above. This will 
+   move the grippers to the specified position. If an object is between the
+   grippers, it will effectively grab the object.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+<TR>
+   <TD VALIGN=top><FONT FACE="Arial" SIZE=2><B>boolean isObjectPresent()</B>
+      </FONT></TD>
+   <TD WIDTH=10 VALIGN=top>-</TD>
+   <TD>returns true if an object is currently detected by the gripper sensor,
+   false otherwise. The gripper sensor detects anything present between the
+   grippers.</TD>
+</TR>
+<TR><TD HEIGHT=3></TD></TR>
+</TABLE> 
+
+<HR>
+<CENTER>
+<TABLE>
+<TR>
+<TH><A HREF="api.html">Back</A></TH>
+<TH WIDTH=10></TH>
+<TH><A HREF="index.html">Home</A></TH>
+</TR>
+</TABLE>	
+</CENTER>
+</BODY>
+</HTML>

@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>Robot class Template</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+<TABLE>
+<TR><TH><IMG SRC="logo-small.gif"></TH>
+    <TH WIDTH=10></TH>
+    <TH><H2><FONT FACE="Arial,Bold">Robot.java Template</FONT></H2></TH>
+</TR>
+</TABLE>
+<HR>
+<BR>
+<CODE>
+/**<BR> 
+  *  Robot.java template<BR>
+  *<BR>
+  *  The following class defintion represents the bare minimum<BR> 
+  *  fields and methods that are required by the simulator for<BR>
+  *  this class. This code should be used as a starting point<BR>
+  *  when writing your own controllers. The code here, as is,<BR>
+  *  will compile, but will do nothing when run within the<BR> 
+  *  simulator. Thus, you need to add your own methods/fields<BR>
+  *  to implement some control.<BR> 
+  *<BR>  
+  *  NOTE: a text based copy of this file can be found in the<BR>
+  *        controller sub-directory (Robot.java.template).<BR> 
+  */<BR>
+<BR>
+public class Robot extends Thread {<BR>
+&#160;    /* Do NOT Modify these fields */<BR>   
+&#160;    private CurrentRobotState currentData;<BR>
+&#160;    private MessagePasser     messagePasser;<BR>
+&#160;    private Sensor[]          sensors;<BR> 
+&#160;    private Motor             motorState;<BR>
+&#160;    private boolean           active;<BR>
+<BR>
+&#160;    // Add your own fields here....<BR>
+<BR>
+&#160;     /* Creates new Robot<BR> 
+&#160;      *    you may append any other initialization code you<BR> 
+&#160;      *    want, but the 5 assignments MUST be present.<BR>
+&#160;      */<BR>
+&#160;    public Robot(CurrentRobotState data, MessagePasser mp) {<BR>
+&#160;&#160;&#160;        currentData = data;<BR>
+&#160;&#160;&#160;        messagePasser = mp;<BR>
+&#160;&#160;&#160;        sensors  = currentData.getSensorValues();<BR>
+&#160;&#160;&#160;        motorState = currentData.getMotorState();<BR>
+&#160;&#160;&#160;        active = true;<BR>
+&#160;    }<BR>
+<BR>
+&#160;    /* This method indirectly terminates the thread.*/<BR>
+&#160;    public void killControl() {<BR>
+&#160;&#160;&#160;        active = false;<BR>
+&#160;    }<BR>
+<BR>
+ &#160;   /* Add your own private methods here.... */<BR>
+<BR>
+ &#160;   /* Need to define run method inherited from Thread. */<BR>
+ &#160;   public void run() {<BR>
+ &#160;&#160;&#160;       while(active) {<BR>
+<BR>
+ &#160;&#160;&#160;       /* Add your routines here.....<BR> 
+ &#160;&#160;&#160;        *  This while loop will iterate until you press the<BR>
+ &#160;&#160;&#160;        *  halt button.<BR> 
+ &#160;&#160;&#160;        */<BR>
+<BR>
+&#160;&#160;&#160;        }<BR>
+&#160;    }<BR>
+<BR>    
+}<BR>
+</CODE>
+
+<HR>
+<CENTER>
+<TABLE>
+<TR>
+<TH><A HREF="controller.html">Back</A></TH>
+<TH WIDTH=10></TH>
+<TH><A HREF="index.html">Home</A></TH>
+</TR>
+</TABLE>	
+</CENTER>
+</BODY>
+</HTML>    

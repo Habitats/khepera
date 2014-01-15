@@ -29,7 +29,6 @@ import javax.swing.event.*;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.lang.*;
 
 /**
  * An <code>OptionsWindow</code> class represents the options window of the
@@ -113,9 +112,10 @@ public class OptionsWindow extends JDialog {
 
 	/** ActionListener for the distance slider */
 	distSlider.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
+            @Override
+			public void stateChanged(ChangeEvent e) {
                 if (!distSlider.getValueIsAdjusting()) {
-                   int sLevel = (int)distSlider.getValue();
+                   int sLevel = distSlider.getValue();
                    parent.distLevel = sLevel;
                    if(parent.running)
                        parent.drawManager.setDistLevel(sLevel);
@@ -145,9 +145,10 @@ public class OptionsWindow extends JDialog {
 
 	/** ActionListener for the Light slider */
         lightSlider.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
+            @Override
+			public void stateChanged(ChangeEvent e) {
                 if (!lightSlider.getValueIsAdjusting()) {
-                   int sLevel = (int)lightSlider.getValue();
+                   int sLevel = lightSlider.getValue();
                    parent.lightLevel = sLevel;
                    if(parent.running)
                        parent.drawManager.setLightLevel(sLevel);
@@ -177,9 +178,10 @@ public class OptionsWindow extends JDialog {
 
 	/** ActionListener for the Speed slider */
         speedSlider.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
+            @Override
+			public void stateChanged(ChangeEvent e) {
                 if (!speedSlider.getValueIsAdjusting()) {
-                   int sLevel = (int)speedSlider.getValue();
+                   int sLevel = speedSlider.getValue();
                    parent.speedLevel = sLevel;
                    if(parent.running)
                        parent.drawManager.setSpeedLevel(sLevel);
@@ -212,7 +214,8 @@ public class OptionsWindow extends JDialog {
 
 	/** ActionListener for the Recorder slider */
 	comboRecording.addActionListener( new ActionListener()  {
-           public void actionPerformed(ActionEvent e) {
+           @Override
+		public void actionPerformed(ActionEvent e) {
             System.out.println(comboRecording.getSelectedItem());
 	    parent.recordRate = Integer.parseInt((String)comboRecording.getSelectedItem());
            }
@@ -239,7 +242,8 @@ public class OptionsWindow extends JDialog {
 
 	/** ActionListener for the Networking slider */
 	comboNetworking.addActionListener( new ActionListener()  {
-           public void actionPerformed(ActionEvent e) {
+           @Override
+		public void actionPerformed(ActionEvent e) {
              System.out.println(comboNetworking.getSelectedItem());
 	     parent.serverTXRate = Integer.parseInt((String)comboNetworking.getSelectedItem());
              comboNetworking.setSelectedItem(Integer.toString(parent.serverTXRate));
@@ -262,7 +266,8 @@ public class OptionsWindow extends JDialog {
 
 	/** ActionListener for the set Port slider */
 	comboNetworking.addActionListener( new ActionListener()  {
-           public void actionPerformed(ActionEvent e) {
+           @Override
+		public void actionPerformed(ActionEvent e) {
              System.out.println(comboPortSet.getSelectedItem());
 	     parent.defaultPort = Integer.parseInt((String)comboNetworking.getSelectedItem());
              comboNetworking.setSelectedItem(Integer.toString(parent.defaultPort));

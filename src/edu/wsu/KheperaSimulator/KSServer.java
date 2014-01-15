@@ -27,8 +27,6 @@ package edu.wsu.KheperaSimulator;
 import java.io.*;
 import java.net.*;
 import java.util.HashMap;
-import java.util.Set;
-import java.util.Vector;
 import javax.swing.JOptionPane;
 
 /**
@@ -102,7 +100,7 @@ public class KSServer implements Runnable{
    * @return an array of worker ID's that are servicing clients
    */
   protected String[] listWorkerIDs() {
-      Object[] keys = (Object[])workers.keySet().toArray();
+      Object[] keys = workers.keySet().toArray();
       String[] sKeys = new String[keys.length];
       for (int i = 0; i < keys.length; i++) {
           sKeys[i] = keys[i].toString();
@@ -181,7 +179,8 @@ public class KSServer implements Runnable{
   /**
    * @see java.lang.Runnable
    */
-  public void run() {
+  @Override
+public void run() {
     try {
       serverSocket = new ServerSocket(port);
       setListening(true);
