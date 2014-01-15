@@ -28,45 +28,46 @@ import java.awt.*;
 import java.awt.geom.*;
 
 /**
- * An <code>UpdateRobotImage</code> class provides the functionality to
- * update the robots image.
+ * An <code>UpdateRobotImage</code> class provides the functionality to update the robots image.
  */
 public class UpdateRobotImage {
-  private CurrentRobotState rState;
-  private RobotCoordinates rCoords;
-  private Image robotAU, robotAD, robotADGO, robotADGC;
+	private CurrentRobotState rState;
+	private RobotCoordinates rCoords;
+	private Image robotAU, robotAD, robotADGO, robotADGC;
 
-  /**
-   * Allocates a new <code>UpdateRobotImage</code> to provide the ablility to
-   * update the robots image.
-   * @param rState the current robot state
-   */
-  public UpdateRobotImage(CurrentRobotState rState) {
-    robotAU = Toolkit.getDefaultToolkit().getImage("images/robot_au.gif");
-    robotAD = Toolkit.getDefaultToolkit().getImage("images/robot_ad.gif");
-    robotADGO = Toolkit.getDefaultToolkit().getImage("images/robot_ad-go.gif");
-    robotADGC = Toolkit.getDefaultToolkit().getImage("images/robot_ad-gc.gif");
-    this.rState = rState;
-    this.rCoords = rState.getRobotCoordinates();
-  }
+	/**
+	 * Allocates a new <code>UpdateRobotImage</code> to provide the ablility to update the robots image.
+	 * 
+	 * @param rState
+	 *            the current robot state
+	 */
+	public UpdateRobotImage(CurrentRobotState rState) {
+		robotAU = Toolkit.getDefaultToolkit().getImage("images/robot_au.gif");
+		robotAD = Toolkit.getDefaultToolkit().getImage("images/robot_ad.gif");
+		robotADGO = Toolkit.getDefaultToolkit().getImage("images/robot_ad-go.gif");
+		robotADGC = Toolkit.getDefaultToolkit().getImage("images/robot_ad-gc.gif");
+		this.rState = rState;
+		this.rCoords = rState.getRobotCoordinates();
+	}
 
-  /**
-   * Update the robot image based on the current status of the robot.
-   * @param g2 graphic context to draw in
-   * @see java.awt.Graphics2D
-   */
-  public void updateRobotImage(Graphics2D g2) {
-    g2.rotate(rCoords.alpha, rCoords.dx+13.0, rCoords.dy+13.0);
-    g2.drawImage(robotAU, rCoords.x, rCoords.y, null);
-    if(rState.getArmState() == KSGripperStates.ARM_DOWN) {
-      g2.drawImage(robotAD, rCoords.x, rCoords.y, null);
-      if(rState.getGripperState() == KSGripperStates.GRIP_CLOSED) {
-        g2.drawImage(robotADGC, rCoords.x, rCoords.y,null);
-      }
-      else if(rState.getGripperState() == KSGripperStates.GRIP_OPEN) {
-        g2.drawImage(robotADGO, rCoords.x, rCoords.y,null);
-      }
-    }
-    g2.setTransform(new AffineTransform());
-  } // updateRobotImage
+	/**
+	 * Update the robot image based on the current status of the robot.
+	 * 
+	 * @param g2
+	 *            graphic context to draw in
+	 * @see java.awt.Graphics2D
+	 */
+	public void updateRobotImage(Graphics2D g2) {
+		g2.rotate(rCoords.alpha, rCoords.dx + 13.0, rCoords.dy + 13.0);
+		g2.drawImage(robotAU, rCoords.x, rCoords.y, null);
+		if (rState.getArmState() == KSGripperStates.ARM_DOWN) {
+			g2.drawImage(robotAD, rCoords.x, rCoords.y, null);
+			if (rState.getGripperState() == KSGripperStates.GRIP_CLOSED) {
+				g2.drawImage(robotADGC, rCoords.x, rCoords.y, null);
+			} else if (rState.getGripperState() == KSGripperStates.GRIP_OPEN) {
+				g2.drawImage(robotADGO, rCoords.x, rCoords.y, null);
+			}
+		}
+		g2.setTransform(new AffineTransform());
+	} // updateRobotImage
 } // UpdateBufferedWorld

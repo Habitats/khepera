@@ -29,59 +29,60 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * The <code>AboutWindow</code> class represents a dialog window that conveys
- * information about the WSU Khepera Simulator.
- *
+ * The <code>AboutWindow</code> class represents a dialog window that conveys information about the WSU Khepera Simulator.
+ * 
  * @author Steve Perretta
  */
 public class AboutWindow extends JDialog implements ActionListener {
 
-  private JPanel mainPanel;
-  private JButton closeButton;
-  private Image background;
-  private KSFrame parent;
+	private JPanel mainPanel;
+	private JButton closeButton;
+	private Image background;
+	private KSFrame parent;
 
-  /**
-   * Allocates a new <code>AboutWindow</code> object.  This window provides
-   * information about the WSU Khepera Simulator.
-   * @param parent a reference the main frame of the simulator
-   */
-  public AboutWindow(KSFrame parent) {
-    super(parent, "About this Program", true);
-    this.parent = parent;
-    initComponents();
-    pack();
-  }
+	/**
+	 * Allocates a new <code>AboutWindow</code> object. This window provides information about the WSU Khepera Simulator.
+	 * 
+	 * @param parent
+	 *            a reference the main frame of the simulator
+	 */
+	public AboutWindow(KSFrame parent) {
+		super(parent, "About this Program", true);
+		this.parent = parent;
+		initComponents();
+		pack();
+	}
 
-  /**
-   * Initialize the graphical components used to display window.
-   */
-  private void initComponents() {
-    getContentPane().setLayout(new BorderLayout());
-    background = Toolkit.getDefaultToolkit().getImage("images/about.gif");
-    mainPanel = new JPanel() {
-      @Override
-	public void paint(Graphics g) {
-        super.paint(g);
-        g.drawImage(background,0,0,this);
-      }
-    };
-    mainPanel.setPreferredSize(new Dimension(300,400));
-    closeButton = new JButton("Close");
-    closeButton.addActionListener(this);
-    getContentPane().add(mainPanel, "North");
-    getContentPane().add(closeButton, "Center");
-  }
+	/**
+	 * Initialize the graphical components used to display window.
+	 */
+	private void initComponents() {
+		getContentPane().setLayout(new BorderLayout());
+		background = Toolkit.getDefaultToolkit().getImage("images/about.gif");
+		mainPanel = new JPanel() {
+			@Override
+			public void paint(Graphics g) {
+				super.paint(g);
+				g.drawImage(background, 0, 0, this);
+			}
+		};
+		mainPanel.setPreferredSize(new Dimension(300, 400));
+		closeButton = new JButton("Close");
+		closeButton.addActionListener(this);
+		getContentPane().add(mainPanel, "North");
+		getContentPane().add(closeButton, "Center");
+	}
 
-  /**
-   * Dispose of this window.
-   * @param e
-   * @see java.awt.event.ActionListener
-   */
-  @Override
-public void actionPerformed(ActionEvent e) {
-    setVisible(false);
-    dispose();
-    parent.repaint();
-  }
+	/**
+	 * Dispose of this window.
+	 * 
+	 * @param e
+	 * @see java.awt.event.ActionListener
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		setVisible(false);
+		dispose();
+		parent.repaint();
+	}
 } // AboutWindow

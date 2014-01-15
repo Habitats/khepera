@@ -28,42 +28,40 @@ import java.io.*;
 import java.util.*;
 
 /**
- * The <code>KSReadWriteState</code> class is used by the <code>KSWriter</code>
- * and <code>KSReader</code> classes when serializing and deserializing robot and
+ * The <code>KSReadWriteState</code> class is used by the <code>KSWriter</code> and <code>KSReader</code> classes when serializing and deserializing robot and
  * world state information associated with recorded files.
- *
- * @author    Steve Perretta
- * @version   1.1 2003/07/29
+ * 
+ * @author Steve Perretta
+ * @version 1.1 2003/07/29
  */
 public class KSReadWriteState implements Serializable {
-  /** Information regarding the robot's state. Includes sensor values, position,
-   * orientation, gripper/arm states, motor speeds....
-   */
-  protected float[] data;
+	/**
+	 * Information regarding the robot's state. Includes sensor values, position, orientation, gripper/arm states, motor speeds....
+	 */
+	protected float[] data;
 
-  /** Set to <tt>true</tt> if something other than the robot changed in the
-   * arena, <tt>false</tt> otherwise.
-   */
-  protected boolean worldChange;
+	/**
+	 * Set to <tt>true</tt> if something other than the robot changed in the arena, <tt>false</tt> otherwise.
+	 */
+	protected boolean worldChange;
 
-  /** If <code>worldChange</code> is <tt>true</tt>, then this field will refer
-   * to the collection of world objects at the particular time step when the
-   * change occured.
-   */
-  protected Vector worldObjects;
+	/**
+	 * If <code>worldChange</code> is <tt>true</tt>, then this field will refer to the collection of world objects at the particular time step when the change
+	 * occured.
+	 */
+	protected Vector worldObjects;
 
-  /** The id number of any object held in the gripper, 0 if nothing is held. */
-  protected int heldID;
+	/** The id number of any object held in the gripper, 0 if nothing is held. */
+	protected int heldID;
 
-  /**
-    * Allocate a new <code>KSReadWriteState</code> object, setting fields to
-    * default values.
-    */
-  public KSReadWriteState() {
-    data = null;
-    worldChange = false;
-    worldObjects = null;
-    heldID = 0;
-  }
+	/**
+	 * Allocate a new <code>KSReadWriteState</code> object, setting fields to default values.
+	 */
+	public KSReadWriteState() {
+		data = null;
+		worldChange = false;
+		worldObjects = null;
+		heldID = 0;
+	}
 
 }

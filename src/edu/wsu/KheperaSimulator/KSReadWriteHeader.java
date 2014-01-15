@@ -28,31 +28,29 @@ import java.io.*;
 import java.util.*;
 
 /**
- * The <code>KSReadWriteHeader</code> class is used by the <code>KSWriter</code>
- * and <code>KSReader</code> classes when serializing and deserializing header
+ * The <code>KSReadWriteHeader</code> class is used by the <code>KSWriter</code> and <code>KSReader</code> classes when serializing and deserializing header
  * information associated with recorded files.
- *
- * @author    Steve Perretta
- * @version   1.1 2003/08/02
+ * 
+ * @author Steve Perretta
+ * @version 1.1 2003/08/02
  */
 public class KSReadWriteHeader implements Serializable {
-  /** Date and time of recording. */
-  protected String date;
-  /** Name of the currently active controller. */
-  protected String controller;
-  /** Time delay information message. */
-  protected String delay;
-  /** All world objects that make up the statring state of the arena. */
-  protected Vector objects;
+	/** Date and time of recording. */
+	protected String date;
+	/** Name of the currently active controller. */
+	protected String controller;
+	/** Time delay information message. */
+	protected String delay;
+	/** All world objects that make up the statring state of the arena. */
+	protected Vector objects;
 
-/**
-  * Allocate a new <code>KSReadWriteHeader</code> object with all fields initialized
-  * to null.
-  */
-  public KSReadWriteHeader() {
-    date = null;
-    controller = null;
-    delay = null;
-    objects = null;
-  }
+	/**
+	 * Allocate a new <code>KSReadWriteHeader</code> object with all fields initialized to null.
+	 */
+	public KSReadWriteHeader() {
+		date = null;
+		controller = null;
+		delay = null;
+		objects = null;
+	}
 }

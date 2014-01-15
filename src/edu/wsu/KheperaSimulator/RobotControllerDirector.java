@@ -31,188 +31,175 @@ import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
 /**
- * A <code>RobotControllerDirector</code> is a utility class used to load,
- * manage, and unload controllers that extend <code>RobotController</code>.
+ * A <code>RobotControllerDirector</code> is a utility class used to load, manage, and unload controllers that extend <code>RobotController</code>.
  */
 public class RobotControllerDirector {
 
-  /**
-   * A hash of the loaded controllers by controller name.
-   */
-  private HashMap controllers;
+	/**
+	 * A hash of the loaded controllers by controller name.
+	 */
+	private HashMap controllers;
 
-  /**
-   * The path of where controllers should reside with respect to the
-   * current working directory of the Khepera Simulator.  The default location
-   * where controllers should be placed is in "./controllers/".  For example
-   * if the simulator is running from the directory "c:\KheperaSimulator\",
-   * then the controller class files would be located in
-   * "c:\KheperaSimulator\controllers\".
-   */
-  private final String controllerPathName = "./controllers/";
+	/**
+	 * The path of where controllers should reside with respect to the current working directory of the Khepera Simulator. The default location where
+	 * controllers should be placed is in "./controllers/". For example if the simulator is running from the directory "c:\KheperaSimulator\", then the
+	 * controller class files would be located in "c:\KheperaSimulator\controllers\".
+	 */
+	private final String controllerPathName = "./controllers/";
 
-  /**
-   * A <code>String</code> array of all controllers available.
-   */
-  private String[] controllerNames;
+	/**
+	 * A <code>String</code> array of all controllers available.
+	 */
+	private String[] controllerNames;
 
-  /**
-   * A reference to the current robot state which is passed to each controller.
-   */
-  private CurrentRobotState currentRobotState = null;
-  
-  private long controllerThreadWaitTime = 20;
+	/**
+	 * A reference to the current robot state which is passed to each controller.
+	 */
+	private CurrentRobotState currentRobotState = null;
 
-  /**
-   * Initialize and create a new <code>RobotControllerDirector</code>.  The
-   * availiable controllers will be discovered and made available.
-   * @param currentRobotState a reference that allows access to the robot
-   * accessor methods.
-   */
-  public RobotControllerDirector(CurrentRobotState currentRobotState)
-  {
-    this.currentRobotState = currentRobotState;
-    controllers = new HashMap();
-    findControllers();
-  }
+	private long controllerThreadWaitTime = 20;
 
-  /**
-   * Find the available controllers that can be loaded and update the hashmap
-   * if needed.
-   */
-  private void findControllers() {
-    try {
-      File directory = new File(controllerPathName);
-      controllerNames = null;
-      controllerNames = directory.list(new ClassFileFilter());
-      for(int i = 0; i < controllerNames.length; i++) {
-        controllerNames[i] = (new StringTokenizer(controllerNames[i], ".", false)).nextToken();
-        if (!controllers.containsKey(controllerNames[i])) {
-          controllers.put(controllerNames[i], null);
-        }
-      }
-    } catch (Exception e) { }
-  }
+	/**
+	 * Initialize and create a new <code>RobotControllerDirector</code>. The availiable controllers will be discovered and made available.
+	 * 
+	 * @param currentRobotState
+	 *            a reference that allows access to the robot accessor methods.
+	 */
+	public RobotControllerDirector(CurrentRobotState currentRobotState) {
+		this.currentRobotState = currentRobotState;
+		controllers = new HashMap();
+		findControllers();
+	}
 
-  /**
-   * Return a <code>String</code> array of the controllers available to the
-   * application.
-   * @return the controller names
-   */
-  protected String[] availableControllers() {
-    findControllers();
-    return controllerNames;
-  }
+	/**
+	 * Find the available controllers that can be loaded and update the hashmap if needed.
+	 */
+	private void findControllers() {
+		try {
+			File directory = new File(controllerPathName);
+			controllerNames = null;
+			controllerNames = directory.list(new ClassFileFilter());
+			for (int i = 0; i < controllerNames.length; i++) {
+				controllerNames[i] = (new StringTokenizer(controllerNames[i], ".", false)).nextToken();
+				if (!controllers.containsKey(controllerNames[i])) {
+					controllers.put(controllerNames[i], null);
+				}
+			}
+		} catch (Exception e) {
+		}
+	}
 
-  /**
-   * Start the controller and return <tt>true</tt> if the controller started
-   * successfully.  Only one instance of a particular controller can be loaded
-   * at one time.  If the controller is already loaded or it failed to load,
-   * this method will return false.
-   * @param controllerName the name of the controller to load
-   * @return <tt>true</tt> on success; <tt>false</tt> otherwise.
-   */
-  protected boolean startController(String controllerName) 
-  {
-	RobotController controller = (RobotController)controllers.get(controllerName);
-    
-    if (controller != null) 
-    {
-      return false;
-    }
-    
-    try
-    {
-      Class c = Class.forName(controllerName, true, new DirectoryClassLoader(controllerPathName));
-      controller = (RobotController)c.newInstance();
-      controllers.put(controllerName, controller);
-      controller.initialize(controllerName, currentRobotState, controllerThreadWaitTime );
-      controller.simStart();
-      return true;
-    }
-    
-    catch (java.lang.ClassNotFoundException ex) 
-    {
-      JOptionPane.showMessageDialog(null,
-                                    "The module class could not be found",
-                                    "Class not Found",
-                                    JOptionPane.ERROR_MESSAGE);
- 	}
-    
-    catch (Exception e)
-    {
-      e.printStackTrace();
-    }
-    
-    return false;
-  } // loadController
+	/**
+	 * Return a <code>String</code> array of the controllers available to the application.
+	 * 
+	 * @return the controller names
+	 */
+	protected String[] availableControllers() {
+		findControllers();
+		return controllerNames;
+	}
 
-  /**
-   * Stop a running controller.  The controller is not guarenteed to terminate
-   * immediatly.  The controller is simply informed that it is time to finish.
-   * The controller will then terminate itself when a safe state is reached.
-   * @param controllerName the name of the controller to stop
-   */
-  protected void stopController(String controllerName) {
-    RobotController controller = (RobotController)controllers.get(controllerName);
-    if (controller == null) return;
-    controller.setFinished(true); // tell the controller to terminate gracefully
-    controllers.put(controllerName, null);
-  }
+	/**
+	 * Start the controller and return <tt>true</tt> if the controller started successfully. Only one instance of a particular controller can be loaded at one
+	 * time. If the controller is already loaded or it failed to load, this method will return false.
+	 * 
+	 * @param controllerName
+	 *            the name of the controller to load
+	 * @return <tt>true</tt> on success; <tt>false</tt> otherwise.
+	 */
+	protected boolean startController(String controllerName) {
+		RobotController controller = (RobotController) controllers.get(controllerName);
 
-  /**
-   * Terminate all controllers.
-   */
-  protected void stopAll() {
-    for (int i = 0; i < controllerNames.length; i++) {
-      stopController(controllerNames[i]);
-    }
-  }
+		if (controller != null) {
+			return false;
+		}
 
-  /**
-   * Provide a list of the running controllers.
-   * @return a list of controllers that are currently running
-   */
-  protected ArrayList runningControllers() {
-    ArrayList list = new ArrayList();
-    RobotController c = null;
-    for (int i = 0; i < controllerNames.length; i++) {
-      c = (RobotController)controllers.get(controllerNames[i]);
-      if (c != null) {
-        list.add(new String(controllerNames[i]));
-      }
-    }
-    return list;
-  }
+		try {
+			Class c = Class.forName(controllerName, true, new DirectoryClassLoader(controllerPathName));
+			controller = (RobotController) c.newInstance();
+			controllers.put(controllerName, controller);
+			controller.initialize(controllerName, currentRobotState, controllerThreadWaitTime);
+			controller.simStart();
+			return true;
+		}
+
+		catch (java.lang.ClassNotFoundException ex) {
+			JOptionPane.showMessageDialog(null, "The module class could not be found", "Class not Found", JOptionPane.ERROR_MESSAGE);
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	} // loadController
+
+	/**
+	 * Stop a running controller. The controller is not guarenteed to terminate immediatly. The controller is simply informed that it is time to finish. The
+	 * controller will then terminate itself when a safe state is reached.
+	 * 
+	 * @param controllerName
+	 *            the name of the controller to stop
+	 */
+	protected void stopController(String controllerName) {
+		RobotController controller = (RobotController) controllers.get(controllerName);
+		if (controller == null)
+			return;
+		controller.setFinished(true); // tell the controller to terminate gracefully
+		controllers.put(controllerName, null);
+	}
+
+	/**
+	 * Terminate all controllers.
+	 */
+	protected void stopAll() {
+		for (int i = 0; i < controllerNames.length; i++) {
+			stopController(controllerNames[i]);
+		}
+	}
+
+	/**
+	 * Provide a list of the running controllers.
+	 * 
+	 * @return a list of controllers that are currently running
+	 */
+	protected ArrayList runningControllers() {
+		ArrayList list = new ArrayList();
+		RobotController c = null;
+		for (int i = 0; i < controllerNames.length; i++) {
+			c = (RobotController) controllers.get(controllerNames[i]);
+			if (c != null) {
+				list.add(new String(controllerNames[i]));
+			}
+		}
+		return list;
+	}
 
 } // RobotControllerDirector
 
 /**
- * A <code>FilenameFilter</code> class used to filter a directory to only see
- * class files.
- *
+ * A <code>FilenameFilter</code> class used to filter a directory to only see class files.
+ * 
  * Filter modified to exclude class files that contain the $ character
  */
 class ClassFileFilter implements FilenameFilter {
-	
-  @Override
-public boolean accept(File dir, String name)
-  {
-  	if ( name.indexOf('$') > -1 )
-  		return false;
-  	
-    StringTokenizer tokenizer = new StringTokenizer(name, ".", false);
-    String ext = null;
-  
-    while (tokenizer.hasMoreTokens()) {
-      ext = tokenizer.nextToken();
-    }
-    
-    if ( ext.equals("class") )
-    {
-      return true;
-    }
-       
-    return false;
-  }
+
+	@Override
+	public boolean accept(File dir, String name) {
+		if (name.indexOf('$') > -1)
+			return false;
+
+		StringTokenizer tokenizer = new StringTokenizer(name, ".", false);
+		String ext = null;
+
+		while (tokenizer.hasMoreTokens()) {
+			ext = tokenizer.nextToken();
+		}
+
+		if (ext.equals("class")) {
+			return true;
+		}
+
+		return false;
+	}
 } // ClassFileFilter

@@ -3,13 +3,11 @@
  *
  *		Created by Steve Perretta, Modified by Duane Bolick on 08 JAN 2005
  *
- */		
+ */
 
 package edu.wsu.KheperaSimulator;
 
-
-public abstract class RobotController implements Controller
-{
+public abstract class RobotController implements Controller {
 
 	private long waitTime = 5;
 	private boolean finished = false;
@@ -20,60 +18,47 @@ public abstract class RobotController implements Controller
 	private CurrentRobotState state = null;
 	private Sensor[] sensors = null;
 
-	
-	public RobotController()
-	{
+	public RobotController() {
 	}
 
-	
-	protected void initialize(String _name, CurrentRobotState _state, long timeout)
-	{
-		name = _name;         
+	protected void initialize(String _name, CurrentRobotState _state, long timeout) {
+		name = _name;
 		state = _state;
 		sensors = state.getSensorValues();
 		waitTime = timeout;
-	} 
-	
-	protected void simStart()
-	{
-		thread = new Thread( this, name );
+	}
+
+	protected void simStart() {
+		thread = new Thread(this, name);
 		thread.start();
 	}
 
-	protected void setWaitTime(long waitTime)
-	{
+	protected void setWaitTime(long waitTime) {
 		this.waitTime = waitTime;
 	}
 
-	protected void setFinished(boolean finished)
-	{
+	protected void setFinished(boolean finished) {
 		this.finished = finished;
 	}
 
-	protected boolean isRunning()
-	{
+	protected boolean isRunning() {
 		return running;
 	}
 
-
 	@Override
-	public void run() 
-	{
+	public void run() {
 		running = true;
 
-		try
-		{
-			while (!finished)
-			{
+		try {
+			while (!finished) {
 				doWork();
 				sleep(waitTime);
 			}
 
 			close();
-		} 
+		}
 
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			System.out.println("\nThere was a problem with the controller.");
 			System.out.println("Here is the controller thread's stack at");
 			System.out.println("the time of the error:\n\n");
@@ -87,121 +72,83 @@ public abstract class RobotController implements Controller
 		}
 
 		running = false;
-	} 
-  
+	}
 
-
-	public void sleep(long timeout)
-	{
-		try 
-		{
+	public void sleep(long timeout) {
+		try {
 			Thread.sleep(timeout);
 		}
-	
-		catch (Exception e) 
-		{
+
+		catch (Exception e) {
 		}
 	}
-  
-  
-	// =========================================================================
-	// ===                          	========================================
-	// ===		Mutator Methods			========================================
-	// ===                          	========================================
-	// =========================================================================
-    
 
-	public void setMotorSpeeds(int left, int right)
-	{
+	// =========================================================================
+	// === ========================================
+	// === Mutator Methods ========================================
+	// === ========================================
+	// =========================================================================
+
+	public void setMotorSpeeds(int left, int right) {
 		state.setMotorSpeeds(left, right);
 	}
 
-
-	public void setLeftMotorSpeed(int speed)
-	{
+	public void setLeftMotorSpeed(int speed) {
 		state.setLeftMotorSpeed(speed);
 	}
 
-
-	public void setRightMotorSpeed(int speed)
-	{
+	public void setRightMotorSpeed(int speed) {
 		state.setRightMotorSpeed(speed);
 	}
 
-	
-	public void setArmState(int armState)
-	{
+	public void setArmState(int armState) {
 		state.setArmState(armState);
 	}
 
-
-	public void setGripperState(int gripState)
-	{
+	public void setGripperState(int gripState) {
 		state.setGripperState(gripState);
 	}
 
-
-
-	
 	// =========================================================================
-	// ===                          	========================================
-	// ===		Accessor Methods		========================================
-	// ===                          	========================================
+	// === ========================================
+	// === Accessor Methods ========================================
+	// === ========================================
 	// =========================================================================
-    
-		
-	public int getArmState()
-	{
+
+	public int getArmState() {
 		return state.getArmState();
 	}
 
-	
-	public int getGripperState()
-	{
+	public int getGripperState() {
 		return state.getGripperState();
 	}
 
-		
-	public boolean isObjectPresent()
-	{
+	public boolean isObjectPresent() {
 		return state.isObjectPresent();
 	}
 
-	
-	public boolean isObjectHeld()
-	{
+	public boolean isObjectHeld() {
 		return state.isObjectHeld();
 	}
 
-	
-	public int getLightValue(int sensorID)
-	{
+	public int getLightValue(int sensorID) {
 		return sensors[sensorID].getLightValue();
 	}
 
-	
-	public int getDistanceValue(int sensorID)
-	{
+	public int getDistanceValue(int sensorID) {
 		return sensors[sensorID].getDistValue();
 	}
 
-	
-	public int getResistivity()
-	{
+	public int getResistivity() {
 		return state.getResistivity();
 	}
 
-	
-	public long getRightWheelPosition()
-	{
+	public long getRightWheelPosition() {
 		return state.getRightPosition();
 	}
 
-	
-	public long getLeftWheelPosition()
-	{
+	public long getLeftWheelPosition() {
 		return state.getLeftPosition();
 	}
-
 
 } // RobotController

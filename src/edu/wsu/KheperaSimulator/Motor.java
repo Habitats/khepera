@@ -26,98 +26,115 @@ package edu.wsu.KheperaSimulator;
 
 /**
  * A <code>Motor</code> class represents a motor of the Khepera robot.
- *
- * @author  Steve Perretta
+ * 
+ * @author Steve Perretta
  */
 public class Motor {
-    protected int leftSpeed, rightSpeed;
-    private long leftPosition, rightPosition;
+	protected int leftSpeed, rightSpeed;
+	private long leftPosition, rightPosition;
 
-    /**
-     * Allocate a new <code>Motor</code> object.
-     */
-    public Motor() {
-        reInitialize();
-    }
+	/**
+	 * Allocate a new <code>Motor</code> object.
+	 */
+	public Motor() {
+		reInitialize();
+	}
 
-    /**
-     * Allocate a new <code>Motor</code> object with the specified defaults.
-     * @param lSpeed left wheel speed
-     * @param rSpeed right wheel speed
-     * @param lPos left wheel position
-     * @param rPos right wheel position
-     */
-    public Motor(int lSpeed, int rSpeed, long lPos, long rPos) {
-        leftSpeed  = lSpeed;
-        rightSpeed = rSpeed;
-        leftPosition  = lPos;
-        rightPosition = rPos;
-    }
+	/**
+	 * Allocate a new <code>Motor</code> object with the specified defaults.
+	 * 
+	 * @param lSpeed
+	 *            left wheel speed
+	 * @param rSpeed
+	 *            right wheel speed
+	 * @param lPos
+	 *            left wheel position
+	 * @param rPos
+	 *            right wheel position
+	 */
+	public Motor(int lSpeed, int rSpeed, long lPos, long rPos) {
+		leftSpeed = lSpeed;
+		rightSpeed = rSpeed;
+		leftPosition = lPos;
+		rightPosition = rPos;
+	}
 
-    /**
-     * Initialize this motor to the default values.
-     */
-    protected void reInitialize() {
-        leftSpeed  = 0;
-        rightSpeed = 0;
-        leftPosition  = 0;
-        rightPosition = 0;
-    }
+	/**
+	 * Initialize this motor to the default values.
+	 */
+	protected void reInitialize() {
+		leftSpeed = 0;
+		rightSpeed = 0;
+		leftPosition = 0;
+		rightPosition = 0;
+	}
 
-    /**
-     * Set the wheels speeds.
-     * @param lSpeed the left wheel speed
-     * @param rSpeed the right wheel speed
-     */
-    protected void setMotorSpeeds(int lSpeed, int rSpeed) {
-        setLeftMotorSpeed(lSpeed);
-        setRightMotorSpeed(rSpeed);
-    }
+	/**
+	 * Set the wheels speeds.
+	 * 
+	 * @param lSpeed
+	 *            the left wheel speed
+	 * @param rSpeed
+	 *            the right wheel speed
+	 */
+	protected void setMotorSpeeds(int lSpeed, int rSpeed) {
+		setLeftMotorSpeed(lSpeed);
+		setRightMotorSpeed(rSpeed);
+	}
 
-    /**
-     * Set the left wheel speed.
-     * @param speed range from -10 to 10; 0 implies motor is off
-     */
-    protected void setLeftMotorSpeed(int speed) {
-      if (speed < 10 && speed > -10) {
-        leftSpeed = speed;
-      }
-    }
+	/**
+	 * Set the left wheel speed.
+	 * 
+	 * @param speed
+	 *            range from -10 to 10; 0 implies motor is off
+	 */
+	protected void setLeftMotorSpeed(int speed) {
+		if (speed < 10 && speed > -10) {
+			leftSpeed = speed;
+		}
+	}
 
-    /**
-     * Set the right wheel speed.
-     * @param speed range from -10 to 10; 0 implies motor is off
-     */
-    protected void setRightMotorSpeed(int speed) {
-      if (speed < 10 && speed > -10) {
-        rightSpeed = speed;
-      }
-    }
+	/**
+	 * Set the right wheel speed.
+	 * 
+	 * @param speed
+	 *            range from -10 to 10; 0 implies motor is off
+	 */
+	protected void setRightMotorSpeed(int speed) {
+		if (speed < 10 && speed > -10) {
+			rightSpeed = speed;
+		}
+	}
 
-    /**
-     * Set the current wheel positions.
-     * @param lPos left position
-     * @param rPos right position
-     */
-    protected void setMotorPositions(long lPos, long rPos) {
-      leftPosition = lPos;
-      rightPosition = rPos;
-    }
+	/**
+	 * Set the current wheel positions.
+	 * 
+	 * @param lPos
+	 *            left position
+	 * @param rPos
+	 *            right position
+	 */
+	protected void setMotorPositions(long lPos, long rPos) {
+		leftPosition = lPos;
+		rightPosition = rPos;
+	}
 
-    /**
-     * Provide the left wheel position.
-     * @return left position
-     */
-    protected long getLeftPosition() {
-      return leftPosition;
-    }
+	/**
+	 * Provide the left wheel position.
+	 * 
+	 * @return left position
+	 */
+	protected long getLeftPosition() {
+		return leftPosition;
+	}
 
-    /**
-     * Provide the right wheel position.
-     * @return right position
-     */
-    protected long getRightPosition() {
-      return rightPosition;
-    }
+	/**
+	 * Provide the right wheel position.
+	 * 
+	 * @return right position
+	 */
+	protected long getRightPosition() {
+		return rightPosition;
+	}
 
 } // Motor
