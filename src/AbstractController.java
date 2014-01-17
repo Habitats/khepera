@@ -1,3 +1,6 @@
+import java.util.Set;
+import java.util.TreeSet;
+
 import edu.wsu.KheperaSimulator.KSGripperStates;
 import edu.wsu.KheperaSimulator.RobotController;
 
@@ -8,14 +11,24 @@ import edu.wsu.KheperaSimulator.RobotController;
  * 
  */
 public abstract class AbstractController extends RobotController {
-	public final int LEFT = 0;
-	public final int ANGLEL = 1;
-	public final int FRONTL = 2;
-	public final int FRONTR = 3;
-	public final int ANGLER = 4;
-	public final int RIGHT = 5;
-	public final int BACKR = 6;
-	public final int BACKL = 7;
+	public enum S {
+		ROTATING, //
+		DRIVING, //
+		IDLE, //
+		BUSY, //
+		INIT, //
+	}
+
+	protected S state = S.INIT;
+
+	public final int SENSOR_LEFT = 0;
+	public final int SENSOR_ANGLEL = 1;
+	public final int SENSOR_FRONTL = 2;
+	public final int SENSOR_FRONTR = 3;
+	public final int SENSOR_ANGLER = 4;
+	public final int SENSOR_RIGHT = 5;
+	public final int SENSOR_BACKR = 6;
+	public final int SENSOR_BACKL = 7;
 
 	public final int GRIP_OPEN = KSGripperStates.GRIP_OPEN;
 	public final int GRIP_CLOSED = KSGripperStates.GRIP_CLOSED;
@@ -32,32 +45,86 @@ public abstract class AbstractController extends RobotController {
 	abstract public void close() throws Exception;
 
 	protected int getAverageDistance(int sensorID) {
-		double accuracy = 3.;
-		int avg = 0;
+		double accuracy = 5;
+		double avg = 0;
+		int v = 0;
 		for (int i = 0; i < accuracy; i++) {
-			avg += (int) (getDistanceValue(sensorID) / accuracy);
+			v = getDistanceValue(sensorID);
+			// System.out.println(getDistanceValue(sensorID));
+			avg += (v / accuracy);
+			// sleep(1);
 		}
-		return avg;
+		return (int) avg;
 	}
 
 	protected void rotate(long degrees) {
+		state = S.ROTATING;
 		long start = getLeftWheelPosition();
 		int d = 1;
 		if (degrees < 0)
 			d = -1;
-		System.out.println("Rotating: " + Long.toString(degrees));
+//		System.out.println("Rotating: " + Long.toString(degrees));
 		setMotorSpeeds(SPEED_ROTATE * d, -SPEED_ROTATE * d);
 		while (Math.abs(getLeftWheelPosition() - start) / 3 < Math.abs(degrees)) {
-			System.out.println(Math.abs(getLeftWheelPosition() - start) / 3);
+			// System.out.println(Math.abs(getLeftWheelPosition() - start) / 3);
 			sleep(1);
 		}
 		stop();
+		state = S.IDLE;
+	}
+
+	protected boolean alignedWithRightWall() {
+		double ratio = getAverageDistance(SENSOR_RIGHT) / (getAverageDistance(SENSOR_ANGLER) * 1.0);
+
+		if (getAverageDistance(SENSOR_RIGHT) < 100)
+			return false;
+		return ratio > 1.75 && ratio < 3.0;
+		// int r = getAverageDistance(SENSOR_RIGHT);
+		// int ra = getAverageDistance(SENSOR_ANGLER);
+		// System.out.println("Right:  " + Integer.toString(r));
+		// System.out.println("RightA: " + Integer.toString(ra));
+		//
+		// if ((940 < r && r < 950) && (430 < ra && ra < 450))
+		// return true;
+		// return false;
+	}
+
+	protected void right() {
+		System.out.println("Turning right...");
+		rotate(90);
+	}
+
+	protected void left() {
+		System.out.println("Turning left...");
+		rotate(-90);
 	}
 
 	protected boolean closeToWall() {
 		for (int i = 0; i < 8; i++) {
-			if (getAverageDistance(i) > 800)
+			if (getAverageDistance(i) > 500)
 				return true;
+		}
+		return false;
+	}
+
+//	protected boolean closeToRigthWall() {
+//		if (getAverageDistance(SENSOR_RIGHT) > 600 && getAverageDistance(SENSOR_ANGLER) > 100)
+//			return true;
+//		return false;
+//	}
+
+	protected boolean detectCornerRight() {
+		if (getAverageDistance(SENSOR_ANGLER) < 15 && getAverageDistance(SENSOR_RIGHT) > 200) {
+			System.out.println("Detected corner: right");
+			return true;
+		}
+		return false;
+	}
+
+	protected boolean detectCornerLeft() {
+		if (getAverageDistance(SENSOR_ANGLEL) < 15 && getAverageDistance(SENSOR_LEFT) > 200) {
+			System.out.println("Detected corner: left");
+			return true;
 		}
 		return false;
 	}
@@ -72,7 +139,9 @@ public abstract class AbstractController extends RobotController {
 		System.out.println(distance);
 		forward();
 		while (Math.abs(getLeftWheelPosition()) < end) {
-			sleep(10);
+			// if (closeToWall())
+			// break;
+			sleep(1);
 		}
 		stop();
 	}
