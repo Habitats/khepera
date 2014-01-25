@@ -1,6 +1,6 @@
 
 
-public class A_PickUpBall extends AbstractController {
+public class PickUpBall extends AbstractController {
 
 	boolean started = false;
 	boolean done = false;

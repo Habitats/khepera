@@ -4,7 +4,7 @@
  * @author Patrick
  * 
  */
-public class AA_WallHugger extends AbstractController {
+public class A1_WallHugger extends AbstractController {
 
 	public enum Turn {
 		LEFT, RIGHT, CROSSING;
@@ -12,13 +12,19 @@ public class AA_WallHugger extends AbstractController {
 
 	int started = 0;
 
+	public A1_WallHugger() {
+		super();
+	}
+
 	@Override
 	public void doWork() throws Exception {
+		super.doWork();
 		if (closeToWall()) {
 			hugRightWall();
 		} else {
 			forward();
 		}
+
 	}
 
 	private boolean detectTurn() {
@@ -31,6 +37,7 @@ public class AA_WallHugger extends AbstractController {
 			t = Turn.RIGHT;
 		else
 			return false;
+		statusPanel.setLabel("Turning: " + t.name(), 1);
 
 		// move forward in order to turn
 		stop();
@@ -48,6 +55,7 @@ public class AA_WallHugger extends AbstractController {
 				left();
 		}
 		forward(300);
+		statusPanel.setLabel(" ", 1);
 		return true;
 	}
 

@@ -68,6 +68,7 @@ public class RemoteControl extends AbstractController implements ActionListener 
 	 */
 	@Override
 	public synchronized void doWork() throws Exception {
+		super.doWork();
 		if (hasUserInput) {
 			// If the user has input something, parse the input.
 			if (input != null)
