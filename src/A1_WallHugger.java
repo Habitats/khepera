@@ -1,3 +1,6 @@
+import etc.AbstractController;
+import etc.Turn;
+
 /**
  * Hugs the right wall, navigating the map
  * 
@@ -23,8 +26,12 @@ public class A1_WallHugger extends AbstractController {
 
 		// if (closeToWall()) {
 		// }
-		detectTurn();
-		forward(20);
+		Turn t;
+		if ((t = detectCorner()) != null) {
+			if (t == Turn.CORNER)
+				t = evalCorner(t);
+			move.move(t);
+		}
 	}
 
 	@Override

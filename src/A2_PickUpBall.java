@@ -1,3 +1,5 @@
+import etc.AbstractController;
+
 public class A2_PickUpBall extends AbstractController {
 
 	boolean started = false;

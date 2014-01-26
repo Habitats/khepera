@@ -1,6 +1,7 @@
 import java.awt.event.*;
 import javax.swing.*;
 import edu.wsu.KheperaSimulator.KSGripperStates;
+import etc.AbstractController;
 
 /**
  * This class allows a robot in the simulator to be actively controlled via command line, simulating the command line control of the interface program.

@@ -1,3 +1,5 @@
+package etc;
+
 import edu.wsu.KheperaSimulator.KSGripperStates;
 import edu.wsu.KheperaSimulator.RobotController;
 import gui.LevelPanel;
@@ -18,10 +20,6 @@ public abstract class AbstractController extends RobotController {
 		INIT, //
 	}
 
-	public enum Turn {
-		LEFT_TURN, RIGHT_TURN, CROSSING, WALL, LEFT_CORNER, RIGHT_CORNER, DEADEND, FULL_CROSSING;
-	}
-
 	protected S state = S.INIT;
 
 	public final int SENSOR_LEFT = 0;
@@ -38,9 +36,9 @@ public abstract class AbstractController extends RobotController {
 	public final int ARM_DOWN = KSGripperStates.ARM_DOWN;
 	public final int ARM_UP = KSGripperStates.ARM_UP;
 
-	final int SPEED_FORWARD = 5;
-	final int SPEED_FORWARD_SLOW = 3;
-	final int SPEED_ROTATE = 2;
+	protected final int SPEED_FORWARD = 5;
+	protected final int SPEED_FORWARD_SLOW = 3;
+	protected final int SPEED_ROTATE = 2;
 
 	private int currentSpeed;
 
@@ -50,6 +48,8 @@ public abstract class AbstractController extends RobotController {
 	protected StatusPanel statusPanel;
 
 	protected LevelPanel levelPanel;
+
+	protected Movement move;
 
 	@Override
 	public void doWork() throws Exception {
@@ -77,6 +77,7 @@ public abstract class AbstractController extends RobotController {
 	public AbstractController() {
 		statusPanel = new StatusPanel();
 		levelPanel = new LevelPanel();
+		move = new Movement(this);
 	}
 
 	protected int getAverageDistance(int sensorID) {
@@ -152,114 +153,108 @@ public abstract class AbstractController extends RobotController {
 		rotate(x);
 	}
 
-	protected boolean detectTurn() {
-		Turn t;
+	protected Turn detectCorner() {
+		Turn t = null;
+
 		if (!goingVerticalOrHorizontal())
-			return false;
+			return null;
 
-		if (detectLeftTurn() && detectRightTurn() && !detectWall())
-			t = Turn.FULL_CROSSING;
-		else if (detectLeftTurn() && detectRightTurn())
-			t = Turn.CROSSING;
-		else if (detectLeftCorner())
-			t = Turn.LEFT_CORNER;
-		else if (detectRightCorner())
-			t = Turn.RIGHT_CORNER;
-		else if (detectLeftTurn())
-			t = Turn.LEFT_TURN;
-		else if (detectRightTurn())
-			t = Turn.RIGHT_TURN;
-		else if (detectDeadend())
-			t = Turn.DEADEND;
-		else if (detectWall())
+		else if (detectLeftTurn() || detectRightTurn())
+			t = Turn.CORNER;
+		else if (!closeToWall() || !detectWall())
+			t = Turn.STRAIGTH;
+		else if (!detectLeftTurn() & !detectRightTurn() && detectWall())
 			t = Turn.WALL;
-		else
-			return false;
 
+		return t;
+	}
+
+	protected Turn evalCorner(Turn t) {
+		// move a little forward in order to examine the corner and its surroundings
+		forward(410);
+
+		// no walls
+		if (!detectWall() && !detectRight() && !detectLeft())
+			t = Turn.FULL_CROSSING;
+		// wall front
+		else if (detectWall() && !detectRight() && !detectLeft())
+			t = Turn.CROSSING;
+		// wall front and right
+		else if (detectWall() && detectRight() && !detectLeft())
+			t = Turn.RIGHT_CORNER;
+		// wall front and left
+		else if (detectWall() && !detectRight() && detectLeft())
+			t = Turn.LEFT_CORNER;
+		// wall left
+		else if (!detectWall() && !detectRight() && detectLeft())
+			t = Turn.LEFT_TURN;
+		// wall rigth
+		else if (!detectWall() && detectRight() && !detectLeft())
+			t = Turn.RIGHT_TURN;
+		// walls everywhere!
+		else if (detectWall() && detectRight() && detectLeft())
+			t = Turn.DEADEND;
 		statusPanel.setLabel("Detected: " + t.name(), 2);
 		System.out.println("Detected: " + t.name());
 
-		if (t == Turn.WALL) {
-			if (Math.random() > 0.5)
-				right();
-			else
-				left();
-			forward(300);
-		} else if (t == Turn.DEADEND) {
-			rotate(180);
-			forward(300);
-		} else if (t == Turn.RIGHT_CORNER) {
-			right();
-			forward(300);
-		} else if (t == Turn.LEFT_CORNER) {
-			left();
-			forward(300);
-		} else {
-
-			// move forward in order to turn
-			stop();
-			sleep(100);
-			forward(150);
-			if (detectWall()) {
-				System.out.println("Wall!");
-			} else {
-
-				if (t == Turn.LEFT_TURN) {
-					if (Math.random() > 0.5)
-						left();
-					// else
-					// forward(100);
-				} else if (t == Turn.RIGHT_TURN) {
-					if (Math.random() > 0.5)
-						right();
-					// else forward(100);
-				} else if (t == Turn.CROSSING) {
-					if (Math.random() > 0.5)
-						right();
-					else
-						left();
-				} else if (t == Turn.FULL_CROSSING) {
-					double rand = Math.random();
-					if (rand > 0.33 && rand < 0.66)
-						right();
-					else if (rand < 0.33)
-						left();
-					else
-						forward(100);
-				}
-			}
-		}
-		statusPanel.setLabel(" ", 1);
-		setSpeed(SPEED_FORWARD);
-		return true;
+		return t;
 	}
 
 	protected void setSpeed(int speed) {
 		currentSpeed = speed;
 	}
 
+	protected boolean detectLeft() {
+		return getAverageDistance(SENSOR_ANGLER) > 5//
+				&& getAverageDistance(SENSOR_RIGHT) > 100;
+	}
+
+	protected boolean detectRight() {
+		return getAverageDistance(SENSOR_ANGLEL) > 5 //
+				&& getAverageDistance(SENSOR_LEFT) > 100;
+	}
+
+	protected boolean detectCrossing() {
+		return !detectWall()//
+				&& getAverageDistance(SENSOR_ANGLEL) < 5 //
+				&& getAverageDistance(SENSOR_ANGLER) < 5//
+				&& getAverageDistance(SENSOR_LEFT) > 100//
+				&& getAverageDistance(SENSOR_RIGHT) > 100;
+	}
+
 	protected boolean detectRightTurn() {
-		return (getAverageDistance(SENSOR_ANGLER) < 5 && getAverageDistance(SENSOR_RIGHT) < 5);
+		return !detectWall() //
+				&& getAverageDistance(SENSOR_ANGLER) < 5 //
+				&& getAverageDistance(SENSOR_RIGHT) > 100;
 	}
 
 	protected boolean detectLeftTurn() {
-		return (getAverageDistance(SENSOR_ANGLEL) < 5 && getAverageDistance(SENSOR_LEFT) < 5);
+		return !detectWall() //
+				&& getAverageDistance(SENSOR_ANGLEL) < 5 //
+				&& getAverageDistance(SENSOR_LEFT) > 100;
 	}
 
 	protected boolean detectDeadend() {
-		return detectWall() && getAverageDistance(SENSOR_LEFT) > 100 && getAverageDistance(SENSOR_RIGHT) > 100;
+		return detectWall() //
+				&& getAverageDistance(SENSOR_LEFT) > 100 //
+				&& getAverageDistance(SENSOR_RIGHT) > 100;
 	}
 
 	protected boolean detectRightCorner() {
-		return (detectWall() && getAverageDistance(SENSOR_LEFT) > 100 && getAverageDistance(SENSOR_RIGHT) < 15);
+		return detectWall() //
+				&& getAverageDistance(SENSOR_LEFT) > 100 //
+				&& getAverageDistance(SENSOR_RIGHT) < 15;
 	}
 
 	protected boolean detectLeftCorner() {
-		return (detectWall() && getAverageDistance(SENSOR_RIGHT) > 100 && getAverageDistance(SENSOR_LEFT) < 15);
+		return detectWall() //
+				&& getAverageDistance(SENSOR_RIGHT) > 100 //
+				&& getAverageDistance(SENSOR_LEFT) < 15;
 	}
 
 	protected boolean detectWall() {
-		return (getAverageDistance(SENSOR_FRONTL) > 800 && getAverageDistance(SENSOR_FRONTR) > 800);
+		return getAverageDistance(SENSOR_FRONTL) > 100 //
+				&& getAverageDistance(SENSOR_FRONTR) > 100;
 	}
 
 	private int getSpeed() {
@@ -272,8 +267,6 @@ public abstract class AbstractController extends RobotController {
 
 	protected void forward(long distance, int speed) {
 		setSpeed(speed);
-		if (crashing())
-			rotate((long) (Math.random() * 180));
 
 		updateLocation(distance);
 		long start = getLeftWheelPosition();
@@ -289,9 +282,10 @@ public abstract class AbstractController extends RobotController {
 	}
 
 	private boolean crashing() {
-
-		// return getAverageDistance(SENSOR_FRONTL) > 1000 || getAverageDistance(SENSOR_RIGHT) > 1000;
-		return false;
+		boolean crash = getAverageDistance(SENSOR_FRONTL) > 1000 || getAverageDistance(SENSOR_FRONTR) > 1000;
+		if (crash)
+			System.out.println("Avoiding crash!");
+		return crash;
 	}
 
 	private void updateLocation(long d) {
