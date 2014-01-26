@@ -31,10 +31,6 @@ public abstract class AbstractController extends RobotController {
 	public final int SENSOR_BACKR = 6;
 	public final int SENSOR_BACKL = 7;
 
-	public final int GRIP_OPEN = KSGripperStates.GRIP_OPEN;
-	public final int GRIP_CLOSED = KSGripperStates.GRIP_CLOSED;
-	public final int ARM_DOWN = KSGripperStates.ARM_DOWN;
-	public final int ARM_UP = KSGripperStates.ARM_UP;
 
 	protected final int SPEED_FORWARD = 5;
 	protected final int SPEED_FORWARD_SLOW = 3;
@@ -53,6 +49,7 @@ public abstract class AbstractController extends RobotController {
 
 	protected Movement move;
 	protected History history;
+	private Balls balls;
 
 	@Override
 	public void doWork() throws Exception {
@@ -68,7 +65,23 @@ public abstract class AbstractController extends RobotController {
 
 		setStatus(history.toString(), 11);
 		setStatus("State: " + state.name(), 12);
+
+		switch (state) {
+		case LOOKING_FOR_BALL:
+			findBall();
+			break;
+		case GOING_HOME:
+			goHome();
+			break;
+		case IDLE:
+			break;
+		}
 	}
+
+	// children need to implement their own way of finding the actual ball, as wall as getting back home
+	abstract protected void goHome();
+
+	abstract protected void findBall();
 
 	private void updateMap() {
 		levelPanel.draw(getLocation()[0], getLocation()[1]);
@@ -82,6 +95,8 @@ public abstract class AbstractController extends RobotController {
 		statusPanel = new StatusPanel();
 		levelPanel = new LevelPanel();
 		move = new Movement(this);
+		balls = new Balls(this);
+
 		history = new History();
 
 		state = RobotState.LOOKING_FOR_BALL;
@@ -159,7 +174,7 @@ public abstract class AbstractController extends RobotController {
 	}
 
 	protected Turn evalCorner(Turn t) {
-		// move a little forward in order to examine the corner and its surroundings
+		// move a little forward in order to examine the corner and its surroundings, 410 is a little more than one robot length, giving it some space
 		forward(410);
 
 		// no walls
@@ -224,6 +239,7 @@ public abstract class AbstractController extends RobotController {
 		return currentSpeed;
 	}
 
+	// default to logging the event
 	protected void rotate(long degrees) {
 		rotate(degrees, true);
 	}
