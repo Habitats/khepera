@@ -60,7 +60,6 @@ public class RemoteControl extends AbstractController implements ActionListener 
 		out.append("=====================================\n");
 		out.append("Type help for a list of commands.");
 
-
 	}
 
 	/**
@@ -86,7 +85,6 @@ public class RemoteControl extends AbstractController implements ActionListener 
 		hasUserInput = false;
 
 		System.out.println(getLeftWheelPosition());
-		alignedWithRightWall();
 	}
 
 	/**
