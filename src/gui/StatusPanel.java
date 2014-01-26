@@ -23,7 +23,7 @@ public class StatusPanel {
 	}
 
 	private void addLabels(JPanel panel) {
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 16; i++) {
 			statusLabel = new JLabel();
 			statusLabel.setText(" ");
 			panel.add(statusLabel);

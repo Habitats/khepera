@@ -1,7 +1,11 @@
 package etc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.wsu.KheperaSimulator.KSGripperStates;
 import edu.wsu.KheperaSimulator.RobotController;
+import etc.RobotEvent.RobotAction;
 import gui.LevelPanel;
 import gui.StatusPanel;
 
@@ -12,15 +16,11 @@ import gui.StatusPanel;
  * 
  */
 public abstract class AbstractController extends RobotController {
-	public enum S {
-		ROTATING, //
-		DRIVING, //
+	public enum RobotState {
+		GOING_HOME, //
+		LOOKING_FOR_BALL, //
 		IDLE, //
-		BUSY, //
-		INIT, //
 	}
-
-	protected S state = S.INIT;
 
 	public final int SENSOR_LEFT = 0;
 	public final int SENSOR_ANGLEL = 1;
@@ -42,6 +42,8 @@ public abstract class AbstractController extends RobotController {
 
 	private int currentSpeed;
 
+	protected RobotState state;
+
 	protected double locationX = 0;
 	protected double locationY = 0;
 
@@ -50,6 +52,7 @@ public abstract class AbstractController extends RobotController {
 	protected LevelPanel levelPanel;
 
 	protected Movement move;
+	protected History history;
 
 	@Override
 	public void doWork() throws Exception {
@@ -62,8 +65,9 @@ public abstract class AbstractController extends RobotController {
 
 		setStatus("Direction radian: " + getDirectionInRadians(), 9);
 		setStatus("Direction h or v: " + Boolean.toString(approximately(getDirectionInRadians() % (Math.PI / 2), 0., 0.1)), 8);
-		// setStatus("Direction degrees: " + getDirectionInDegrees(), 8);
 
+		setStatus(history.toString(), 11);
+		setStatus("State: " + state.name(), 12);
 	}
 
 	private void updateMap() {
@@ -78,6 +82,9 @@ public abstract class AbstractController extends RobotController {
 		statusPanel = new StatusPanel();
 		levelPanel = new LevelPanel();
 		move = new Movement(this);
+		history = new History();
+
+		state = RobotState.LOOKING_FOR_BALL;
 	}
 
 	protected int getAverageDistance(int sensorID) {
@@ -91,24 +98,6 @@ public abstract class AbstractController extends RobotController {
 			// sleep(1);
 		}
 		return (int) avg;
-	}
-
-	protected void rotate(long degrees) {
-		state = S.ROTATING;
-		setStatus("Rotating!", 1);
-		long start = getLeftWheelPosition();
-		int d = 1;
-		if (degrees < 0)
-			d = -1;
-		// System.out.println("Rotating: " + Long.toString(degrees));
-		setMotorSpeeds(SPEED_ROTATE * d, -SPEED_ROTATE * d);
-		while (Math.abs(getLeftWheelPosition() - start) / 3 < Math.abs(degrees)) {
-			sleep(1);
-		}
-		updateMap();
-		stop();
-		state = S.IDLE;
-		setStatus(" ", 1);
 	}
 
 	// a ~ b
@@ -214,14 +203,6 @@ public abstract class AbstractController extends RobotController {
 				&& getAverageDistance(SENSOR_LEFT) > 100;
 	}
 
-	protected boolean detectCrossing() {
-		return !detectWall()//
-				&& getAverageDistance(SENSOR_ANGLEL) < 5 //
-				&& getAverageDistance(SENSOR_ANGLER) < 5//
-				&& getAverageDistance(SENSOR_LEFT) > 100//
-				&& getAverageDistance(SENSOR_RIGHT) > 100;
-	}
-
 	protected boolean detectRightTurn() {
 		return !detectWall() //
 				&& getAverageDistance(SENSOR_ANGLER) < 5 //
@@ -234,24 +215,6 @@ public abstract class AbstractController extends RobotController {
 				&& getAverageDistance(SENSOR_LEFT) > 100;
 	}
 
-	protected boolean detectDeadend() {
-		return detectWall() //
-				&& getAverageDistance(SENSOR_LEFT) > 100 //
-				&& getAverageDistance(SENSOR_RIGHT) > 100;
-	}
-
-	protected boolean detectRightCorner() {
-		return detectWall() //
-				&& getAverageDistance(SENSOR_LEFT) > 100 //
-				&& getAverageDistance(SENSOR_RIGHT) < 15;
-	}
-
-	protected boolean detectLeftCorner() {
-		return detectWall() //
-				&& getAverageDistance(SENSOR_RIGHT) > 100 //
-				&& getAverageDistance(SENSOR_LEFT) < 15;
-	}
-
 	protected boolean detectWall() {
 		return getAverageDistance(SENSOR_FRONTL) > 100 //
 				&& getAverageDistance(SENSOR_FRONTR) > 100;
@@ -261,6 +224,37 @@ public abstract class AbstractController extends RobotController {
 		return currentSpeed;
 	}
 
+	protected void rotate(long degrees) {
+		rotate(degrees, true);
+	}
+
+	protected void rotate(long degrees, boolean LOG) {
+		setStatus("Rotating!", 1);
+		long start = getLeftWheelPosition();
+
+		int d = 1;
+		if (degrees < 0)
+			d = -1;
+
+		setMotorSpeeds(SPEED_ROTATE * d, -SPEED_ROTATE * d);
+		while (Math.abs(getLeftWheelPosition() - start) / 3 < Math.abs(degrees)) {
+			sleep(1);
+		}
+		// stop rotation
+		stop();
+
+		updateMap();
+
+		setStatus(" ", 1);
+
+		// do not log this event
+		if (!LOG)
+			return;
+		RobotEvent e = new RobotEvent(state, RobotAction.ROTATE, degrees);
+		history.addEvent(e);
+
+	}
+
 	protected void forward(long distance) {
 		forward(distance, SPEED_FORWARD);
 	}
@@ -268,7 +262,6 @@ public abstract class AbstractController extends RobotController {
 	protected void forward(long distance, int speed) {
 		setSpeed(speed);
 
-		updateLocation(distance);
 		long start = getLeftWheelPosition();
 		long end = start + distance;
 		setMotorSpeeds(getSpeed(), getSpeed());
@@ -277,8 +270,19 @@ public abstract class AbstractController extends RobotController {
 			// break;
 			sleep(1);
 		}
-		updateMap();
+		// stop motors until next forward-call
 		stop();
+
+		// update to actual traveled distance
+		distance = getLeftWheelPosition() - start;
+
+		// update the map and location
+		updateLocation(distance);
+		updateMap();
+
+		// add event to history
+		RobotEvent e = new RobotEvent(state, RobotAction.FORWARD, distance, speed);
+		history.addEvent(e);
 	}
 
 	private boolean crashing() {
