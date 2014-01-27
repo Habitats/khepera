@@ -31,7 +31,7 @@ public class A1_PassageNavigator extends AbstractController {
 			move.move(t);
 		}
 
-		if (System.currentTimeMillis() - startTime > 10000 && history.backWardSize() == 0)
+		if (System.currentTimeMillis() - startTime > 60000 && history.backWardSize() == 0)
 			state = RobotState.GOING_HOME;
 		else if (history.forwardSize() == 0)
 			state = RobotState.LOOKING_FOR_BALL;

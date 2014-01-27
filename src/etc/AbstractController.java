@@ -106,15 +106,15 @@ public abstract class AbstractController extends RobotController {
 	// draw the outlines of the actual map
 	private void updateMap() {
 		if (detectLeft()) {
-//			map.add(getCurrentLocation());
+			// map.add(getCurrentLocation());
 			robotFrame.drawSomething(getOffsetLocation(250, Direction.LEFT).getNormalized());
 		}
 		if (detectRight()) {
-//			map.add(getCurrentLocation());
+			// map.add(getCurrentLocation());
 			robotFrame.drawSomething(getOffsetLocation(250, Direction.RIGHT).getNormalized());
 		}
 		if (detectWall()) {
-//			map.add(getCurrentLocation());
+			// map.add(getCurrentLocation());
 			robotFrame.drawSomething(getOffsetLocation(250, Direction.FRONT).getNormalized());
 		}
 	}
@@ -284,9 +284,11 @@ public abstract class AbstractController extends RobotController {
 		updateLocation(distance);
 		updateLevelKnowledge();
 
-		// add event to history
-		RobotEvent e = new RobotEvent(state, RobotAction.FORWARD, distance, speed);
-		history.addEvent(e);
+		// add event to history if the robot actually traveled
+		if (distance > 0) {
+			RobotEvent e = new RobotEvent(state, RobotAction.FORWARD, distance, speed);
+			history.addEvent(e);
+		}
 	}
 
 	private boolean crashing() {
