@@ -59,7 +59,7 @@ public class RobotFrame extends JFrame {
 		levelPanel.direction(directionInRadians);
 	}
 
-	public void draw(Coord c, RobotState state) {
+	public void drawRobotTail(Coord c, RobotState state) {
 		Color tailColor = null;
 		if (state == RobotState.GOING_HOME)
 			tailColor = Color.orange;
@@ -67,11 +67,17 @@ public class RobotFrame extends JFrame {
 			tailColor = Color.red;
 		else if (state == RobotState.IDLE)
 			tailColor = Color.blue;
+		c.setColor(tailColor);
 
-		levelPanel.draw(c.x, c.y, tailColor);
+		levelPanel.addTail(c);
 	}
 
 	public static void main(String[] args) {
 		new RobotFrame();
+	}
+
+	public void drawSomething(Coord c) {
+		c.setColor(Color.green);
+		levelPanel.addSomething(c);
 	}
 }

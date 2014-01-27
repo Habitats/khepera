@@ -21,7 +21,7 @@ public class StatusPanel extends JPanel {
 
 		addLabels(this);
 		// buildFrame(statusPanel);
-		setBackground(Color.gray);
+//		setBackground(Color.gray);
 
 		Dimension size = new Dimension(200, 500);
 		setPreferredSize(size);
@@ -31,7 +31,6 @@ public class StatusPanel extends JPanel {
 	private void addLabels(JPanel panel) {
 		for (int i = 0; i < 16; i++) {
 			statusLabel = new JLabel();
-			statusLabel.setBackground(Color.blue);
 			// statusLabel.setSize(new Dimension(90, 30));
 			statusLabel.setText(" ");
 			panel.add(statusLabel);

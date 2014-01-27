@@ -104,32 +104,4 @@ public class A1_PassageNavigator extends AbstractController {
 		return t;
 
 	}
-
-	protected boolean detectLeft() {
-		return getAverageDistance(SENSOR_ANGLER) > 5//
-				&& getAverageDistance(SENSOR_RIGHT) > 100;
-	}
-
-	protected boolean detectRight() {
-		return getAverageDistance(SENSOR_ANGLEL) > 5 //
-				&& getAverageDistance(SENSOR_LEFT) > 100;
-	}
-
-	protected boolean detectRightTurn() {
-		return !detectWall() //
-				&& getAverageDistance(SENSOR_ANGLER) < 5 //
-				&& getAverageDistance(SENSOR_RIGHT) > 100;
-	}
-
-	protected boolean detectLeftTurn() {
-		return !detectWall() //
-				&& getAverageDistance(SENSOR_ANGLEL) < 5 //
-				&& getAverageDistance(SENSOR_LEFT) > 100;
-	}
-
-	protected boolean detectWall() {
-		return getAverageDistance(SENSOR_FRONTL) > 100 //
-				&& getAverageDistance(SENSOR_FRONTR) > 100//
-		;
-	}
 }

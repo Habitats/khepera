@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import etc.Coord;
+
 public class LevelPanel extends JPanel {
 
 	final int HEIGHT = 500;
@@ -21,18 +23,16 @@ public class LevelPanel extends JPanel {
 	// direction
 	private double d = 0;
 
-	private int x = -1;
-	private int y = -1;
-	private ArrayList<int[]> tail;
-
-	private Color tailColor;
+	private ArrayList<Coord> tail;
+	private ArrayList<Coord> something;
 
 	public LevelPanel() {
 		Dimension size = new Dimension(WIDTH, HEIGHT);
 		setPreferredSize(size);
 		setMinimumSize(size);
 
-		tail = new ArrayList<int[]>();
+		tail = new ArrayList<Coord>();
+		something = new ArrayList<Coord>();
 
 		// level = new int[500][500];
 
@@ -57,26 +57,38 @@ public class LevelPanel extends JPanel {
 		return p;
 	}
 
-	public void draw(int x, int y, Color tailColor) {
-		this.tailColor = tailColor;
-		this.x = x;
-		this.y = y;
-		int[] c = { this.x, this.y };
-
-		tail.add(c);
-		repaint();
-	}
-
 	public void direction(double e) {
 		this.d = e;
 		repaint();
 	}
 
-	private void drawTail(Graphics g) {
-		g.setColor(tailColor);
+	public void addTail(Coord c) {
+		tail.add(c);
+		repaint();
+	}
 
-		for (int i = 0; i < tail.size(); i++) {
-			g.fillRect(tail.get(i)[0] + 250, tail.get(i)[1] + 250, 10, 10);
+	public void addSomething(Coord c) {
+		something.add(c);
+		repaint();
+	}
+
+	private void drawTail(Graphics g) {
+		for (Coord c : tail) {
+			g.setColor(c.getColor());
+			g.fillRect(c.x + 250, c.y + 250, 10, 10);
+		}
+	}
+
+	private void drawRobot(Graphics g) {
+		Coord c = tail.get(tail.size() - 1);
+		g.setColor(Color.YELLOW);
+		g.fillRect(c.x + 250, c.y + 250, 10, 10);
+	}
+
+	public void drawSomething(Graphics g) {
+		for (Coord c : something) {
+			g.setColor(c.getColor());
+			g.fillRect(c.x + 250, c.y + 250, 10, 10);
 		}
 	}
 
@@ -85,17 +97,18 @@ public class LevelPanel extends JPanel {
 		Rectangle rect = p.getBounds();
 		AffineTransform at = new AffineTransform();
 		at.rotate(d, rect.getX() + rect.width / 2, rect.getY() + rect.height / 2);
-		g.setColor(Color.green);
+		g.setColor(Color.cyan);
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.fill(at.createTransformedShape(p));
-
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
+		drawSomething(g);
 		drawTail(g);
+		drawRobot(g);
 		drawArrow(g);
 
 	}

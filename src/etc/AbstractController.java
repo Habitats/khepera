@@ -2,6 +2,7 @@ package etc;
 
 import java.util.ArrayList;
 import java.util.List;
+import etc.Direction;
 
 import edu.wsu.KheperaSimulator.RobotController;
 import etc.RobotEvent.RobotAction;
@@ -44,7 +45,10 @@ public abstract class AbstractController extends RobotController {
 	protected History history;
 	protected Balls balls;
 	private RobotFrame robotFrame;
+
+	private List<Coord> robotTail;
 	private List<Coord> map;
+
 	private long startTime;
 
 	public AbstractController() {
@@ -55,7 +59,7 @@ public abstract class AbstractController extends RobotController {
 		balls = new Balls(this);
 
 		history = new History();
-		map = new ArrayList<Coord>();
+		robotTail = new ArrayList<Coord>();
 
 		state = RobotState.LOOKING_FOR_BALL;
 	}
@@ -92,15 +96,66 @@ public abstract class AbstractController extends RobotController {
 
 	abstract protected void findBall();
 
-	private void updateMap() {
-		map.add(getCurrentLocation());
-		robotFrame.draw(getCurrentLocation().getNormalized(), state);
+	// draw where the robot has been dirving
+	private void updateRobotTail() {
+		robotTail.add(getCurrentLocation());
+		robotFrame.drawRobotTail(getCurrentLocation().getNormalized(), state);
 		robotFrame.direction(getDirectionInRadians());
+	}
+
+	// draw the outlines of the actual map
+	private void updateMap() {
+		if (detectLeft()) {
+//			map.add(getCurrentLocation());
+			robotFrame.drawSomething(getOffsetLocation(250, Direction.LEFT).getNormalized());
+		}
+		if (detectRight()) {
+//			map.add(getCurrentLocation());
+			robotFrame.drawSomething(getOffsetLocation(250, Direction.RIGHT).getNormalized());
+		}
+		if (detectWall()) {
+//			map.add(getCurrentLocation());
+			robotFrame.drawSomething(getOffsetLocation(250, Direction.FRONT).getNormalized());
+		}
+	}
+
+	// update the robots knowledge of its surroundings
+	private void updateLevelKnowledge() {
+		updateMap();
+		updateRobotTail();
 	}
 
 	@Override
 	public void close() throws Exception {
 		// levelPanel.
+	}
+
+	protected boolean detectLeft() {
+		return getAverageDistance(SENSOR_ANGLER) > 5//
+				&& getAverageDistance(SENSOR_RIGHT) > 100;
+	}
+
+	protected boolean detectRight() {
+		return getAverageDistance(SENSOR_ANGLEL) > 5 //
+				&& getAverageDistance(SENSOR_LEFT) > 100;
+	}
+
+	protected boolean detectRightTurn() {
+		return !detectWall() //
+				&& getAverageDistance(SENSOR_ANGLER) < 5 //
+				&& getAverageDistance(SENSOR_RIGHT) > 100;
+	}
+
+	protected boolean detectLeftTurn() {
+		return !detectWall() //
+				&& getAverageDistance(SENSOR_ANGLEL) < 5 //
+				&& getAverageDistance(SENSOR_LEFT) > 100;
+	}
+
+	protected boolean detectWall() {
+		return getAverageDistance(SENSOR_FRONTL) > 100 //
+				&& getAverageDistance(SENSOR_FRONTR) > 100//
+		;
 	}
 
 	protected int getAverageDistance(int sensorID) {
@@ -182,12 +237,12 @@ public abstract class AbstractController extends RobotController {
 		setMotorSpeeds(SPEED_ROTATE * d, -SPEED_ROTATE * d);
 		while (Math.abs(getLeftWheelPosition() - start) / 3 < Math.abs(degrees)) {
 			sleep(1);
-			updateMap();
+			updateLevelKnowledge();
 		}
 		// stop rotation
 		stop();
 
-		updateMap();
+		updateLevelKnowledge();
 
 		setStatus("Rotating: False", 1);
 
@@ -220,14 +275,14 @@ public abstract class AbstractController extends RobotController {
 			sleep(1);
 		}
 		// stop motors until next forward-call
-		 stop();
+		stop();
 
 		// update to actual traveled distance
 		distance = getLeftWheelPosition() - start;
 
 		// update the map and location
 		updateLocation(distance);
-		updateMap();
+		updateLevelKnowledge();
 
 		// add event to history
 		RobotEvent e = new RobotEvent(state, RobotAction.FORWARD, distance, speed);
@@ -241,12 +296,39 @@ public abstract class AbstractController extends RobotController {
 		return crash;
 	}
 
-	private void updateLocation(long d) {
+	// update the location based on polar-coordinates, with starting position as origin
+	private void updateLocation(long distance) {
 		double r = getDirectionInRadians();
-		double xNew = (int) (Math.cos(r) * d + locationX);
-		double yNew = (int) (Math.sin(r) * d + locationY);
+		double xNew = (int) (Math.cos(r) * distance + locationX);
+		double yNew = (int) (Math.sin(r) * distance + locationY);
 
 		setLocation(xNew, yNew);
+	}
+
+	private Coord getOffsetLocation(long offset, Direction d) {
+		int x = 0;
+		int y = 0;
+		double r = getDirectionInRadians();
+		switch (d) {
+		case BACK:
+			x = (int) (Math.cos(-r) * offset + locationX);
+			y = (int) (Math.sin(-r) * offset + locationY);
+			break;
+		case FRONT:
+			x = (int) (Math.cos(r) * offset + locationX);
+			y = (int) (Math.sin(r) * offset + locationY);
+			break;
+		case LEFT:
+			x = (int) (Math.cos(r + Math.PI / 2) * offset + locationX);
+			y = (int) (Math.sin(r + Math.PI / 2) * offset + locationY);
+			break;
+		case RIGHT:
+			x = (int) (Math.cos(r - Math.PI / 2) * offset + locationX);
+			y = (int) (Math.sin(r - Math.PI / 2) * offset + locationY);
+			break;
+		}
+
+		return new Coord(x, y);
 	}
 
 	private void setLocation(double xNew, double yNew) {
@@ -282,8 +364,9 @@ public abstract class AbstractController extends RobotController {
 		int max = 0;
 		for (int i = 0; i < 8; i++) {
 			int avg = getAverageDistance(i);
-			if (avg > max)
+			if (avg > max) {
 				max = avg;
+			}
 		}
 		return max;
 	}
