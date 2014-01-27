@@ -1,59 +1,51 @@
 import etc.AbstractController;
 
+/**
+ * Goes straigth forward looking for balls. Doesn't care about walls...
+ * 
+ * @author Patrick
+ * 
+ */
 public class A2_PickUpBall extends AbstractController {
 
 	boolean started = false;
 	boolean done = false;
 
-
+	@Override
 	protected void findBall() {
-		if (!closeToSomething())
+		if (!closeToSomething()) {
+			setStatus("Found nothing:(!", 15);
 			forward(20);
-		else {
-			System.out.println("found something!");
-			rotateToward();
-			while (getMaxSensorValue() < 900) {
-				if (getAverageDistance(SENSOR_FRONTL) > 700 && getAverageDistance(SENSOR_FRONTR) > 700) {
-					pickUpBall();
-					returnToBase();
-					break;
-				}
-				forward(100);
-				rotateToward();
-				sleep(1);
+		} else {
+			setStatus("Found something!", 15);
+			if (getAverageDistance(SENSOR_FRONTL) > 700 && getAverageDistance(SENSOR_FRONTR) > 700) {
+				balls.pickUpBall();
+				state = RobotState.GOING_HOME;
+				return;
 			}
-			stop();
-			sleep(500);
-			pickUpBall();
 
-			returnToBase();
+			if (notFacing()) {
+				if (getAverageDistance(SENSOR_FRONTL) > getAverageDistance(SENSOR_FRONTR) - 100)
+					rotate(-1);
+				else if (getAverageDistance(SENSOR_FRONTR) > getAverageDistance(SENSOR_FRONTL) - 100)
+					rotate(1);
+			} else
+				forward(20);
 		}
 	}
 
 	@Override
 	protected void goHome() {
+		move.goHomeTheSameWayYouCame();
 	}
 
-	private void rotateToward() {
-		while (!approximately(getAverageDistance(SENSOR_FRONTL), getAverageDistance(SENSOR_FRONTR), 10) || getAverageDistance(SENSOR_FRONTL) < 15
-				|| getAverageDistance(SENSOR_FRONTR) < 15) {
-			rotate(-1);
-			sleep(1);
-		}
-	}
-
-	private void returnToBase() {
-
-		// return to base
-		long distanceTraveled = getLeftWheelPosition();
-		rotate(180);
-		forward(distanceTraveled);
-		rotate(180);
-		done = true;
-	}
-
-	@Override
-	public void close() throws Exception {
+	private boolean notFacing() {
+		return (!approximately(getAverageDistance(SENSOR_FRONTL), getAverageDistance(SENSOR_FRONTR), 100)//
+				|| getAverageDistance(SENSOR_FRONTL) < 15//
+		|| getAverageDistance(SENSOR_FRONTR) < 15)//
+		// && (getAverageDistance(SENSOR_FRONTL) > 100//
+		// || getAverageDistance(SENSOR_FRONTR) > 100)//
+		;
 	}
 
 }

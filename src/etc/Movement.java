@@ -1,6 +1,6 @@
 package etc;
 
-import javax.tools.ForwardingFileObject;
+import etc.AbstractController.RobotState;
 
 public class Movement {
 	private AbstractController robot;
@@ -76,7 +76,6 @@ public class Movement {
 
 	private void rightTurn() {
 		robot.stop();
-		robot.sleep(100);
 		if (Math.random() > 0.5)
 			robot.right();
 		else
@@ -85,7 +84,6 @@ public class Movement {
 
 	private void leftTurn() {
 		robot.stop();
-		robot.sleep(100);
 
 		if (Math.random() > 0.5)
 			robot.left();
@@ -106,5 +104,28 @@ public class Movement {
 	private void deadEnd() {
 		robot.rotate(180);
 		// robot.forward(300);
+	}
+
+	public void goHomeTheSameWayYouCame() {
+		if (robot.history.backWardSize() == 0)
+			robot.rotate(180, false);
+
+		if (robot.history.forwardSize() > 0) {
+			RobotEvent e = robot.history.getLastEvent();
+			switch (e.getAction()) {
+			case FORWARD:
+				robot.forward(e.getDistance());
+				break;
+			case ROTATE:
+				robot.rotate(e.getDegrees() * -1);
+				break;
+			default:
+				break;
+
+			}
+		} else {
+			robot.rotate(180, false);
+			robot.state = RobotState.IDLE;
+		}
 	}
 }

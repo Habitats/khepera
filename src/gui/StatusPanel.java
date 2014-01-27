@@ -5,48 +5,38 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class StatusPanel {
+public class StatusPanel extends JPanel {
 	private JLabel statusLabel;
 	private ArrayList<JLabel> labels;
 
 	public StatusPanel() {
-		JPanel statusPanel = new JPanel();
-		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		labels = new ArrayList<JLabel>();
-		addLabels(statusPanel);
-		buildFrame(statusPanel);
+
+		JLabel header = new JLabel(" - COOL STATS --------------");
+		add(header);
+
+		addLabels(this);
+		// buildFrame(statusPanel);
+		setBackground(Color.gray);
+
+		Dimension size = new Dimension(200, 500);
+		setPreferredSize(size);
+		setMinimumSize(size);
 	}
 
 	private void addLabels(JPanel panel) {
 		for (int i = 0; i < 16; i++) {
 			statusLabel = new JLabel();
+			statusLabel.setBackground(Color.blue);
+			// statusLabel.setSize(new Dimension(90, 30));
 			statusLabel.setText(" ");
 			panel.add(statusLabel);
 			labels.add(statusLabel);
 		}
-	}
-
-	private void buildFrame(JComponent component) {
-		JFrame frame = new JFrame();
-
-		frame.getContentPane().setBackground(Color.black);
-		frame.getContentPane().add(component);
-
-		frame.setTitle("Status Panel");
-		frame.pack();
-
-		// frame.setLocationRelativeTo(frame.getRootPane());
-		frame.setLocation(0, 510);
-		frame.setSize(new Dimension(300, 300));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		frame.setResizable(false);
-		frame.setVisible(true);
 	}
 
 	public void setLabel(String status) {
@@ -54,7 +44,7 @@ public class StatusPanel {
 	}
 
 	public void setLabel(String status, int i) {
-		labels.get(i).setText(status);
+		labels.get(i).setText(" " + status);
 	}
 
 }

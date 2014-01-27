@@ -9,8 +9,6 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class LevelPanel extends JPanel {
@@ -27,22 +25,25 @@ public class LevelPanel extends JPanel {
 	private int y = -1;
 	private ArrayList<int[]> tail;
 
+	private Color tailColor;
+
 	public LevelPanel() {
-		this.setSize(new Dimension(WIDTH, HEIGHT));
+		Dimension size = new Dimension(WIDTH, HEIGHT);
+		setPreferredSize(size);
+		setMinimumSize(size);
+
 		tail = new ArrayList<int[]>();
 
 		// level = new int[500][500];
 
 		setBackground(Color.black);
 
-		buildCanvas(this);
-
 		this.p = createArrowPoly();
 	}
 
 	private Polygon createArrowPoly() {
-		int posX = WIDTH - 80;
-		int posY = HEIGHT - 80;
+		int posX = WIDTH - 70;
+		int posY = HEIGHT - 70;
 		int xPoly[] = { -30, 0, 0, 30, 0, 0, -30 };
 		int yPoly[] = { -10, -10, -15, 0, 15, 10, 10 };
 
@@ -56,16 +57,8 @@ public class LevelPanel extends JPanel {
 		return p;
 	}
 
-	private void buildCanvas(JComponent c) {
-		JFrame frame = new JFrame();
-
-		frame.setSize(WIDTH, HEIGHT);
-		frame.add(c);
-
-		frame.setVisible(true);
-	}
-
-	public void draw(int x, int y) {
+	public void draw(int x, int y, Color tailColor) {
+		this.tailColor = tailColor;
 		this.x = x;
 		this.y = y;
 		int[] c = { this.x, this.y };
@@ -80,10 +73,10 @@ public class LevelPanel extends JPanel {
 	}
 
 	private void drawTail(Graphics g) {
-		g.setColor(Color.pink);
+		g.setColor(tailColor);
 
 		for (int i = 0; i < tail.size(); i++) {
-			g.drawRect(tail.get(i)[0] + 250, tail.get(i)[1] + 250, 10, 10);
+			g.fillRect(tail.get(i)[0] + 250, tail.get(i)[1] + 250, 10, 10);
 		}
 	}
 
@@ -106,7 +99,4 @@ public class LevelPanel extends JPanel {
 		drawArrow(g);
 
 	}
-	// public static void main(String[] args) {
-	// new LevelPanel();
-	// }
 }

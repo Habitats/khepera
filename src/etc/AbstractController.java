@@ -3,11 +3,9 @@ package etc;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.wsu.KheperaSimulator.KSGripperStates;
 import edu.wsu.KheperaSimulator.RobotController;
 import etc.RobotEvent.RobotAction;
-import gui.LevelPanel;
-import gui.StatusPanel;
+import gui.RobotFrame;
 
 /**
  * Abstract controller with base functions and constants
@@ -31,7 +29,6 @@ public abstract class AbstractController extends RobotController {
 	public final int SENSOR_BACKR = 6;
 	public final int SENSOR_BACKL = 7;
 
-
 	protected final int SPEED_FORWARD = 5;
 	protected final int SPEED_FORWARD_SLOW = 3;
 	protected final int SPEED_ROTATE = 2;
@@ -43,18 +40,30 @@ public abstract class AbstractController extends RobotController {
 	protected double locationX = 0;
 	protected double locationY = 0;
 
-	protected StatusPanel statusPanel;
-
-	protected LevelPanel levelPanel;
-
 	protected Movement move;
 	protected History history;
-	private Balls balls;
+	protected Balls balls;
+	private RobotFrame robotFrame;
+	private List<Coord> map;
+	private long startTime;
+
+	public AbstractController() {
+		startTime = System.currentTimeMillis();
+		robotFrame = new RobotFrame();
+
+		move = new Movement(this);
+		balls = new Balls(this);
+
+		history = new History();
+		map = new ArrayList<Coord>();
+
+		state = RobotState.LOOKING_FOR_BALL;
+	}
 
 	@Override
 	public void doWork() throws Exception {
 
-		setStatus("Doing work: " + Long.toString(System.currentTimeMillis() / 1000), 0);
+		setStatus("Time passed: " + Double.toString((System.currentTimeMillis() - startTime) / 1000.), 0);
 
 		setStatus("Speed: " + getSpeed(), 6);
 
@@ -84,22 +93,14 @@ public abstract class AbstractController extends RobotController {
 	abstract protected void findBall();
 
 	private void updateMap() {
-		levelPanel.draw(getLocation()[0], getLocation()[1]);
-		levelPanel.direction(getDirectionInRadians());
+		map.add(getCurrentLocation());
+		robotFrame.draw(getCurrentLocation().getNormalized(), state);
+		robotFrame.direction(getDirectionInRadians());
 	}
 
 	@Override
-	abstract public void close() throws Exception;
-
-	public AbstractController() {
-		statusPanel = new StatusPanel();
-		levelPanel = new LevelPanel();
-		move = new Movement(this);
-		balls = new Balls(this);
-
-		history = new History();
-
-		state = RobotState.LOOKING_FOR_BALL;
+	public void close() throws Exception {
+		// levelPanel.
 	}
 
 	protected int getAverageDistance(int sensorID) {
@@ -125,12 +126,12 @@ public abstract class AbstractController extends RobotController {
 	}
 
 	protected void right() {
-		System.out.println("Turning right...");
+		// System.out.println("Turning right...");
 		rotate(90);
 	}
 
 	protected void left() {
-		System.out.println("Turning left...");
+		// System.out.println("Turning left...");
 		rotate(-90);
 	}
 
@@ -157,82 +158,8 @@ public abstract class AbstractController extends RobotController {
 		rotate(x);
 	}
 
-	protected Turn detectCorner() {
-		Turn t = null;
-
-		if (!goingVerticalOrHorizontal())
-			return null;
-
-		else if (detectLeftTurn() || detectRightTurn())
-			t = Turn.CORNER;
-		else if (!closeToWall() || !detectWall())
-			t = Turn.STRAIGTH;
-		else if (!detectLeftTurn() & !detectRightTurn() && detectWall())
-			t = Turn.WALL;
-
-		return t;
-	}
-
-	protected Turn evalCorner(Turn t) {
-		// move a little forward in order to examine the corner and its surroundings, 410 is a little more than one robot length, giving it some space
-		forward(410);
-
-		// no walls
-		if (!detectWall() && !detectRight() && !detectLeft())
-			t = Turn.FULL_CROSSING;
-		// wall front
-		else if (detectWall() && !detectRight() && !detectLeft())
-			t = Turn.CROSSING;
-		// wall front and right
-		else if (detectWall() && detectRight() && !detectLeft())
-			t = Turn.RIGHT_CORNER;
-		// wall front and left
-		else if (detectWall() && !detectRight() && detectLeft())
-			t = Turn.LEFT_CORNER;
-		// wall left
-		else if (!detectWall() && !detectRight() && detectLeft())
-			t = Turn.LEFT_TURN;
-		// wall rigth
-		else if (!detectWall() && detectRight() && !detectLeft())
-			t = Turn.RIGHT_TURN;
-		// walls everywhere!
-		else if (detectWall() && detectRight() && detectLeft())
-			t = Turn.DEADEND;
-		statusPanel.setLabel("Detected: " + t.name(), 2);
-		System.out.println("Detected: " + t.name());
-
-		return t;
-	}
-
 	protected void setSpeed(int speed) {
 		currentSpeed = speed;
-	}
-
-	protected boolean detectLeft() {
-		return getAverageDistance(SENSOR_ANGLER) > 5//
-				&& getAverageDistance(SENSOR_RIGHT) > 100;
-	}
-
-	protected boolean detectRight() {
-		return getAverageDistance(SENSOR_ANGLEL) > 5 //
-				&& getAverageDistance(SENSOR_LEFT) > 100;
-	}
-
-	protected boolean detectRightTurn() {
-		return !detectWall() //
-				&& getAverageDistance(SENSOR_ANGLER) < 5 //
-				&& getAverageDistance(SENSOR_RIGHT) > 100;
-	}
-
-	protected boolean detectLeftTurn() {
-		return !detectWall() //
-				&& getAverageDistance(SENSOR_ANGLEL) < 5 //
-				&& getAverageDistance(SENSOR_LEFT) > 100;
-	}
-
-	protected boolean detectWall() {
-		return getAverageDistance(SENSOR_FRONTL) > 100 //
-				&& getAverageDistance(SENSOR_FRONTR) > 100;
 	}
 
 	private int getSpeed() {
@@ -245,7 +172,7 @@ public abstract class AbstractController extends RobotController {
 	}
 
 	protected void rotate(long degrees, boolean LOG) {
-		setStatus("Rotating!", 1);
+		setStatus("Rotating: True", 1);
 		long start = getLeftWheelPosition();
 
 		int d = 1;
@@ -255,13 +182,14 @@ public abstract class AbstractController extends RobotController {
 		setMotorSpeeds(SPEED_ROTATE * d, -SPEED_ROTATE * d);
 		while (Math.abs(getLeftWheelPosition() - start) / 3 < Math.abs(degrees)) {
 			sleep(1);
+			updateMap();
 		}
 		// stop rotation
 		stop();
 
 		updateMap();
 
-		setStatus(" ", 1);
+		setStatus("Rotating: False", 1);
 
 		// do not log this event
 		if (!LOG)
@@ -272,7 +200,12 @@ public abstract class AbstractController extends RobotController {
 	}
 
 	protected void forward(long distance) {
-		forward(distance, SPEED_FORWARD);
+		int tick = (int) (Math.floor(distance / 20.));
+		int rest = (int) (distance % 20);
+		for (int i = 0; i < tick; i++) {
+			forward(20, SPEED_FORWARD);
+		}
+		forward(rest, SPEED_FORWARD);
 	}
 
 	protected void forward(long distance, int speed) {
@@ -287,7 +220,7 @@ public abstract class AbstractController extends RobotController {
 			sleep(1);
 		}
 		// stop motors until next forward-call
-		stop();
+		 stop();
 
 		// update to actual traveled distance
 		distance = getLeftWheelPosition() - start;
@@ -325,12 +258,12 @@ public abstract class AbstractController extends RobotController {
 		setMotorSpeeds(0, 0);
 	}
 
-	private void setStatus(String s, int i) {
-		statusPanel.setLabel(s, i);
+	protected void setStatus(String s, int i) {
+		robotFrame.setStatus(s, i);
 	}
 
-	protected int[] getLocation() {
-		int[] location = { ((int) locationX / 15), ((int) locationY / 15) };
+	protected Coord getCurrentLocation() {
+		Coord location = new Coord((int) locationX, (int) locationY);
 		return location;
 	}
 

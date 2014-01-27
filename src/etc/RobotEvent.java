@@ -1,7 +1,6 @@
 package etc;
 
 import etc.AbstractController.RobotState;
-import etc.RobotEvent.RobotAction;
 
 public class RobotEvent {
 	public enum RobotAction {
@@ -18,26 +17,20 @@ public class RobotEvent {
 	private long degrees;
 	private final RobotState state;
 
-	// rotation
-	// public RobotEvent(RobotAction action, Turn t, double rads, int direction) {
-	// time = System.currentTimeMillis();
-	//
-	// this.action = action;
-	// this.turn = t;
-	// this.direction = direction;
-	// }
-
 	// forward
 	public RobotEvent(RobotState state, RobotAction action, long distance, int speed) {
-		this.state = state;
 		time = System.currentTimeMillis();
 
+		this.state = state;
 		this.action = action;
 		this.distance = distance;
 		this.speed = speed;
 	}
 
+	//
 	public RobotEvent(RobotState state, RobotAction action, long degrees) {
+		time = System.currentTimeMillis();
+
 		this.state = state;
 		this.action = action;
 		this.degrees = degrees;
@@ -70,6 +63,7 @@ public class RobotEvent {
 	public RobotState getState() {
 		return state;
 	}
+
 	public long getDegrees() {
 		return degrees;
 	}
