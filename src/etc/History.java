@@ -24,7 +24,6 @@ public class History {
 			forward.add(e);
 			backward.clear();
 		} else if (e.getState() == RobotState.GOING_HOME) {
-			forward.remove(forward.size() - 1);
 			backward.add(e);
 		}
 	}

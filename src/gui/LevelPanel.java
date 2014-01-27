@@ -8,6 +8,8 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -23,16 +25,16 @@ public class LevelPanel extends JPanel {
 	// direction
 	private double d = 0;
 
-	private ArrayList<Coord> tail;
-	private ArrayList<Coord> something;
+	private List<Coord> tail;
+	private List<Coord> something;
 
 	public LevelPanel() {
 		Dimension size = new Dimension(WIDTH, HEIGHT);
 		setPreferredSize(size);
 		setMinimumSize(size);
 
-		tail = new ArrayList<Coord>();
-		something = new ArrayList<Coord>();
+		tail = Collections.synchronizedList(new ArrayList<Coord>());
+		something = Collections.synchronizedList(new ArrayList<Coord>());
 
 		// level = new int[500][500];
 
@@ -73,22 +75,32 @@ public class LevelPanel extends JPanel {
 	}
 
 	private void drawTail(Graphics g) {
-		for (Coord c : tail) {
-			g.setColor(c.getColor());
-			g.fillRect(c.x + 250, c.y + 250, 10, 10);
+		synchronized (tail) {
+			if (tail.size() > 0) {
+				for (Coord c : tail) {
+					g.setColor(c.getColor());
+					g.fillRect(c.x + 250, c.y + 250, 10, 10);
+				}
+			}
 		}
 	}
 
 	private void drawRobot(Graphics g) {
-		Coord c = tail.get(tail.size() - 1);
-		g.setColor(Color.YELLOW);
-		g.fillRect(c.x + 250, c.y + 250, 10, 10);
+		synchronized (tail) {
+			if (tail.size() > 0) {
+				Coord c = tail.get(tail.size() - 1);
+				g.setColor(Color.YELLOW);
+				g.fillRect(c.x + 250, c.y + 250, 10, 10);
+			}
+		}
 	}
 
 	public void drawSomething(Graphics g) {
-		for (Coord c : something) {
-			g.setColor(c.getColor());
-			g.fillRect(c.x + 250, c.y + 250, 10, 10);
+		synchronized (something) {
+			for (Coord c : something) {
+				g.setColor(c.getColor());
+				g.fillRect(c.x + 250, c.y + 250, 10, 10);
+			}
 		}
 	}
 

@@ -49,7 +49,7 @@ public abstract class AbstractController extends RobotController {
 	private List<Coord> robotTail;
 	private List<Coord> map;
 
-	private long startTime;
+	protected long startTime;
 
 	public AbstractController() {
 		startTime = System.currentTimeMillis();

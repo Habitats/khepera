@@ -111,7 +111,7 @@ public class Movement {
 			robot.rotate(180, false);
 
 		if (robot.history.forwardSize() > 0) {
-			RobotEvent e = robot.history.getLastEvent();
+			RobotEvent e = robot.history.pop();
 			switch (e.getAction()) {
 			case FORWARD:
 				robot.forward(e.getDistance());
