@@ -92,7 +92,7 @@ public class Logger extends RobotController {
 
 	@Override
 	public void close() throws Exception {
-		System.out.println(log.printLog());
+		log.printMap();
 		setFinished(true);
 	}
 
@@ -158,7 +158,7 @@ public class Logger extends RobotController {
 
 	//so temp
 	public void addBehaviors() {
-		behaviors.add(new ExploreMaze(0, 500));
+		behaviors.add(new ExploreMaze(0, 50));
 //				behaviors.add(new CollectBall(5, 50));
 //				behaviors.add(new GoHome(10));
 	}
@@ -396,25 +396,26 @@ public class Logger extends RobotController {
 				}
 				//Log left and right of the robot.
 				int logState = LogEntry.STATE_AIR;
-				if (distanceSensors[SENSOR_LEFT] > 600) {
+				if (distanceSensors[SENSOR_LEFT] > 300) {
 					logState = LogEntry.STATE_SOMETHING;
 					canGoLeft = false;
 				}
 				log.log(new LogEntry((int) ((posX + dx * loggingInterval) / loggingInterval), (int) ((posY + dy * loggingInterval) / loggingInterval), logState));
 
 				logState = LogEntry.STATE_AIR;
-				if (distanceSensors[SENSOR_RIGHT] > 700) {
+				if (distanceSensors[SENSOR_RIGHT] > 300) {
 					logState = LogEntry.STATE_SOMETHING;
 					canGoRight = false;
 				}
 				log.log(new LogEntry((int) ((posX - dx * loggingInterval) / loggingInterval), (int) ((posY - dy * loggingInterval) / loggingInterval), logState));
 
 				logState = LogEntry.STATE_AIR;
-				if (distanceSensors[SENSOR_FRONTL] > 700) {
+				if (distanceSensors[SENSOR_FRONTL] > 300) {
 					logState = LogEntry.STATE_SOMETHING;
 					canGoForward = true;
 				}
-				log.log(new LogEntry((int) ((posX - frontX * loggingInterval) / loggingInterval), (int) ((posY - frontY * loggingInterval) / loggingInterval), logState));
+				log.log(new LogEntry((int) ((posX + frontX * loggingInterval) / loggingInterval), (int) ((posY + frontY * loggingInterval) / loggingInterval), logState));
+				
 				lastX = posX;
 				lastY = posY;
 				state++;
@@ -426,7 +427,7 @@ public class Logger extends RobotController {
 				}
 
 				boolean mustTurn = false;
-				if (distanceSensors[SENSOR_FRONTL] > 600) {
+				if (distanceSensors[SENSOR_FRONTL] > 700) {
 					mustTurn = true;
 				}
 				if (mustTurn) {
@@ -434,17 +435,17 @@ public class Logger extends RobotController {
 					state++;
 					break;
 				}
-				moveForward(5);
+				moveForward(3);
 				break;
 			case 3:
 				stop();
 				boolean canTurnLeft = true;
 				boolean canTurnRight = true;
 
-				if (distanceSensors[SENSOR_LEFT] > 500) {
+				if (distanceSensors[SENSOR_LEFT] > 700) {
 					canTurnLeft = false;
 				}
-				if (distanceSensors[SENSOR_RIGHT] > 500) {
+				if (distanceSensors[SENSOR_RIGHT] > 700) {
 					canTurnRight = false;
 				}
 
@@ -478,6 +479,8 @@ public class Logger extends RobotController {
 					rotate(-direction, 1);
 				} else {
 					stop();
+					sleep(500);
+					log.printMap();
 					state = 2;
 				}
 				break;
