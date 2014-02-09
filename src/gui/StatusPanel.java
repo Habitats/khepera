@@ -7,7 +7,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class StatusPanel extends JPanel {
+public class StatusPanel extends JPanel implements StatusView {
 	private JLabel statusLabel;
 	private ArrayList<JLabel> labels;
 
@@ -20,7 +20,7 @@ public class StatusPanel extends JPanel {
 
 		addLabels(this);
 		// buildFrame(statusPanel);
-//		setBackground(Color.gray);
+		// setBackground(Color.gray);
 
 		Dimension size = new Dimension(200, 500);
 		setPreferredSize(size);
@@ -37,12 +37,8 @@ public class StatusPanel extends JPanel {
 		}
 	}
 
-	public void setLabel(String status) {
-		setLabel(status, 0);
-	}
-
-	public void setLabel(String status, int i) {
+	@Override
+	public void setStatus(String status, int i) {
 		labels.get(i).setText(" " + status);
 	}
-
 }

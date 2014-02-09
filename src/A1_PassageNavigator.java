@@ -1,4 +1,5 @@
 import etc.AbstractController;
+import etc.Singleton;
 import etc.Turn;
 
 /**
@@ -31,9 +32,9 @@ public class A1_PassageNavigator extends AbstractController {
 			move.move(t);
 		}
 
-		if (System.currentTimeMillis() - startTime > 60000 && history.backWardSize() == 0)
+		if (System.currentTimeMillis() - startTime > 60000 && Singleton.getInstance().getHistory().backWardSize() == 0)
 			state = RobotState.GOING_HOME;
-		else if (history.forwardSize() == 0)
+		else if (Singleton.getInstance().getHistory().forwardSize() == 0)
 			state = RobotState.LOOKING_FOR_BALL;
 	}
 

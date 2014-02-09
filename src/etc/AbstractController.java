@@ -6,7 +6,6 @@ import etc.Direction;
 
 import edu.wsu.KheperaSimulator.RobotController;
 import etc.RobotEvent.RobotAction;
-import gui.RobotFrame;
 
 /**
  * Abstract controller with base functions and constants
@@ -42,9 +41,7 @@ public abstract class AbstractController extends RobotController {
 	protected double locationY = 0;
 
 	protected Movement move;
-	protected History history;
 	protected Balls balls;
-	private RobotFrame robotFrame;
 
 	private List<Coord> robotTail;
 	private List<Coord> map;
@@ -53,12 +50,10 @@ public abstract class AbstractController extends RobotController {
 
 	public AbstractController() {
 		startTime = System.currentTimeMillis();
-		robotFrame = new RobotFrame();
 
 		move = new Movement(this);
 		balls = new Balls(this);
 
-		history = new History();
 		robotTail = new ArrayList<Coord>();
 
 		state = RobotState.LOOKING_FOR_BALL;
@@ -76,7 +71,7 @@ public abstract class AbstractController extends RobotController {
 		setStatus("Direction radian: " + getDirectionInRadians(), 9);
 		setStatus("Direction h or v: " + Boolean.toString(approximately(getDirectionInRadians() % (Math.PI / 2), 0., 0.1)), 8);
 
-		setStatus(history.toString(), 11);
+		setStatus(Singleton.getInstance().getHistory().toString(), 11);
 		setStatus("State: " + state.name(), 12);
 
 		switch (state) {
@@ -99,23 +94,23 @@ public abstract class AbstractController extends RobotController {
 	// draw where the robot has been dirving
 	private void updateRobotTail() {
 		robotTail.add(getCurrentLocation());
-		robotFrame.drawRobotTail(getCurrentLocation().getNormalized(), state);
-		robotFrame.direction(getDirectionInRadians());
+		Singleton.getInstance().getController().drawRobotTail(getCurrentLocation().getNormalized(), state);
+		Singleton.getInstance().getController().direction(getDirectionInRadians());
 	}
 
 	// draw the outlines of the actual map
 	private void updateMap() {
 		if (detectLeft()) {
 			// map.add(getCurrentLocation());
-			robotFrame.drawSomething(getOffsetLocation(250, Direction.LEFT).getNormalized());
+			Singleton.getInstance().getController().drawSomething(getOffsetLocation(250, Direction.LEFT).getNormalized());
 		}
 		if (detectRight()) {
 			// map.add(getCurrentLocation());
-			robotFrame.drawSomething(getOffsetLocation(250, Direction.RIGHT).getNormalized());
+			Singleton.getInstance().getController().drawSomething(getOffsetLocation(250, Direction.RIGHT).getNormalized());
 		}
 		if (detectWall()) {
 			// map.add(getCurrentLocation());
-			robotFrame.drawSomething(getOffsetLocation(250, Direction.FRONT).getNormalized());
+			Singleton.getInstance().getController().drawSomething(getOffsetLocation(250, Direction.FRONT).getNormalized());
 		}
 	}
 
@@ -250,7 +245,7 @@ public abstract class AbstractController extends RobotController {
 		if (!LOG)
 			return;
 		RobotEvent e = new RobotEvent(state, RobotAction.ROTATE, degrees);
-		history.addEvent(e);
+		Singleton.getInstance().getHistory().addEvent(e);
 
 	}
 
@@ -287,7 +282,7 @@ public abstract class AbstractController extends RobotController {
 		// add event to history if the robot actually traveled
 		if (distance > 0) {
 			RobotEvent e = new RobotEvent(state, RobotAction.FORWARD, distance, speed);
-			history.addEvent(e);
+			Singleton.getInstance().getHistory().addEvent(e);
 		}
 	}
 
@@ -343,7 +338,7 @@ public abstract class AbstractController extends RobotController {
 	}
 
 	protected void setStatus(String s, int i) {
-		robotFrame.setStatus(s, i);
+		Singleton.getInstance().getController().setStatus(s, i);
 	}
 
 	protected Coord getCurrentLocation() {

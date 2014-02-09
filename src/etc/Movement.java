@@ -107,11 +107,11 @@ public class Movement {
 	}
 
 	public void goHomeTheSameWayYouCame() {
-		if (robot.history.backWardSize() == 0)
+		if (Singleton.getInstance().getHistory().backWardSize() == 0)
 			robot.rotate(180, false);
 
-		if (robot.history.forwardSize() > 0) {
-			RobotEvent e = robot.history.pop();
+		if (Singleton.getInstance().getHistory().forwardSize() > 0) {
+			RobotEvent e = Singleton.getInstance().getHistory().pop();
 			switch (e.getAction()) {
 			case FORWARD:
 				robot.forward(e.getDistance());

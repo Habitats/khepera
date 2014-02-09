@@ -18,10 +18,10 @@ public class LogEntry implements Comparable<LogEntry>{
 
 	@Override
 	public int compareTo(LogEntry arg0) {
-		if ((int) (arg0.y - y) < 0) {
-			return (int) (arg0.y - y);
+		if (arg0.y - y < 0) {
+			return arg0.y - y;
 		}
-		return (int) (arg0.x - x);
+		return arg0.x - x;
 	}
 	
 	
