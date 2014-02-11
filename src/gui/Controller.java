@@ -31,6 +31,7 @@ public class Controller {
 		robotFrame.drawSomething(normalized);
 	}
 
+	// MVC happens here
 	public void setStatus(String s, int i) {
 		statusModel.setStatus(s, i);
 		for (StatusView view : statusViews) {
