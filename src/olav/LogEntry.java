@@ -1,3 +1,4 @@
+package olav;
 
 public class LogEntry implements Comparable<LogEntry>{
 	

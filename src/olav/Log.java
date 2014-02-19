@@ -1,3 +1,5 @@
+package olav;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -7,12 +9,14 @@ public class Log {
 	
 	int[][] map;
 	
+	ArrayList<LogChangeListener> listeners;
+	
 	public Log() {
 		minX = 0;
 		maxX = 0;
 		minY = 0;
 		maxY = 0;
-		
+		listeners = new ArrayList<LogChangeListener>();
 		log = new HashMap<Integer, HashMap<Integer, LogEntry>>();
 	}
 	
@@ -33,6 +37,7 @@ public class Log {
 		
 		if (entry.y < minY) minY = entry.y;
 		else if (entry.y > maxY) maxY = entry.y;
+		fireLogChangeEvent(new LogChangeEvent(LogChangeEvent.ENRTY_CHANGED, entry.x, entry.y, "Found something"));
 	}
 	
 	public int get(int x, int y) {
@@ -116,13 +121,21 @@ public class Log {
 					if (isWall(x + minX, y + minY)) {
 						map[y][x] = LogEntry.STATE_WALL;
 						log.get(y).put(x, new LogEntry(x, y, LogEntry.STATE_WALL));
+						fireLogChangeEvent(new LogChangeEvent(LogChangeEvent.WALL_FOUND, x, y, "Wall detected"));
 					}
 					if (isBall(x + minX, y + minY)) {
 						map[y][x] = LogEntry.STATE_BALL;
 						log.get(y).put(x, new LogEntry(x, y, LogEntry.STATE_BALL));
+						fireLogChangeEvent(new LogChangeEvent(LogChangeEvent.BALL_FOUND, x, y, "Ball detected"));
 					}
 				}
 			}
+		}
+	}
+	
+	public void fireLogChangeEvent(LogChangeEvent e) {
+		for (LogChangeListener l : listeners) {
+			l.fireLogChange(e);
 		}
 	}
 	

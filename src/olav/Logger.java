@@ -1,3 +1,4 @@
+package olav;
 
 
 import java.util.ArrayList;
@@ -33,20 +34,17 @@ public class Logger extends RobotController {
 	int[] distanceSensors;
 	int[] lightSensors;
 
-	float posX;
-	float posY;
-	float orientation;
-	float lastLeftWheelPos = 0;
-	float lastRightWheelPos = 0;
-
+	RobotState rstate;
+	
 	public Logger() {
 		//setup
 		distanceSensors = new int[8];
 		lightSensors = new int[8];
 		behaviors = new ArrayList<Behavior>();
-		posX = 0;
-		posY = 0;
-		orientation = 0;
+		rstate = RobotState.getInstance();
+		rstate.posX = 0;
+		rstate.posY = 0;
+		rstate.orientation = 0;
 		log = new Log();
 
 		//Temp methods for first assignment
@@ -57,25 +55,25 @@ public class Logger extends RobotController {
 	public void updateState() {
 		float leftWheelPos = getLeftWheelPosition();
 		float rightWheelPos = getRightWheelPosition();
-		float LWDiff = leftWheelPos - lastLeftWheelPos;
-		float RWDiff = rightWheelPos - lastRightWheelPos;
+		float LWDiff = leftWheelPos - rstate.lastLeftWheelPos;
+		float RWDiff = rightWheelPos - rstate.lastRightWheelPos;
 
 		if(LWDiff == 0 && RWDiff == 0) return;
 		if(Math.signum(RWDiff) == Math.signum(LWDiff)) {
-			posX += (LWDiff + RWDiff) / 6 * Math.cos(Math.toRadians(orientation));
-			posY += (LWDiff + RWDiff) / 6 * Math.sin(Math.toRadians(orientation));
+			rstate.posX += (LWDiff + RWDiff) / 6 * Math.cos(Math.toRadians(rstate.orientation));
+			rstate.posY += (LWDiff + RWDiff) / 6 * Math.sin(Math.toRadians(rstate.orientation));
 		}
 		else if (Math.signum(RWDiff) != Math.signum(LWDiff)) {
-			orientation += RWDiff / 3;
-			if (orientation < 0) orientation += 360;
-			else if (orientation >= 360) orientation -= 360;
+			rstate.orientation += RWDiff / 3;
+			if (rstate.orientation < 0) rstate.orientation += 360;
+			else if (rstate.orientation >= 360) rstate.orientation -= 360;
 		}
 		//		System.out.println("ORIENTATION: " + orientation);
 		//		System.out.println("X: " + posX);
 		//		System.out.println("Y: " + posY);
 
-		lastLeftWheelPos = leftWheelPos;
-		lastRightWheelPos = rightWheelPos;
+		rstate.lastLeftWheelPos = leftWheelPos;
+		rstate.lastRightWheelPos = rightWheelPos;
 	}
 
 	@Override
@@ -106,7 +104,7 @@ public class Logger extends RobotController {
 	}
 
 	public int getFacingDirection() {
-		int facingDirection = (int) Math.rint(orientation / 90);
+		int facingDirection = (int) Math.rint(rstate.orientation / 90);
 		return facingDirection;
 	}
 
@@ -125,7 +123,7 @@ public class Logger extends RobotController {
 	 */
 	public boolean rotateTo(double angle, int speed) {
 		int direction = 0;
-		double diff = (this.orientation - angle);
+		double diff = (this.rstate.orientation - angle);
 		//		System.out.println("ANGLE WANTED: " + angle);
 		//		System.out.println("ANGLE AT: " + this.orientation);
 		//		System.out.println("DIFF: " + diff +"\n");
@@ -193,7 +191,6 @@ public class Logger extends RobotController {
 		public CollectBall(int priority, int detectThreshhold) {
 			super(priority);
 			this.detectThreshhold = detectThreshhold;
-			// TODO Auto-generated constructor stub
 		}
 
 		int sensor;
@@ -294,7 +291,7 @@ public class Logger extends RobotController {
 				break;
 			case 1:
 				//Calculate angle to origin
-				angleToOrigin = (Math.toDegrees(Math.atan2(posY, posX)) + 540) % 360;
+				angleToOrigin = (Math.toDegrees(Math.atan2(rstate.posY, rstate.posX)) + 540) % 360;
 				state++;
 			case 2:
 				if(rotateTo(angleToOrigin, 1)) {
@@ -308,7 +305,7 @@ public class Logger extends RobotController {
 				ticks++;
 				//				System.out.println(String.format("X: %.3f \tY: %.3f", posX, posY));
 				//				System.out.println("ORIENTATION: " + orientation + "\n");
-				if (Math.abs(posX) < 5 && Math.abs(posY) < 5) {
+				if (Math.abs(rstate.posX) < 5 && Math.abs(rstate.posY) < 5) {
 					stop();
 					state++;
 				} 
@@ -362,7 +359,7 @@ public class Logger extends RobotController {
 		public void run() {
 			switch(state) {
 			case 0:
-				log.log(new LogEntry((int) (posX / loggingInterval), (int) (posY / loggingInterval), LogEntry.STATE_AIR));
+				log.log(new LogEntry((int) (rstate.posX / loggingInterval), (int) (rstate.posY / loggingInterval), LogEntry.STATE_AIR));
 				state++;
 				break;
 			case 1:
@@ -400,28 +397,28 @@ public class Logger extends RobotController {
 					logState = LogEntry.STATE_SOMETHING;
 					canGoLeft = false;
 				}
-				log.log(new LogEntry((int) ((posX + dx * loggingInterval) / loggingInterval), (int) ((posY + dy * loggingInterval) / loggingInterval), logState));
+				log.log(new LogEntry((int) ((rstate.posX + dx * loggingInterval) / loggingInterval), (int) ((rstate.posY + dy * loggingInterval) / loggingInterval), logState));
 
 				logState = LogEntry.STATE_AIR;
 				if (distanceSensors[SENSOR_RIGHT] > 300) {
 					logState = LogEntry.STATE_SOMETHING;
 					canGoRight = false;
 				}
-				log.log(new LogEntry((int) ((posX - dx * loggingInterval) / loggingInterval), (int) ((posY - dy * loggingInterval) / loggingInterval), logState));
+				log.log(new LogEntry((int) ((rstate.posX - dx * loggingInterval) / loggingInterval), (int) ((rstate.posY - dy * loggingInterval) / loggingInterval), logState));
 
 				logState = LogEntry.STATE_AIR;
 				if (distanceSensors[SENSOR_FRONTL] > 300) {
 					logState = LogEntry.STATE_SOMETHING;
 					canGoForward = true;
 				}
-				log.log(new LogEntry((int) ((posX + frontX * loggingInterval) / loggingInterval), (int) ((posY + frontY * loggingInterval) / loggingInterval), logState));
+				log.log(new LogEntry((int) ((rstate.posX + frontX * loggingInterval) / loggingInterval), (int) ((rstate.posY + frontY * loggingInterval) / loggingInterval), logState));
 				
-				lastX = posX;
-				lastY = posY;
+				lastX = rstate.posX;
+				lastY = rstate.posY;
 				state++;
 				break;
 			case 2:
-				if (Math.abs(posX - lastX) > loggingInterval || Math.abs(posY - lastY) > loggingInterval) {
+				if (Math.abs(rstate.posX - lastX) > loggingInterval || Math.abs(rstate.posY - lastY) > loggingInterval) {
 					stop();
 					state = 1;
 				}
