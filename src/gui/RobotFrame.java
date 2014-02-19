@@ -12,12 +12,19 @@ import etc.Coord;
 public class RobotFrame extends JFrame {
 
 	private StatusPanel statusPanel;
+	private StatusPanel statusPanel2;
+
 	private LevelPanel levelPanel;
 
-	public RobotFrame() {
+	public RobotFrame(Controller controller) {
 		setName("Robot Management");
 		levelPanel = new LevelPanel();
 		statusPanel = new StatusPanel();
+		statusPanel2 = new StatusPanel();
+
+		controller.addStatusView(statusPanel);
+		controller.addStatusView(statusPanel2);
+
 		setLayout(new GridBagLayout());
 
 		add(levelPanel, new GBC(0, 0));
@@ -50,10 +57,6 @@ public class RobotFrame extends JFrame {
 		return levelPanel;
 	}
 
-	public void setStatus(String s, int i) {
-		statusPanel.setLabel(s, i);
-	}
-
 	// TODO Auto-generated method stub
 	public void direction(double directionInRadians) {
 		levelPanel.direction(directionInRadians);
@@ -70,10 +73,6 @@ public class RobotFrame extends JFrame {
 		c.setColor(tailColor);
 
 		levelPanel.addTail(c);
-	}
-
-	public static void main(String[] args) {
-		new RobotFrame();
 	}
 
 	public void drawSomething(Coord c) {
