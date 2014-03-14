@@ -1,6 +1,6 @@
-package behaviour;
+package khepera.behaviour;
 
-import managers.MovementManager;
+import khepera.managers.MovementManager;
 
 public class MoveState extends State {
 

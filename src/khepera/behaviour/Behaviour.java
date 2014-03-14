@@ -1,4 +1,4 @@
-package behaviour;
+package khepera.behaviour;
 
 import java.util.ArrayList;
 

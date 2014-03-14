@@ -1,4 +1,4 @@
-package behaviour;
+package khepera.behaviour;
 
 /**
  * Logger class, implemented as a Singleton, to centralize logging

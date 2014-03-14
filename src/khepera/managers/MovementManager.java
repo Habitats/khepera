@@ -1,4 +1,4 @@
-package managers;
+package khepera.managers;
 
 public class MovementManager {
 	public static void move() {}
