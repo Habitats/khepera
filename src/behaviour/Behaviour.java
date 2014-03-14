@@ -22,6 +22,7 @@ public abstract class Behaviour implements Comparable<Behaviour>{
 		
 		if (transition != 0) {
 			//TODO: make this work
+			return;
 		}
 		
 		states.get(currentState).doWork();
