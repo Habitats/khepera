@@ -1,6 +1,11 @@
 package khepera.managers;
 
 public class MovementManager {
-	public static void move() {}
-	public static void turn() {}
+  public enum Direction {
+    LEFT, RIGHT;
+  }
+
+  public static void move(int steps) {}
+
+  public static void turn(int degrees, Direction direction) {}
 }
