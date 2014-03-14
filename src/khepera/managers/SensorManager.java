@@ -2,6 +2,8 @@ package khepera.managers;
 
 import java.awt.Point;
 
+import edu.wsu.KheperaSimulator.RobotController;
+
 public class SensorManager{
 	
 	RobotController controller; // 
