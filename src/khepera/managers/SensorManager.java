@@ -50,6 +50,8 @@ public class SensorManager{
 			// Loop over the discrete distance sensor intervals
 			if( this.discreteSensorIntervals[i].inSensorInverval( distanceValue ) ){
 				// If the measured distance may appear in this range interval relative to the wall
+				
+				/* returns [max distance, minimum distance] to an object*/
 				return this.discreteSensorIntervals[i].getDistanceInterval();
 			}
 		}
