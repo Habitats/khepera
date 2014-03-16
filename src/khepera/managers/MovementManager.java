@@ -62,10 +62,10 @@ public class MovementManager {
     updateLevelKnowledge();
 
     // // add event to history if the robot actually traveled
-    // if (distance > 0) {
-    // RobotEvent e = new RobotEvent(state, RobotAction.FORWARD, distance, speed);
-    // Singleton.getInstance().getHistory().addEvent(e);
-    // }
+//    if (distance > 0) {
+//      RobotEvent e = new RobotEvent(state, RobotAction.FORWARD, distance, speed);
+//      Singleton.getInstance().getHistory().addEvent(e);
+//    }
   }
 
   public void rotate(int degrees, Direction direction) {
@@ -80,16 +80,12 @@ public class MovementManager {
     controller.setMotorSpeeds(SPEED_ROTATE * d, -SPEED_ROTATE * d);
     while (Math.abs(controller.getLeftWheelPosition() - start) / 3 < Math.abs(degrees)) {
       controller.sleep(1);
-      // controller.updateLevelKnowledge();
+      updateLevelKnowledge();
     }
     // stop rotation
     stop();
 
-    // controller.updateLevelKnowledge();
-
     Logger.getInstance().setStatus("Rotating: False");
-
-    // do not log this event
   }
 
   private int getAverageDistance(int sensorID) {

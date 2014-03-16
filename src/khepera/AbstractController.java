@@ -18,6 +18,8 @@ public class AbstractController extends RobotController {
     // TODO Auto-generated method stub
     movementManager.forward(400);
     movementManager.rotate(90, MovementManager.Direction.RIGHT);
+    movementManager.forward(800);
+    movementManager.rotate(180, MovementManager.Direction.LEFT);
 
   }
 
