@@ -36,7 +36,12 @@ public class Logger {
   }
 
   public void setStatus(String string) {
+    setStatus(string, 12);
+  }
+
+  public void setStatus(String string, int i) {
     System.out.println("Status > " + string);
+    controller.setStatus(string, i);
   }
 
   public void updateRobotDirection(double directionInRadians) {

@@ -2,7 +2,8 @@ package khepera.managers;
 
 import java.awt.Point;
 
-import edu.wsu.KheperaSimulator.RobotController;
+import khepera.AbstractController;
+
 
 public class SensorManager{
   public static final int SENSOR_LEFT = 0;
@@ -19,7 +20,7 @@ public class SensorManager{
 	// end
 	
 	
-	private RobotController controller; 
+	private AbstractController controller; 
 	private SensorInterval[] discreteSensorIntervals = new SensorInterval[]{ 
 			new SensorInterval(10,17.5,345,303), 
 			new SensorInterval(17.5, 40, 302, 274), 
@@ -32,7 +33,7 @@ public class SensorManager{
 		};
 	
 	
-	public SensorManager( RobotController controller ){
+	public SensorManager( AbstractController controller ){
 		this.controller = controller;
 		
 	}

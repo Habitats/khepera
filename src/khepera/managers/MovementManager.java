@@ -35,12 +35,12 @@ public class MovementManager {
     int tick = (int) (Math.floor(steps / 20.));
     int rest = (int) (steps % 20);
     for (int i = 0; i < tick; i++) {
-      move(20, SPEED_FORWARD);
+      forward(20, SPEED_FORWARD);
     }
-    move(rest, SPEED_FORWARD);
+    forward(rest, SPEED_FORWARD);
   }
 
-  private void move(long distance, int newSpeed) {
+  private void forward(long distance, int newSpeed) {
     currentSpeed = newSpeed;
 
     long start = controller.getLeftWheelPosition();
@@ -62,13 +62,17 @@ public class MovementManager {
     updateLevelKnowledge();
 
     // // add event to history if the robot actually traveled
-//    if (distance > 0) {
-//      RobotEvent e = new RobotEvent(state, RobotAction.FORWARD, distance, speed);
-//      Singleton.getInstance().getHistory().addEvent(e);
-//    }
+    // if (distance > 0) {
+    // RobotEvent e = new RobotEvent(state, RobotAction.FORWARD, distance, speed);
+    // Singleton.getInstance().getHistory().addEvent(e);
+    // }
   }
 
   public void rotate(int degrees, Direction direction) {
+    rotate(degrees, direction, false);
+  }
+
+  public void rotate(int degrees, Direction direction, boolean enableCorrection) {
 
     Logger.getInstance().setStatus("Rotating: True");
     long start = controller.getLeftWheelPosition();
@@ -84,6 +88,12 @@ public class MovementManager {
     }
     // stop rotation
     stop();
+    if (enableCorrection) {
+      if (!goingVerticalOrHorizontal()) {
+        correctDirection();
+        Logger.getInstance().setStatus("Correcting direction!");
+      }
+    }
 
     Logger.getInstance().setStatus("Rotating: False");
   }
@@ -104,6 +114,25 @@ public class MovementManager {
     controller.setMotorSpeeds(0, 0);
   }
 
+  private void correctDirection() {
+    double d = getDirectionInRadians() + 2 * Math.PI;
+    Direction dir;
+    if ((d % (Math.PI / 4)) > (Math.PI / 8))
+
+    dir = Direction.RIGHT;
+    else
+      dir = Direction.LEFT;
+    rotate(1, dir,true);
+  }
+
+  private boolean goingVerticalOrHorizontal() {
+    return approximately(getDirectionInRadians() % (Math.PI / 2), 0., 0.005);
+  }
+
+  // a ~ b
+  private boolean approximately(double a, double b, double delta) {
+    return (a < (b + delta) && a > (b - delta));
+  }
 
   private boolean crashing() {
     boolean crash = getAverageDistance(SensorManager.SENSOR_FRONTL) > 1000 || getAverageDistance(SensorManager.SENSOR_FRONTR) > 1000;
@@ -125,7 +154,7 @@ public class MovementManager {
     updateRobotTail();
   }
 
-  protected Coord getCurrentLocation() {
+  public Coord getCurrentLocation() {
     Coord location = new Coord((int) locationX, (int) locationY);
     return location;
   }
@@ -143,11 +172,11 @@ public class MovementManager {
     locationY = yNew;
   }
 
-  protected double getDirectionInRadians() {
+  public double getDirectionInRadians() {
     return (getDirectionInDegrees() / 180.) * Math.PI;
   }
 
-  protected int getDirectionInDegrees() {
+  public int getDirectionInDegrees() {
     long diff = controller.getLeftWheelPosition() - controller.getRightWheelPosition();
     diff /= 2;
     int direction = (int) (diff % 1080) / 3;

@@ -239,7 +239,7 @@ public abstract class AbstractController extends RobotController {
       d = -1;
 
     setMotorSpeeds(SPEED_ROTATE * d, -SPEED_ROTATE * d);
-    while (Math.abs(getLeftWheelPosition() - start) / 3 < Math.abs(degrees)) {
+    while (Math.abs(getLeftWheelPosition() - start) / 3 <Math.abs(degrees)) {
       sleep(1);
       updateLevelKnowledge();
     }
