@@ -6,10 +6,9 @@ import edu.wsu.KheperaSimulator.RobotController;
 
 public class SensorManager{
 	
-	/* User configuration parameters */
-	int definedNearWall = 6; // a index of the discreteSensorIntervals[]
-	
-	/* end */
+	// User configurated parameters
+	int definedNearWall = 6; // a index of the discreteSensorIntervals[].
+	// end
 	
 	
 	private RobotController controller; 
@@ -51,7 +50,8 @@ public class SensorManager{
 	 * @return True if there is a wall to the left of the robot
 	 */
 	public boolean isWallAtLeft(  ){ 
-		int sensorLeft = 0, sensorDiagonalLeft = 1;
+		int 	sensorLeft = this.getDistanceRange(0)[0],
+				sensorDiagonalLeft = this.getDistanceRange(1)[0];
 		return ( this.discreteSensorIntervals[ this.definedNearWall ].getLowerBound() <= sensorLeft &&
 				 this.discreteSensorIntervals[ this.definedNearWall-1 ].getLowerBound() <= sensorDiagonalLeft ); 
 	}
@@ -60,7 +60,8 @@ public class SensorManager{
 	 * @return True if there is a wall to the right of the robot.
 	 */
 	public boolean isWallAtRight(  ){
-		int sensorRight = 0, sensorDiagonalRight = 1;
+		int 	sensorRight = this.getDistanceRange(5)[0],
+				sensorDiagonalRight = this.getDistanceRange(4)[0];
 		return ( this.discreteSensorIntervals[ this.definedNearWall ].getLowerBound() <= sensorRight &&
 				 this.discreteSensorIntervals[ this.definedNearWall-1 ].getLowerBound() <= sensorDiagonalRight );
 	}
@@ -69,8 +70,11 @@ public class SensorManager{
 	 * @return True if there is a wall in front of the robot
 	 */
 	public boolean isWallInFront( ){
-		int frontSensorLeft = 2, frontSensorRight = 3;
-		int diagonalSensorLeft = 1, diagonalSensorRight = 4;
+		int 	diagonalSensorLeft = this.getDistanceRange(1)[0],
+				frontSensorLeft = this.getDistanceRange(2)[0],
+				frontSensorRight = this.getDistanceRange(3)[0],
+				diagonalSensorRight = this.getDistanceRange(4)[0];
+		
 		boolean objectInFront = (this.discreteSensorIntervals[ this.definedNearWall ].getLowerBound() <= frontSensorLeft && 
 				this.discreteSensorIntervals[ this.definedNearWall ].getLowerBound() <= frontSensorRight);
 		boolean extendedFront = (this.discreteSensorIntervals[ this.definedNearWall-1 ].getLowerBound() <= diagonalSensorLeft  && 
@@ -79,14 +83,49 @@ public class SensorManager{
 		return (objectInFront && extendedFront);
 	}
 	
+	/**
+	 * 
+	 * @return An integer describing the sensor index related to a nearby object. If none, it returns -1.
+	 */
+	public int isObjectInProximity( ){
+		boolean wallInFront = this.isWallInFront(),
+				wallOnLeft = this.isWallAtLeft(),
+				wallOnRight = this.isWallAtRight();
+		
+		if( !wallInFront ){
+			// If there is something in front of the robot, it isn't a wall.
+			
+			int 	sensorLeft = this.getDistanceRange(0)[0],
+					frontSensorLeft = this.getDistanceRange(2)[0],
+					frontSensorRight = this.getDistanceRange(3)[0],
+					sensorRight = this.getDistanceRange(5)[0];
+			
+			boolean objectInFrontLeft = (this.discreteSensorIntervals[ this.definedNearWall ].getLowerBound() <= frontSensorLeft),
+					objectInFrontRight = (this.discreteSensorIntervals[ this.definedNearWall ].getLowerBound() <= frontSensorRight),
+					objectAtLeft = false,
+					objectAtRight = false;
+			
+			if( !wallOnLeft ){
+				// If there is something to the left of the ball, is won't be a wall.
+				objectAtLeft = (this.discreteSensorIntervals[ this.definedNearWall ].getLowerBound() <= sensorLeft);
+			}
+			if( !wallOnRight ){
+				// If there is something to the right of the ball, is won't be a wall.
+				objectAtRight = (this.discreteSensorIntervals[ this.definedNearWall ].getLowerBound() <= sensorRight);
+			}
+			
+			if( objectAtLeft ) return 0;
+			if( objectInFrontLeft ) return 2;
+			if( objectInFrontRight ) return 3;
+			if( objectAtRight ) return 5;
+		}
+		
+		return -1;
+	}
 	
-	public boolean isObjectInProximity( ){
+	
+	public int getNearestObjectOrWall( ){
 		// TODO
-		/*
-		 * Note to self:
-		 * Loop over sensorene og oppdag hindringer som bare
-		 * opptrer pŒ et subsett av sensorene.
-		 */
 	}
 	
 	
