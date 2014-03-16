@@ -16,6 +16,12 @@ public class MovementManager {
   protected double locationY = 0;
 
 
+  public enum RobotState {
+    GOING_HOME, //
+    LOOKING_FOR_BALL, //
+    IDLE, //
+  }
+
   public enum Direction {
     LEFT, RIGHT;
   }
@@ -24,7 +30,7 @@ public class MovementManager {
     this.controller = abstractController;
   }
 
-  public void move(int steps) {
+  public void forward(int steps) {
 
     int tick = (int) (Math.floor(steps / 20.));
     int rest = (int) (steps % 20);
@@ -62,7 +68,7 @@ public class MovementManager {
     // }
   }
 
-  public void turn(int degrees, Direction direction) {
+  public void rotate(int degrees, Direction direction) {
 
     Logger.getInstance().setStatus("Rotating: True");
     long start = controller.getLeftWheelPosition();

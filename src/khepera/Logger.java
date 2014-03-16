@@ -1,5 +1,8 @@
 package khepera;
 
+import khepera.gui.GuiController;
+import khepera.managers.MovementManager.RobotState;
+
 
 /**
  * Logger class, implemented as a Singleton, to centralize logging
@@ -11,8 +14,11 @@ package khepera;
  */
 public class Logger {
   private static Logger instance;
+  private GuiController controller;
 
-  private Logger() {};
+  private Logger() {
+    controller = new GuiController();
+  };
 
   public synchronized static Logger getInstance() {
     if (instance == null)
@@ -34,12 +40,10 @@ public class Logger {
   }
 
   public void updateRobotDirection(double directionInRadians) {
-    // TODO Auto-generated method stub
-    
+    controller.direction(directionInRadians);
   }
 
   public void updateRobotLocation(Coord normalized) {
-    // TODO Auto-generated method stub
-    
+    controller.drawRobotTail(normalized, RobotState.LOOKING_FOR_BALL);
   }
 }

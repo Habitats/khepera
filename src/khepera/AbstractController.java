@@ -5,14 +5,19 @@ import khepera.managers.SensorManager;
 import edu.wsu.KheperaSimulator.RobotController;
 
 public class AbstractController extends RobotController {
+  private SensorManager sensorManager;
+  private MovementManager movementManager;
+
   public AbstractController() {
-    SensorManager sensorManager = new SensorManager(this);
-    MovementManager movementManager = new MovementManager(this);
+    sensorManager = new SensorManager(this);
+    movementManager = new MovementManager(this);
   }
 
   @Override
   public void doWork() throws Exception {
     // TODO Auto-generated method stub
+    movementManager.forward(400);
+    movementManager.rotate(90, MovementManager.Direction.RIGHT);
 
   }
 
