@@ -3,16 +3,16 @@ package khepera.gui;
 
 import java.util.ArrayList;
 
-import old.pat.etc.Coord;
-import old.pat.etc.AbstractController.RobotState;
+import khepera.Coord;
+import khepera.managers.MovementManager.RobotState;
 
 
-public class Controller {
+public class GuiController {
   private RobotFrame robotFrame;
   private ArrayList<StatusView> statusViews;
   private StatusModel statusModel;
 
-  public Controller() {
+  public GuiController() {
     statusViews = new ArrayList<StatusView>();
     statusModel = new StatusModel();
 

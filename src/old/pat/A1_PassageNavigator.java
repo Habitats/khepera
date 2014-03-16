@@ -1,3 +1,4 @@
+package old.pat;
 import old.pat.etc.AbstractController;
 import old.pat.etc.Singleton;
 import old.pat.etc.Turn;

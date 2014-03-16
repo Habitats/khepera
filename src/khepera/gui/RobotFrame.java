@@ -6,10 +6,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import old.pat.etc.Coord;
-import old.pat.etc.AbstractController.RobotState;
-
-
+import khepera.Coord;
+import khepera.managers.MovementManager.RobotState;
 
 public class RobotFrame extends JFrame {
 
@@ -18,7 +16,7 @@ public class RobotFrame extends JFrame {
 
   private LevelPanel levelPanel;
 
-  public RobotFrame(Controller controller) {
+  public RobotFrame(GuiController controller) {
     setName("Robot Management");
     levelPanel = new LevelPanel();
     statusPanel = new StatusPanel();

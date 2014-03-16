@@ -134,6 +134,7 @@ public class SensorManager{
 	
 	public int getNearestObjectOrWall( ){
 		// TODO
+	  return (Integer) null;
 	}
 	
 	
@@ -157,6 +158,7 @@ public class SensorManager{
 				return this.discreteSensorIntervals[i].getDistanceInterval();
 			}
 		}
+    return null;
 	}
 	
 }

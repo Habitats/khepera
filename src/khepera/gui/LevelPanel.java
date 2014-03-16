@@ -13,8 +13,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import old.pat.etc.Coord;
-
+import khepera.Coord;
 
 
 public class LevelPanel extends JPanel {
