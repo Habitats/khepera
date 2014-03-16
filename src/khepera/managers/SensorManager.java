@@ -5,6 +5,14 @@ import java.awt.Point;
 import edu.wsu.KheperaSimulator.RobotController;
 
 public class SensorManager{
+  public static final int SENSOR_LEFT = 0;
+  public static final int SENSOR_ANGLEL = 1;
+  public static final int SENSOR_FRONTL = 2;
+  public static final int SENSOR_FRONTR = 3;
+  public static final int SENSOR_ANGLER = 4;
+  public static final int SENSOR_RIGHT = 5;
+  public static final int SENSOR_BACKR = 6;
+  public static final int SENSOR_BACKL = 7;
 	
 	// User configurated parameters
 	int definedNearWall = 6; // a index of the discreteSensorIntervals[].
