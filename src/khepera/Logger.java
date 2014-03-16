@@ -21,11 +21,25 @@ public class Logger {
   }
 
   public void log(String logMessage) {
-    System.out.println(logMessage);
+    System.out.println("Log > " + logMessage);
   }
 
   public void error(String errorMessage) {
-    System.err.println(errorMessage);
+    System.err.println("Error > " + errorMessage);
 
+  }
+
+  public void setStatus(String string) {
+    System.out.println("Status > " + string);
+  }
+
+  public void updateRobotDirection(double directionInRadians) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void updateRobotLocation(Coord normalized) {
+    // TODO Auto-generated method stub
+    
   }
 }
