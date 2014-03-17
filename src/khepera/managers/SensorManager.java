@@ -1,6 +1,5 @@
 package khepera.managers;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,7 +8,7 @@ import edu.wsu.KheperaSimulator.RobotController;
 
 public class SensorManager{
 	
-	// User configurated parameters
+	// User configured parameters
 	int definedNearWall = 6; // a index of the discreteSensorIntervals[].
 	// end
 		
