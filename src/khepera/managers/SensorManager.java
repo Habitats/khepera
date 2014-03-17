@@ -1,26 +1,30 @@
 package khepera.managers;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Random;
 
-import khepera.AbstractController;
+import edu.wsu.KheperaSimulator.RobotController;
 
 
 public class SensorManager{
-  public static final int SENSOR_LEFT = 0;
-  public static final int SENSOR_ANGLEL = 1;
-  public static final int SENSOR_FRONTL = 2;
-  public static final int SENSOR_FRONTR = 3;
-  public static final int SENSOR_ANGLER = 4;
-  public static final int SENSOR_RIGHT = 5;
-  public static final int SENSOR_BACKR = 6;
-  public static final int SENSOR_BACKL = 7;
 	
 	// User configurated parameters
 	int definedNearWall = 6; // a index of the discreteSensorIntervals[].
 	// end
+		
+		
+	public static final int SENSOR_LEFT = 0;
+	public static final int SENSOR_DIAGONAL_LEFT = 1;
+	public static final int SENSOR_FRONT_LEFT = 2;
+	public static final int SENSOR_FRONT_RIGHT = 3;
+	public static final int SENSOR_DIAGONAL_RIGHT = 4;
+	public static final int SENSOR_RIGHT = 5;
+	public static final int SENSOR_BACK_RIGHT = 6;
+	public static final int SENSOR_BACK_LEFT = 7;
 	
 	
-	private AbstractController controller; 
+	private RobotController controller; 
 	private SensorInterval[] discreteSensorIntervals = new SensorInterval[]{ 
 			new SensorInterval(10,17.5,345,303), 
 			new SensorInterval(17.5, 40, 302, 274), 
@@ -33,11 +37,12 @@ public class SensorManager{
 		};
 	
 	
-	public SensorManager( AbstractController controller ){
+	public SensorManager( RobotController controller ){
 		this.controller = controller;
 		
 	}
 	
+	// Helper class
 	private class SensorInterval {
 		private int xFar, xClose;
 		private double sensorFar, sensorNear;
@@ -133,9 +138,37 @@ public class SensorManager{
 	}
 	
 	
+	/**
+	 * @return An integer describing the sensor index in the direction of the nearest object.
+	 */
 	public int getNearestObjectOrWall( ){
-		// TODO
-	  return (Integer) null;
+		/*
+		 * Loop over the distance sensors and find the sensor which
+		 * yields the minimum distance to an object. 
+		 * 
+		 * Solves equal distance occurrences by randomly deciding a direction.
+		 */
+		int shortestDistance = -1;
+		ArrayList<Integer> sensorDirections = new ArrayList<Integer>(); // used to randomly solve situations with equal distance.
+		
+		for( int sensorIndex=0;sensorIndex<=7;sensorIndex++){
+			int currentDistance = this.getDistanceRange(sensorIndex)[0];
+			if( currentDistance < shortestDistance || shortestDistance==-1 ){
+				shortestDistance = currentDistance; 
+				sensorDirections.clear();
+				sensorDirections.add( sensorIndex );
+			}
+			else if( currentDistance==shortestDistance ){
+				sensorDirections.add( sensorIndex );
+			}
+		}
+		
+		
+		if( sensorDirections.size()>1 )
+			return sensorDirections.get( new Random().nextInt(sensorDirections.size()) );
+		//else
+		return sensorDirections.get(0);
+		
 	}
 	
 	
