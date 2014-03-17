@@ -20,7 +20,7 @@ public class Logg extends State
 	}
 
 	@Override
-	public void reserState()
+	public void resetState()
 	{
 		// TODO Auto-generated method stub
 		
