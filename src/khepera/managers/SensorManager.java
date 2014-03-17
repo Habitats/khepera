@@ -9,7 +9,7 @@ import khepera.AbstractController;
 public class SensorManager{
 	
 	// User configured parameters
-	int definedNearWall = 6; // a index of the discreteSensorIntervals[].
+	int definedNearWall = 6; // a index of the discreteSensorIntervals.
 	// end
 		
 		
@@ -24,39 +24,24 @@ public class SensorManager{
 	
 	
 	private final AbstractController controller; 
-	private final SensorInterval[] discreteSensorIntervals = new SensorInterval[]{ 
-			new SensorInterval(10,17.5,345,303), 
-			new SensorInterval(17.5, 40, 302, 274), 
-			new SensorInterval(40, 84, 273, 260),
-			new SensorInterval(84, 150, 259, 217),
-			new SensorInterval(150, 300, 216, 174),
-			new SensorInterval(300, 540, 173, 130),
-			new SensorInterval(540, 800, 129, 102),
-			new SensorInterval(800, 2000, 101, 0),
-		};
+	private final SensorInterval[] discreteDistanceSensorIntervals;
 	
 	
 	public SensorManager( AbstractController controller ){
 		this.controller = controller;
 		
+		this.discreteDistanceSensorIntervals = new SensorInterval[]{ 
+				new SensorInterval(10,17.5,345,303), 
+				new SensorInterval(17.5, 40, 302, 274), 
+				new SensorInterval(40, 84, 273, 260),
+				new SensorInterval(84, 150, 259, 217),
+				new SensorInterval(150, 300, 216, 174),
+				new SensorInterval(300, 540, 173, 130),
+				new SensorInterval(540, 800, 129, 102),
+				new SensorInterval(800, 2000, 101, 0),
+			};
 	}
 	
-	// Helper class
-	private static class SensorInterval {
-		private int xFar, xClose;
-		private double sensorFar, sensorNear;
-		
-		public SensorInterval(double sensorFar, double sensorNear, int xFar, int xClose){
-			this.sensorFar = sensorFar;
-			this.sensorNear = sensorNear;
-			this.xFar = xFar;
-			this.xClose = xClose;
-		}
-		public boolean isInSensorInverval( int sensorValue ){ return (this.sensorNear>sensorValue && sensorValue>=this.sensorFar); }
-		public int[] getDistanceInterval(){ return new int[]{this.xFar, this.xClose}; }
-		public int getLowestPossibleSensorReading(){ return (int) this.sensorFar; }
-		public int getHighestPossibleSensorReading(){ return (int) this.sensorNear; }
-	}
 	
 
 	/**
@@ -68,8 +53,8 @@ public class SensorManager{
 				distanceDiagonalLeft = this.getDistanceRange( SENSOR_DIAGONAL_LEFT )[0];
 		
 		// Check if there was a large object which obscured both the sideways and the diagonal sensor.
-		return ( this.discreteSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceLeft &&
-				 this.discreteSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalLeft ); 
+		return ( this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceLeft &&
+				 this.discreteDistanceSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalLeft ); 
 	}
 	
 	/**
@@ -81,8 +66,8 @@ public class SensorManager{
 				distanceDiagonalRight = this.getDistanceRange( SENSOR_DIAGONAL_RIGHT )[0];
 		
 		// Check if there was a large object which obscured both the sideways and the diagonal sensor.
-		return ( this.discreteSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceRight &&
-				 this.discreteSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalRight );
+		return ( this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceRight &&
+				 this.discreteDistanceSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalRight );
 	}
 	
 	/**
@@ -96,16 +81,18 @@ public class SensorManager{
 				distanceDiagonalRight = this.getDistanceRange(SENSOR_DIAGONAL_RIGHT )[0];
 		
 		// Check if there was a large object which obscured both of the frontal sensor.
-		boolean objectInFront = (this.discreteSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceFrontLeft && 
-				this.discreteSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distnaceFrontRight);
+		boolean objectInFront = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceFrontLeft && 
+				this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distnaceFrontRight);
 
 		// Check if there was a large object which obscured both of the diagonal sensor.
-		boolean extendedFront = (this.discreteSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalLeft  && 
-				this.discreteSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalRight );
+		boolean extendedFront = (this.discreteDistanceSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalLeft  && 
+				this.discreteDistanceSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalRight );
 		
 		// A wall should occlude both of these parameters.
 		return (objectInFront && extendedFront);
 	}
+	
+	
 	
 	
 	/**
@@ -129,19 +116,19 @@ public class SensorManager{
 			
 			
 			// Check if there was something there at all.
-			boolean objectInFrontLeft = (this.discreteSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceFrontLeft),
-					objectInFrontRight = (this.discreteSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceFrontRight),
+			boolean objectInFrontLeft = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceFrontLeft),
+					objectInFrontRight = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceFrontRight),
 					objectAtLeft = false,
 					objectAtRight = false;
 			
 			
 			if( !wallOnLeft ){
 				// If there is something to the left of the ball, is won't be a wall.
-				objectAtLeft = (this.discreteSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceLeft);
+				objectAtLeft = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceLeft);
 			}
 			if( !wallOnRight ){
 				// If there is something to the right of the ball, is won't be a wall.
-				objectAtRight = (this.discreteSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceRight);
+				objectAtRight = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceRight);
 			}
 			
 			if( objectAtLeft ) return 0;
@@ -151,12 +138,12 @@ public class SensorManager{
 		}
 		else if( !wallOnRight ){
 			// If there is something to the left of the robot, it shouldn't be a wall.
-			boolean objectAtRight = (this.discreteSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceRight);
+			boolean objectAtRight = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceRight);
 			if( objectAtRight ) return 5;
 		}
 		else if( !wallOnLeft ){
 			// If there is something to the right of the robot, it shouldn't be a wall.
-			boolean objectAtLeft = (this.discreteSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceLeft);
+			boolean objectAtLeft = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceLeft);
 			if( objectAtLeft ) return 0;
 		}
 		
@@ -210,13 +197,13 @@ public class SensorManager{
 		// and categorize the distance interval. (According to statistical analysis).
 		int distanceValue = this.controller.getDistanceValue( sensorIndex );
 		
-		for( int i=0; i<this.discreteSensorIntervals.length; i++ ){
+		for( int i=0; i<this.discreteDistanceSensorIntervals.length; i++ ){
 			// Loop over the discrete distance sensor intervals
-			if( this.discreteSensorIntervals[i].isInSensorInverval( distanceValue ) ){
+			if( this.discreteDistanceSensorIntervals[i].isInSensorInverval( distanceValue ) ){
 				// If the measured distance may appear in this range interval relative to the wall.
 				
 				// returns [max distance, minimum distance] to an object.
-				return this.discreteSensorIntervals[i].getDistanceInterval();
+				return this.discreteDistanceSensorIntervals[i].getDistanceInterval();
 			}
 		}
     return null;
