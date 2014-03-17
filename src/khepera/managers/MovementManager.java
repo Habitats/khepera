@@ -135,7 +135,7 @@ public class MovementManager {
   }
 
   private boolean crashing() {
-    boolean crash = getAverageDistance(SensorManager.SENSOR_FRONTL) > 1000 || getAverageDistance(SensorManager.SENSOR_FRONTR) > 1000;
+    boolean crash = getAverageDistance(SensorManager.SENSOR_FRONT_LEFT) > 1000 || getAverageDistance(SensorManager.SENSOR_FRONT_RIGHT) > 1000;
     if (crash)
       Logger.getInstance().log("Avoiding crash!");
     return crash;
