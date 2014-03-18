@@ -21,6 +21,7 @@ public class AbstractController extends RobotController {
     updateStatus();
     movementManager.forward(400);
     updateStatus();
+    // direction correction
     movementManager.rotate(80, MovementManager.Direction.RIGHT, true);
     updateStatus();
     movementManager.forward(800);

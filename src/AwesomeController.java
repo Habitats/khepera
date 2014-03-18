@@ -8,7 +8,7 @@ import khepera.AbstractController;
  * @author Patrick
  * 
  */
-public class AwesomeController extends AbstractController {
+public final class AwesomeController extends AbstractController {
   public AwesomeController() {
     super();
   }

@@ -2,7 +2,7 @@ package khepera.state;
 
 import khepera.behaviour.State;
 
-public class Logg extends State
+public class Log extends State
 {
 
 	@Override
