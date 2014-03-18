@@ -1,6 +1,5 @@
 package khepera;
 
-import old.pat.etc.Singleton;
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
 import edu.wsu.KheperaSimulator.RobotController;

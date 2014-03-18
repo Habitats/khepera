@@ -33,7 +33,7 @@ public class MovementManager {
   public void forward(int steps) {
 
     int tick = (int) (Math.floor(steps / 20.));
-    int rest = (int) (steps % 20);
+    int rest = steps % 20;
     for (int i = 0; i < tick; i++) {
       forward(20, SPEED_FORWARD);
     }
