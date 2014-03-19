@@ -55,6 +55,6 @@ public class SensorInterval {
 	 * @return The upper bound of sensors readings which are within this interval.
 	 */
 	public int getHighestPossibleSensorReading(){ 
-		return (int) this.sensorNear; 
+		return (int) this.sensorNear-1; 
 	}
 }
