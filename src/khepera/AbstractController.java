@@ -16,7 +16,7 @@ public abstract class AbstractController extends RobotController {
   
   public AbstractController() {
     startTime = System.currentTimeMillis();
-    sensorManager = new SensorManager(this);
+    sensorManager = SensorManager.getInstance(this); // this method is overloaded, so we may leave the "this" keyword after this call.
     movementManager = new MovementManager(this);
     behaviours = new ArrayList<Behaviour>();
   }
@@ -56,7 +56,8 @@ public abstract class AbstractController extends RobotController {
   
   @Override
   public void close() throws Exception {
-    // TODO Auto-generated method stub
+    
+	  this.sensorManager.close(); // Necessary for stopping the SensorManager.run thread.
 
   }
 
