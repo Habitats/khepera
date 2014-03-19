@@ -1,9 +1,12 @@
 package khepera.managers;
 
+
+
 import java.util.ArrayList;
 import java.util.Random;
 
 import khepera.AbstractController;
+import khepera.Logger;
 
 
 public class SensorManager{
@@ -11,8 +14,6 @@ public class SensorManager{
 	// User configured parameters
 	private final int definedNearWall = 6; // an index from the discreteSensorIntervals array.
 	// end
-	
-		
 		
 	public static final int SENSOR_LEFT = 0;
 	public static final int SENSOR_DIAGONAL_LEFT = 1;
@@ -23,6 +24,7 @@ public class SensorManager{
 	public static final int SENSOR_BACK_RIGHT = 6;
 	public static final int SENSOR_BACK_LEFT = 7;
 	
+	private static SensorManager instance = null;
 	
 	private final AbstractController controller; 
 	private final SensorInterval[] discreteDistanceSensorIntervals;
@@ -42,6 +44,20 @@ public class SensorManager{
 				new SensorInterval(800, 2000, 101, 0),
 			};
 	}
+	
+	public static SensorManager getInstance( AbstractController rc ) {
+	      if( instance == null ) {
+	    	  instance = new SensorManager(rc);
+	      }
+	      return instance;
+	   }
+	public static SensorManager getInstance( ) {
+		if( instance == null ) {
+			Logger.getInstance().error("SensorManager.getInstance() ERROR: tried to fetch"
+										+ " an instance without initializing the manager.");
+		}
+	      return instance;
+	   }
 	
 	
 
