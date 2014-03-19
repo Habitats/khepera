@@ -30,7 +30,7 @@ public class SensorManager{
 	private final SensorInterval[] discreteDistanceSensorIntervals;
 	
 	
-	public SensorManager( AbstractController controller ){
+	protected SensorManager( AbstractController controller ){
 		this.controller = controller;
 		
 		this.discreteDistanceSensorIntervals = new SensorInterval[]{ 
