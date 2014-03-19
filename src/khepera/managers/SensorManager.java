@@ -346,10 +346,11 @@ public class SensorManager implements Runnable{
 					// We now know that the max distance to the object in front is one step less.
 					
 					
-					bufferedDistanceInterval[8] = this.distanceValues[8]+1; // We are shrinking the possible position interval
-					bufferedDistanceInterval[9] = (this.distanceValues[9]<this.distanceValues[8])?this.distanceValues[8]:this.distanceValues[9];
+					bufferedDistanceInterval[8] = this.distanceValues[8]-1; // We are shrinking the possible position interval
+					bufferedDistanceInterval[9] = (this.distanceValues[9]<this.distanceValues[8])?this.distanceValues[9]:this.distanceValues[8];
 					
-					assert this.distanceValues[9]>=this.distanceValues[8] : "SensorManager.run() ERROR: the distance interval has become illegal.";
+					// The following should not happen. We should have moved on to the next interval instead.
+					assert this.distanceValues[9]>this.distanceValues[8] : "SensorManager.run() ERROR: the distance interval has become illegal.";
 				}
 				else if(currentIntervalMinDistance < previousIntervalMinDistance){
 					// We have entered a new interval. Since we know this is a new interval, the distance is guaranteed to
