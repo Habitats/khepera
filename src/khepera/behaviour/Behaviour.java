@@ -2,6 +2,8 @@ package khepera.behaviour;
 
 import java.util.ArrayList;
 
+import khepera.state.State;
+
 public abstract class Behaviour implements Comparable<Behaviour>{
 	
 	public int priority;

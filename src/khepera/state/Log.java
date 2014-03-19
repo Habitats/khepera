@@ -1,6 +1,5 @@
 package khepera.state;
 
-import khepera.behaviour.State;
 
 public class Log extends State
 {

@@ -1,6 +1,5 @@
 package khepera.state;
 
-import khepera.behaviour.State;
 
 public class Turn extends State
 {

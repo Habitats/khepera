@@ -1,18 +1,24 @@
 package khepera;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
+import khepera.behaviour.Behaviour;
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
 import edu.wsu.KheperaSimulator.RobotController;
 
-public class AbstractController extends RobotController {
+public abstract class AbstractController extends RobotController {
   private SensorManager sensorManager;
   private MovementManager movementManager;
   private long startTime;
-
+  private ArrayList<Behaviour> behaviours;
+  
   public AbstractController() {
     startTime = System.currentTimeMillis();
     sensorManager = new SensorManager(this);
     movementManager = new MovementManager(this);
+    behaviours = new ArrayList<Behaviour>();
   }
 
   @Override
@@ -26,8 +32,28 @@ public class AbstractController extends RobotController {
     movementManager.forward(800);
     updateStatus();
     movementManager.rotate(180, MovementManager.Direction.LEFT, true);
+    
+    //Run behaviour
+    runBehaviour();
   }
-
+  
+  protected void addBehaviour(Behaviour b) {
+	  behaviours.add(b);
+	  Collections.sort(behaviours);
+  }
+  
+  private void runBehaviour() {
+	  if (behaviours.size() == 0) {
+		  System.err.println("No behaviours added to the controller...");
+	  } 
+	  
+	  for(Behaviour b : behaviours) {
+		  if (b.shouldRun()) {
+			  b.doWork();
+		  }
+	  }
+  }
+  
   @Override
   public void close() throws Exception {
     // TODO Auto-generated method stub

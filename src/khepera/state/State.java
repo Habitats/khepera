@@ -1,4 +1,4 @@
-package khepera.behaviour;
+package khepera.state;
 
 public abstract class State {
   public abstract int shouldTransition();
