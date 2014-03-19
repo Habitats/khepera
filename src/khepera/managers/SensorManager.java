@@ -9,8 +9,9 @@ import khepera.AbstractController;
 public class SensorManager{
 	
 	// User configured parameters
-	int definedNearWall = 6; // a index of the discreteSensorIntervals.
+	private final int definedNearWall = 6; // an index from the discreteSensorIntervals array.
 	// end
+	
 		
 		
 	public static final int SENSOR_LEFT = 0;
@@ -184,6 +185,15 @@ public class SensorManager{
 	}
 	
 	
+	/**
+	 * 
+	 * @return NOT IMPLEMENTED
+	 */
+	public int getApproximateLightDistance(){
+		
+		return ((Integer) null);
+	}
+	
 	
 	
 	/**
@@ -208,5 +218,15 @@ public class SensorManager{
 		}
     return null;
 	}
-	
+ 	
+ 	/**
+ 	 * 
+ 	 * @param sensorIndex The sensor to read the light value from.
+ 	 * @return A light value measurement.
+ 	 */
+ 	public int getSensorReading( int sensorIndex ){
+ 		int lightMeasurementResult = this.controller.getLightValue( sensorIndex );
+ 		
+ 		return lightMeasurementResult;
+ 	}
 }
