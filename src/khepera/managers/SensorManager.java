@@ -403,7 +403,7 @@ public class SensorManager implements Runnable{
 			// Set the buffered values to signify that we haven't got any distance information.
 			bufferedDistanceInterval[0] = -1;
 			bufferedDistanceInterval[1] = -1; 
-			Logger.getInstance().log("SensorManager.run() INFO: has found accurate distance to an object in front.");
+			Logger.getInstance().setStatus("SensorManager.run() INFO: has found accurate distance to an object in front.",15);
 		}
 		
 		distanceSensorBuffer[8] = bufferedDistanceInterval[0];

@@ -16,7 +16,8 @@ public abstract class AbstractController extends RobotController {
   
   public AbstractController() {
     startTime = System.currentTimeMillis();
-    sensorManager = SensorManager.getInstance(this); // this method is overloaded, so we may leave the "this" keyword after this call.
+//    sensorManager = SensorManager.getInstance(this); // this method is overloaded, so we may leave the "this" keyword after this call.
+    sensorManager = new SensorManager(this);
     movementManager = new MovementManager(this);
     behaviours = new ArrayList<Behaviour>();
   }
@@ -44,7 +45,7 @@ public abstract class AbstractController extends RobotController {
   
   private void runBehaviour() {
 	  if (behaviours.size() == 0) {
-		  System.err.println("No behaviours added to the controller...");
+		  Logger.getInstance().error("No behaviours added to the controller...");
 	  } 
 	  
 	  for(Behaviour b : behaviours) {

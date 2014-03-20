@@ -22,7 +22,7 @@ public class StatusPanel extends JPanel implements StatusView {
     // buildFrame(statusPanel);
     // setBackground(Color.gray);
 
-    Dimension size = new Dimension(200, 500);
+    Dimension size = new Dimension(500, 500);
     setPreferredSize(size);
     setMinimumSize(size);
   }
@@ -39,6 +39,6 @@ public class StatusPanel extends JPanel implements StatusView {
 
   @Override
   public void setStatus(String status, int i) {
-    labels.get(i).setText(" " + status);
+    labels.get(i).setText(i +": " + status);
   }
 }
