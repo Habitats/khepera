@@ -35,13 +35,26 @@ public class Logger {
 
   }
 
-  public void setStatus(String string) {
-    setStatus(string, 12);
+  /**
+   * Display a status message in the default status field - USE WITH CAUTION as it may override
+   * other messages
+   * 
+   * @param statusMessage
+   */
+  public void setStatus(String statusMessage) {
+    setStatus(statusMessage, 12);
   }
 
-  public void setStatus(String string, int i) {
-    System.out.println("Status > " + string);
-    controller.setStatus(string, i);
+  /**
+   * Set a status, useful for parameters that update regularly Currently displaying status in
+   * console and GUI
+   * 
+   * @param statusMessage
+   * @param statusLine - make sure this parameter doesn't conflic with existing messages
+   */
+  public void setStatus(String statusMessage, int statusLine) {
+    System.out.println("Status > " + statusMessage);
+    controller.setStatus(statusMessage, statusLine);
   }
 
   public void updateRobotDirection(double directionInRadians) {
