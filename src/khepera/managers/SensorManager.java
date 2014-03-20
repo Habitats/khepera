@@ -3,7 +3,6 @@ package khepera.managers;
 
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Random;
 
 import khepera.AbstractController;
@@ -52,7 +51,8 @@ public class SensorManager implements Runnable{
 				new SensorInterval(800, 2000, 101, 0),
 			};
 		
-		new Thread( this ).run();
+		// Initialize the observer thread.
+		new Thread( this ).start();
 	}
 	
 	public static SensorManager getInstance( AbstractController rc ) {
@@ -281,10 +281,16 @@ public class SensorManager implements Runnable{
  	
  	
 	public void run() {
-		try {
-			Thread.sleep( 2 );
-		} catch (InterruptedException e) {
-			Logger.getInstance().error("SensorManager.run() ERROR: during initial thread sleep.");
+		// Sleep the observer until the simulation framework has been initialized.
+		boolean isInitialized = false;
+		while(!isInitialized){
+			try {
+				Thread.sleep( 1 );
+				this.controller.getLightValue(3);
+				isInitialized = true;
+			} catch (Exception e) {
+				Logger.getInstance().error("SensorManager.run() ERROR: during initial thread sleep.");
+			}
 		}
 		
 		while( running ){
@@ -292,7 +298,7 @@ public class SensorManager implements Runnable{
 			this.updateDistanceObservations();
 			
 			try {
-				Thread.sleep(1);
+				Thread.sleep(4);
 			} catch (InterruptedException e) {
 				Logger.getInstance().error("SensorManager.run() ERROR: during sleep between measurements.");
 			}
@@ -333,47 +339,74 @@ public class SensorManager implements Runnable{
 		if( isGoingStraight ){
 			// We might be able to tell something more accurate about distances.
 			
+//			String s = "";
+//			for(int i=0;i<this.distanceValues.length;i++) s += " "+this.distanceValues[i];
+//			System.err.println("STRAIGHT"+s);
+			
+			
 			if ( bufferedDistanceInterval[0]==-1 ){
 				// We have never recorded a distance measurement, and are thus not able to improve it.
 				// We fill the buffer with our best estimate.
 				
 				int[] interval = this.classifyDistance( distanceSensorBuffer[ SENSOR_FRONT_LEFT ] );
+				
+				bufferedDistanceInterval[0] = interval[0];
+				bufferedDistanceInterval[1] = interval[1];
+			}
+			else{
+				// Improve our distance estimate
+				
+				int[] interval = this.classifyDistance( distanceSensorBuffer[ SENSOR_FRONT_LEFT ] );
 				int currentIntervalMinDistance = interval[1];
 				int previousIntervalMinDistance = this.classifyDistance( this.distanceValues[ SENSOR_FRONT_LEFT ] )[1];
+				
+//				System.err.println("DIFF: "+distanceValues[9]+" : "+previousIntervalMinDistance);
 				
 				if( currentIntervalMinDistance == previousIntervalMinDistance ){
 					// We are in the same discrete interval relative to the previous reading.
 					// We now know that the max distance to the object in front is one step less.
 					
+					bufferedDistanceInterval[0] = this.distanceValues[8]-1; // We are shrinking the possible position interval
+					bufferedDistanceInterval[1] = this.distanceValues[9];
 					
-					bufferedDistanceInterval[8] = this.distanceValues[8]-1; // We are shrinking the possible position interval
-					bufferedDistanceInterval[9] = (this.distanceValues[9]<this.distanceValues[8])?this.distanceValues[9]:this.distanceValues[8];
+					if( this.distanceValues[8]==this.distanceValues[9] ){
+						// We had a tight bound on our distance guess.
+						
+						bufferedDistanceInterval[1] -= 1;						
+					}
 					
 					// The following should not happen. We should have moved on to the next interval instead.
-					assert this.distanceValues[9]>this.distanceValues[8] : "SensorManager.run() ERROR: the distance interval has become illegal.";
+//					assert this.distanceValues[9]>this.distanceValues[8] : "SensorManager.run() ERROR: the distance interval has become illegal.";
 				}
 				else if(currentIntervalMinDistance < previousIntervalMinDistance){
 					// We have entered a new interval. Since we know this is a new interval, the distance is guaranteed to
 					// be equal to the max distance in this interval.
 					
-					bufferedDistanceInterval[8] = interval[0];
-					bufferedDistanceInterval[9] = interval[0];
+					System.err.println("NEW INTERVAL");
+					
+					bufferedDistanceInterval[0] = interval[0];
+					bufferedDistanceInterval[1] = interval[0];
 				}
+				
+				System.err.println("position: "+bufferedDistanceInterval[0]+", "+bufferedDistanceInterval[1]);
 			}
 			
 		}
 		else if( !isGoingStraight ){
 			// Since we are turning, we are unaware what might be going on in front of us.
-			// Set the buffered values to signify that we haven't got any distance information.
 			
-			distanceSensorBuffer[8] = -1; // we know nothing about the distances
-			distanceSensorBuffer[9] = -1; 
+			// Set the buffered values to signify that we haven't got any distance information.
+			bufferedDistanceInterval[0] = -1;
+			bufferedDistanceInterval[1] = -1; 
 			
 		}
 		
+		distanceSensorBuffer[8] = bufferedDistanceInterval[0];
+		distanceSensorBuffer[9] = bufferedDistanceInterval[1];
+		
 		// Update the new buffer with the new values.
 		this.wheelPositions = wheelPositionBuffer;
-		this.distanceValues = distanceSensorBuffer; 
+		this.distanceValues = distanceSensorBuffer;
 	}
 
 	private void updateLightObservations(){
