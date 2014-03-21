@@ -69,7 +69,7 @@ public class MovementManager {
   }
 
   public void rotate(int degrees, Direction direction) {
-    rotate(degrees, direction, false);
+    rotate(degrees, direction, true);
   }
 
   public void rotate(int degrees, Direction direction, boolean enableCorrection) {

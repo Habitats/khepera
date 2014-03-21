@@ -53,9 +53,7 @@ public abstract class AbstractController extends RobotController {
   
   @Override
   public void close() throws Exception {
-    
 	  this.sensorManager.close(); // Necessary for stopping the SensorManager.run thread.
-
   }
 
   private void updateStatus() {

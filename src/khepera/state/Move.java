@@ -3,7 +3,6 @@ package khepera.state;
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
 
-
 public class Move extends State
 {
 	private int collisionTransition;
@@ -27,5 +26,4 @@ public class Move extends State
 	{
 		//Nothing needed here
 	}
-
 }

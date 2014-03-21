@@ -14,10 +14,9 @@ public final class AwesomeController extends AbstractController {
     super();
   }
 
-@Override
-protected void addBehaviours() {
+  @Override
+  protected void addBehaviours() {
 	addBehaviour(new ExampleBehaviour(0, sensorManager, movementManager));
 	
-}
-
+	}
 }
