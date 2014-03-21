@@ -53,7 +53,7 @@ public class Logger {
    * @param statusLine - make sure this parameter doesn't conflic with existing messages
    */
   public void setStatus(String statusMessage, int statusLine) {
-    System.out.println("Status > " + statusMessage);
+//    System.out.println("Status > " + statusMessage);
     controller.setStatus(statusMessage, statusLine);
   }
 

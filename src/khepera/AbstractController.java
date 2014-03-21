@@ -9,8 +9,8 @@ import khepera.managers.SensorManager;
 import edu.wsu.KheperaSimulator.RobotController;
 
 public abstract class AbstractController extends RobotController {
-  private SensorManager sensorManager;
-  private MovementManager movementManager;
+  protected SensorManager sensorManager;
+  protected MovementManager movementManager;
   private long startTime;
   private ArrayList<Behaviour> behaviours;
   
@@ -20,23 +20,19 @@ public abstract class AbstractController extends RobotController {
     sensorManager = new SensorManager(this);
     movementManager = new MovementManager(this);
     behaviours = new ArrayList<Behaviour>();
+    addBehaviours();
   }
 
   @Override
   public void doWork() throws Exception {
     updateStatus();
-    movementManager.forward(400);
-    updateStatus();
-    // direction correction
-    movementManager.rotate(80, MovementManager.Direction.RIGHT, true);
-    updateStatus();
-    movementManager.forward(800);
-    updateStatus();
-    movementManager.rotate(180, MovementManager.Direction.LEFT, true);
-    
-    //Run behaviour
     runBehaviour();
   }
+  
+  /**
+   * This method should use the addBehaviour() function to add all wanted behaviors
+   */
+  protected abstract void addBehaviours();
   
   protected void addBehaviour(Behaviour b) {
 	  behaviours.add(b);

@@ -1,24 +1,33 @@
 package khepera.state;
 
+import khepera.managers.MovementManager;
+
 
 public class Turn extends State {
 
+	int nextTransition = 0;
+	int doneTransition;
+	MovementManager.Direction direction;
+	
+	public Turn(MovementManager.Direction dir, int doneTransition) {
+		this.doneTransition = doneTransition;
+		this.direction = dir;
+	}
+
   @Override
   public int shouldTransition() {
-    // TODO Auto-generated method stub
-    return 0;
+    return nextTransition;
   }
 
   @Override
   public void doWork() {
-    // TODO Auto-generated method stub
+	  //TODO: get access to movementmanager
 
   }
 
   @Override
   public void resetState() {
-    // TODO Auto-generated method stub
-
+	  nextTransition = 0;
   }
 
 }

@@ -1,4 +1,5 @@
 import khepera.AbstractController;
+import khepera.behaviour.ExampleBehaviour;
 
 
 /**
@@ -12,5 +13,11 @@ public final class AwesomeController extends AbstractController {
   public AwesomeController() {
     super();
   }
+
+@Override
+protected void addBehaviours() {
+	addBehaviour(new ExampleBehaviour(0, sensorManager, movementManager));
+	
+}
 
 }
