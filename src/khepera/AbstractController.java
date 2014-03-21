@@ -25,7 +25,7 @@ public abstract class AbstractController extends RobotController {
   @Override
   public void doWork() throws Exception {
     updateStatus();
-    movementManager.forward(400);
+    movementManager.forward(40000);
     updateStatus();
     // direction correction
     movementManager.rotate(80, MovementManager.Direction.RIGHT, true);
@@ -57,9 +57,7 @@ public abstract class AbstractController extends RobotController {
   
   @Override
   public void close() throws Exception {
-    
 	  this.sensorManager.close(); // Necessary for stopping the SensorManager.run thread.
-
   }
 
   private void updateStatus() {

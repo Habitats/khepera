@@ -7,6 +7,4 @@ public class TemplateController extends AbstractController{
 	public TemplateController() {
 		
 	}
-	
-	
 }

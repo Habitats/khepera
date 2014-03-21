@@ -12,5 +12,4 @@ public final class AwesomeController extends AbstractController {
   public AwesomeController() {
     super();
   }
-
 }
