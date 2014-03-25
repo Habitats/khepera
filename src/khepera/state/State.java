@@ -30,7 +30,7 @@ public abstract class State {
 	}
 	
 	/**
-	 * Return nextTransition, this variable should be set by the user.
+	 * Return nextTransition, this variable should be set by the user to return the index of the next state in the behavior module.
 	 * @return nextTransition
 	 */
 	public int getTransition() {
