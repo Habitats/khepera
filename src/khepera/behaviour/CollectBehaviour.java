@@ -10,12 +10,18 @@ public class CollectBehaviour extends Behaviour{
 			MovementManager movementManager) {
 		super(priority, sensorManager, movementManager);
 		addState(new PickUpBall(0, 0));
+		setName("CollectBehaviour");
 	}
 
 	@Override
 	public boolean shouldRun() {
-		boolean l = sensorManager.isObjectInProximity() == 2 || sensorManager.isObjectInProximity() == 3;
-		return (l); 
+		//Returns if something is already held in the gripper
+		boolean holding = sensorManager.isObjectHeld();
+		System.out.println(holding);
+		if (holding) return false;
+		
+		//Checks if there is something in front
+		return sensorManager.isObjectInProximity() == 2 || sensorManager.isObjectInProximity() == 3;
 	}
 
 }

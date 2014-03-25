@@ -15,7 +15,7 @@ public class PickUpBall extends State {
   @Override
   public void doWork() {
 	  movementManager.pickUpBall();
-	  if (movementManager.objectHeld()) transition = success;
+	  if (sensorManager.isObjectHeld()) transition = success;
 	  else transition = failure;
 	  setTransitionFlag(transition);
   }

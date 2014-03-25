@@ -19,7 +19,7 @@ public class Move extends State
 		movementManager.forward(distanceToMove);
 		setTransitionFlag(movementDoneTransition);
 		
-		if (sensorManager.isWallInFront()){
+		if (sensorManager.isWallInFront() || sensorManager.isObjectInProximity() == 2 || sensorManager.isObjectInProximity() == 3){
 			setTransitionFlag(collisionTransition);
 		}
 	}

@@ -8,6 +8,7 @@ import khepera.state.State;
 
 public abstract class Behaviour implements Comparable<Behaviour>{
 	
+	private String name = "No Name";
 	public int priority;
 	private int currentState = 0;
 	private ArrayList<State> states;
@@ -48,6 +49,14 @@ public abstract class Behaviour implements Comparable<Behaviour>{
 	 */
 	public void resetBehavior() {
 		currentState = 0;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return this.name;
 	}
 	
 	public abstract boolean shouldRun();
