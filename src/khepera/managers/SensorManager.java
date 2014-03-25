@@ -100,7 +100,7 @@ public class SensorManager implements Runnable{
 		boolean extendedFront = (this.discreteDistanceSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalLeft  && 
 				this.discreteDistanceSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalRight );
 		
-		System.err.println("Front: "+objectInFront+" # Extended: "+extendedFront);
+//		System.err.println("Front: "+objectInFront+" # Extended: "+extendedFront);
 		
 		// A wall should occlude both of these parameters.
 		return (objectInFront && extendedFront);
@@ -120,44 +120,28 @@ public class SensorManager implements Runnable{
 				wallOnRight = this.isWallAtRight();
 		
 		// Measure the distance to any object for each sensor.
-		int 	distanceLeft = this.getDistanceRange( SENSOR_LEFT )[0],
-				distanceFrontLeft = this.getDistanceRange( SENSOR_FRONT_LEFT )[0],
-				distanceFrontRight = this.getDistanceRange(SENSOR_FRONT_RIGHT )[0],
-				distanceRight = this.getDistanceRange( SENSOR_RIGHT )[0];
+		int 	distanceLeft = this.getDistanceRange( SENSOR_LEFT )[1],
+				distanceFrontLeft = this.getDistanceRange( SENSOR_FRONT_LEFT )[1],
+				distanceFrontRight = this.getDistanceRange(SENSOR_FRONT_RIGHT )[1],
+				distanceRight = this.getDistanceRange( SENSOR_RIGHT )[1];
 		
+		// Check if there was something there at all.
+        boolean objectInFrontLeft = (distanceFrontLeft == 0),
+                objectInFrontRight = (distanceFrontRight == 0),
+                objectAtLeft = (distanceLeft == 0),
+                objectAtRight = (distanceRight == 0);
+        
 		if( !wallInFront ){
 			// If there is something in front of the robot, it isn't a wall.
-			
-			
-			// Check if there was something there at all.
-			boolean objectInFrontLeft = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceFrontLeft),
-					objectInFrontRight = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceFrontRight),
-					objectAtLeft = false,
-					objectAtRight = false;
-			
-			
-			if( !wallOnLeft ){
-				// If there is something to the left of the ball, is won't be a wall.
-				objectAtLeft = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceLeft);
-			}
-			if( !wallOnRight ){
-				// If there is something to the right of the ball, is won't be a wall.
-				objectAtRight = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceRight);
-			}
-			
-			if( objectAtLeft ) return 0;
 			if( objectInFrontLeft ) return 2;
 			if( objectInFrontRight ) return 3;
-			if( objectAtRight ) return 5;
 		}
 		else if( !wallOnRight ){
-			// If there is something to the left of the robot, it shouldn't be a wall.
-			boolean objectAtRight = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceRight);
-			if( objectAtRight ) return 5;
+			// If there is something to the right of the robot, it shouldn't be a wall.
+		    if( objectAtRight ) return 5;
 		}
 		else if( !wallOnLeft ){
-			// If there is something to the right of the robot, it shouldn't be a wall.
-			boolean objectAtLeft = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceLeft);
+			// If there is something to the left of the robot, it shouldn't be a wall.
 			if( objectAtLeft ) return 0;
 		}
 		
