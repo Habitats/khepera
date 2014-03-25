@@ -61,8 +61,8 @@ public class SensorManager implements Runnable{
 	 */
 	public boolean isWallAtLeft(  ){ 
 		// Measure the distance to any object according to the sensors.
-		int 	distanceLeft = this.getDistanceRange( SENSOR_LEFT )[0],
-				distanceDiagonalLeft = this.getDistanceRange( SENSOR_DIAGONAL_LEFT )[0];
+		int 	distanceLeft = this.getDistanceSensorReading( SENSOR_LEFT ),
+				distanceDiagonalLeft = this.getDistanceSensorReading( SENSOR_DIAGONAL_LEFT );
 		
 		// Check if there was a large object which obscured both the sideways and the diagonal sensor.
 		return ( this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceLeft &&
@@ -74,8 +74,8 @@ public class SensorManager implements Runnable{
 	 */
 	public boolean isWallAtRight(  ){
 		// Measure the distance to any object according to the sensors.
-		int 	distanceRight = this.getDistanceRange( SENSOR_RIGHT )[0],
-				distanceDiagonalRight = this.getDistanceRange( SENSOR_DIAGONAL_RIGHT )[0];
+		int 	distanceRight = this.getDistanceSensorReading( SENSOR_RIGHT ),
+				distanceDiagonalRight = this.getDistanceSensorReading( SENSOR_DIAGONAL_RIGHT );
 		
 		// Check if there was a large object which obscured both the sideways and the diagonal sensor.
 		return ( this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceRight &&
@@ -100,8 +100,7 @@ public class SensorManager implements Runnable{
 		boolean extendedFront = (this.discreteDistanceSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalLeft  && 
 				this.discreteDistanceSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalRight );
 		
-//		System.err.println("Front: "+objectInFront+" # Extended: "+extendedFront+" # dist fl: "+distanceFrontRight+" # lim: "+this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading());
-		
+		System.err.println("Front: "+objectInFront+" # Extended: "+extendedFront);
 		
 		// A wall should occlude both of these parameters.
 		return (objectInFront && extendedFront);
