@@ -100,7 +100,7 @@ public class SensorManager implements Runnable{
 		boolean extendedFront = (this.discreteDistanceSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalLeft  && 
 				this.discreteDistanceSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalRight );
 		
-		System.err.println("Front: "+objectInFront+" # Extended: "+extendedFront+" # dist fl: "+distanceFrontRight+" # lim: "+this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading());
+//		System.err.println("Front: "+objectInFront+" # Extended: "+extendedFront+" # dist fl: "+distanceFrontRight+" # lim: "+this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading());
 		
 		
 		// A wall should occlude both of these parameters.
