@@ -25,13 +25,11 @@ public class SensorManager implements Runnable{
 	public static final int SENSOR_BACK_LEFT = 7;
 	
 	private final AbstractController controller; 
-	private static SensorManager instance = null;
 	private volatile boolean running = true;
 	
 	
 	private final SensorInterval[] discreteDistanceSensorIntervals;
 	private int[] distanceValues  = new int[]{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}; // 1..8 = measurement values, 9-10 = distance guess, 
-	private int[] lightValues	  = new int[]{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}; // initialized to simplify the threading.
 	private long[] wheelPositions = new long[]{-1,-1};
 
 	public SensorManager( AbstractController controller ){
@@ -183,13 +181,50 @@ public class SensorManager implements Runnable{
 	
 	
 	/**
-	 * @return NOT IMPLEMENTED
+	 * 
+	 * @return  An integer describing the sensor index related to a nearby light source. If none, it returns -1.
 	 */
-	public int getApproximateLightDistance(){
-		
-		return ((Integer) null);
+	public int isLightInProximity(){
+	    boolean lightInFrontLeft = (this.getLightSensorReading( SENSOR_FRONT_LEFT ) <= 90),
+	            lightInFrontRight = (this.getLightSensorReading( SENSOR_FRONT_RIGHT ) <= 90),
+	            lightOnLeft = (this.getLightSensorReading( SENSOR_LEFT ) <= 90),
+	            lightOnRight = (this.getLightSensorReading( SENSOR_RIGHT ) <= 90);
+	    
+	    if( lightInFrontLeft ) return 2;
+	    if( lightInFrontRight) return 3;
+	    if( lightOnLeft ) return 0;
+	    if( lightOnRight ) return 5;
+	    
+	    return -1;
 	}
 	
+	/**
+	 * 
+	 * @return An integer describing the sensor index in the direction of the nearest light source. If none, it returns -1.
+	 */
+	public int getNearestLightSource(){
+	    
+	    // Read the light sensors
+	    int     lightSensorFrontLeft = this.getLightSensorReading( SENSOR_FRONT_LEFT ) - 50, // Minus 50 because of their noise model
+                lightSensorFrontRight = this.getLightSensorReading( SENSOR_FRONT_RIGHT ) - 50,
+                lightSensorLeft = this.getLightSensorReading( SENSOR_LEFT ) - 50,
+                lightSensorRight = this.getLightSensorReading( SENSOR_RIGHT ) - 50;
+	    
+	    int[]  lightMeasurements = new int[]{ lightSensorLeft, -1, lightSensorFrontLeft, lightSensorFrontRight, -1, lightSensorRight };
+	    int    minValue = Integer.MAX_VALUE,
+	           idSensor = -1;
+	    
+	    for( int i=0;i< lightMeasurements.length;i++ ){
+	        // Loop through the light values and find the nearest
+	        if( lightMeasurements[i]!=-1 && lightMeasurements[i]<minValue ){
+	            minValue = lightMeasurements[i];
+	            idSensor = i;
+	        }
+	    }
+	    
+	    // Return -1 if there wasnt detected any lights at all.
+	    return (idSensor!=-1) ? idSensor: -1;
+	}
 	
 	
 	/**
