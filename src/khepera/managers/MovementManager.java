@@ -29,7 +29,7 @@ public class MovementManager {
   }
 
   public enum Direction {
-    LEFT, RIGHT;
+    LEFT, RIGHT, RANDOM;
   }
 
   public MovementManager(AbstractController abstractController) {
@@ -76,9 +76,18 @@ public class MovementManager {
     Logger.getInstance().setStatus("Rotating: True");
     long start = controller.getLeftWheelPosition();
 
-    int d = 1;
-    if (direction == Direction.LEFT)
-      d = -1;
+    int d = 0;
+    switch (direction) {
+      case LEFT:
+        d = -1;
+        break;
+      case RIGHT:
+        d = 1;
+        break;
+      case RANDOM:
+        d = (Math.random() > 0.5) ? 1 : -1;
+        break;
+    }
 
     controller.setMotorSpeeds(SPEED_ROTATE * d, -SPEED_ROTATE * d);
     while (Math.abs(controller.getLeftWheelPosition() - start) / 3 < Math.abs(degrees)) {
@@ -184,7 +193,8 @@ public class MovementManager {
     controller.setArmState(ARM_UP);
     controller.sleep(100);
   }
-  public void dropBall(){
+
+  public void dropBall() {
     controller.setArmState(ARM_DOWN);
     controller.sleep(100);
     controller.setGripperState(GRIP_OPEN);
@@ -194,5 +204,5 @@ public class MovementManager {
     controller.setGripperState(GRIP_CLOSED);
     controller.sleep(100);
   }
-  
+
 }
