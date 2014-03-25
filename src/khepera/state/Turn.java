@@ -15,11 +15,6 @@ public class Turn extends State {
 	}
 
   @Override
-  public int shouldTransition() {
-    return nextTransition;
-  }
-
-  @Override
   public void doWork() {
 	  //TODO: get access to movementmanager
 
@@ -29,5 +24,4 @@ public class Turn extends State {
   public void resetState() {
 	  nextTransition = 0;
   }
-
 }

@@ -15,12 +15,15 @@ public class Move extends State
 	@Override
 	public void doWork()
 	{
-		getMover().forward(distanceToMove);
+		//Call moving this babe forward
+		movementManager.forward(distanceToMove);
 		nextTransition = movementDoneTransition;
+		shouldTransition = true;
 		
 		if (sensorManager.isWallInFront()){
 			System.err.println("WALL NIGA!");
 			nextTransition = collisionTransition; 
+			shouldTransition = true;
 		}
 	}
 

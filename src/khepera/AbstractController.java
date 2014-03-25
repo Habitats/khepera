@@ -23,7 +23,9 @@ public abstract class AbstractController extends RobotController {
     addBehaviours();
    
     //Start the sensor manager
-    new Thread(sensorManager).start();
+    Thread t = new Thread(sensorManager);
+    t.setName("SensorManager thread");
+    t.start();
     initialized = true;
   }
 
@@ -47,6 +49,7 @@ public abstract class AbstractController extends RobotController {
   private void runBehaviour() {
 	  if (behaviours.size() == 0) {
 		  Logger.getInstance().error("No behaviours added to the controller...");
+		  return;
 	  } 
 	  
 	  for(Behaviour b : behaviours) {

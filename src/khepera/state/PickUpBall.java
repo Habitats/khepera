@@ -11,8 +11,7 @@ public class PickUpBall extends State {
     this.returnStateNumber = returnStateNumber;
   }
 
-  @Override
-  public int shouldTransition() {
+  public int getTransition() {
     if (state >= 2) {
       return returnStateNumber;
     }

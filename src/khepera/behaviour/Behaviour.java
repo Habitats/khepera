@@ -28,9 +28,10 @@ public abstract class Behaviour implements Comparable<Behaviour>{
 	}	
 	
 	public void doWork() {
-		int transition = states.get(currentState).shouldTransition(); 
-		if (transition != 0) {
-			states.get(currentState).resetState();
+		if (states.get(currentState).shouldTransition()) {
+			
+			int transition = states.get(currentState).getTransition(); 
+			states.get(currentState).initializeState();
 			currentState += transition;
 			return;
 		}

@@ -4,7 +4,7 @@ package khepera.state;
 public class PutDownBall extends State {
 
   @Override
-  public int shouldTransition() {
+  public int getTransition() {
     return 0;
   }
 
