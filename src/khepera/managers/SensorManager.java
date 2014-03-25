@@ -87,18 +87,21 @@ public class SensorManager implements Runnable{
 	 */
 	public boolean isWallInFront( ){
 		// Measure the distance to any object according to the sensors.
-		int 	distanceDiagonalLeft = this.getDistanceRange( SENSOR_DIAGONAL_LEFT )[0],
-				distanceFrontLeft = this.getDistanceRange(	SENSOR_FRONT_LEFT )[0],
-				distnaceFrontRight = this.getDistanceRange(	SENSOR_FRONT_RIGHT )[0],
-				distanceDiagonalRight = this.getDistanceRange(SENSOR_DIAGONAL_RIGHT )[0];
+		int 	distanceDiagonalLeft = this.getDistanceSensorReading( SENSOR_DIAGONAL_LEFT ),
+				distanceFrontLeft = this.getDistanceSensorReading(	SENSOR_FRONT_LEFT ),
+				distanceFrontRight = this.getDistanceSensorReading(	SENSOR_FRONT_RIGHT ),
+				distanceDiagonalRight = this.getDistanceSensorReading(SENSOR_DIAGONAL_RIGHT );
 		
 		// Check if there was a large object which obscured both of the frontal sensor.
 		boolean objectInFront = (this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceFrontLeft && 
-				this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distnaceFrontRight);
+				this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading() <= distanceFrontRight);
 
 		// Check if there was a large object which obscured both of the diagonal sensor.
 		boolean extendedFront = (this.discreteDistanceSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalLeft  && 
 				this.discreteDistanceSensorIntervals[ this.definedNearWall-1 ].getLowestPossibleSensorReading() <= distanceDiagonalRight );
+		
+//		System.err.println("Front: "+objectInFront+" # Extended: "+extendedFront+" # dist fl: "+distanceFrontRight+" # lim: "+this.discreteDistanceSensorIntervals[ this.definedNearWall ].getLowestPossibleSensorReading());
+		
 		
 		// A wall should occlude both of these parameters.
 		return (objectInFront && extendedFront);
@@ -251,10 +254,14 @@ public class SensorManager implements Runnable{
  	 * @param sensorIndex The sensor to read the light value from.
  	 * @return A light value measurement.
  	 */
- 	public int getSensorReading( int sensorIndex ){
+ 	public int getLightSensorReading( int sensorIndex ){
  		int lightMeasurementResult = this.controller.getLightValue( sensorIndex );
  		
  		return lightMeasurementResult;
+ 	}
+ 	
+ 	public int getDistanceSensorReading( int sensorIndex ){
+ 	    return this.controller.getDistanceValue( sensorIndex );
  	}
 
 	
