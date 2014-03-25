@@ -34,9 +34,6 @@ public class SensorManager implements Runnable{
 	private int[] lightValues	  = new int[]{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}; // initialized to simplify the threading.
 	private long[] wheelPositions = new long[]{-1,-1};
 
-	
-	
-	
 	public SensorManager( AbstractController controller ){
 		this.controller = controller;
 		
@@ -50,29 +47,14 @@ public class SensorManager implements Runnable{
 				new SensorInterval(540, 800, 129, 102),
 				new SensorInterval(800, 2000, 101, 0),
 			};
-		
-		// Initialize the observer thread.
-//		new Thread( this ).start();
 	}
 	
-	public static SensorManager getInstance( AbstractController rc ) {
-	      if( instance == null ) {
-	    	  instance = new SensorManager(rc);
-	      }
-	      return instance;
-	   }
-	public static SensorManager getInstance( ) {
-		if( instance == null ) {
-			Logger.getInstance().error("SensorManager.getInstance() ERROR: tried to fetch"
-										+ " an instance without initializing the manager.");
-		}
-	      return instance;
-	   }
-	
+	/**
+	 * Stop the observer thread.
+	 */
 	public void close(){
 		this.running = false;
 	}
-	
 
 	/**
 	 * @return True if there is a wall to the left of the robot
@@ -215,7 +197,6 @@ public class SensorManager implements Runnable{
 	
 	
 	/**
-	 * 
 	 * @return NOT IMPLEMENTED
 	 */
 	public int getApproximateLightDistance(){
@@ -244,7 +225,6 @@ public class SensorManager implements Runnable{
  	}
 	
 	/**
-	 * 
 	 * @param sensorIndex The sensor to read distance measurements. 
 	 * @return Integer array with [max, min] distance from the given sensor to an object.
 	 */
@@ -284,19 +264,7 @@ public class SensorManager implements Runnable{
 		// This methods runs until the SensorManager.close() has been called.
 		// It will continuously read sensor values, and estimate the distance between
 		// the robot and a object.
-		
-		// Sleep the observer until the simulation framework has been initialized.
-		boolean isInitialized = false;
-		while(!isInitialized){
-			try {
-				Thread.sleep( 1 );
-				this.controller.getLightValue(3);
-				isInitialized = true;
-			} catch (Exception e) {
-				Logger.getInstance().error("SensorManager.run() ERROR: during initial thread sleep.");
-			}
-		}
-		
+		running = true;
 		// Perform the observation.
 		while( running ){
 			this.updateLightObservations();
