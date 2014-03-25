@@ -17,13 +17,11 @@ public class Turn extends State {
   public void doWork() {
 	  movementManager.rotate(90, direction);
 	  nextTransition = doneTransition;
-	  System.out.println("Next transition is: " + nextTransition);
 	  shouldTransition = true;
   }
 
   @Override
   public void resetState() {
-	  System.out.println("Resetting turn");
 	  nextTransition = 0;
   }
 }

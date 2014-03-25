@@ -29,7 +29,6 @@ public class Move extends State
 	@Override
 	public void resetState()
 	{
-		System.out.println("Restting move");
 		nextTransition = 0;
 	}
 }
