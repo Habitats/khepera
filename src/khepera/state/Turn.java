@@ -1,14 +1,14 @@
 package khepera.state;
 
-import khepera.managers.MovementManager;
+import khepera.managers.MovementManager.Direction;
 
 
 public class Turn extends State {
 
 	int doneTransition;
-	MovementManager.Direction direction;
+	Direction direction;
 	
-	public Turn(MovementManager.Direction dir, int doneTransition) {
+	public Turn(Direction dir, int doneTransition) {
 		this.doneTransition = doneTransition;
 		this.direction = dir;
 	}

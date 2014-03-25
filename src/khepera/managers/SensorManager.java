@@ -285,7 +285,8 @@ public class SensorManager implements Runnable{
 	
  	
  	
-	public void run() {
+	@Override
+  public void run() {
 		// This methods runs until the SensorManager.close() has been called.
 		// It will continuously read sensor values, and estimate the distance between
 		// the robot and a object.

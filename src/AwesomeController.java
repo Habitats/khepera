@@ -1,5 +1,4 @@
 import khepera.AbstractController;
-import khepera.behaviour.CollectBehaviour;
 import khepera.behaviour.ExampleBehaviour;
 
 
