@@ -13,19 +13,23 @@ public abstract class AbstractController extends RobotController {
   protected MovementManager movementManager;
   private long startTime;
   private ArrayList<Behaviour> behaviours;
+  private boolean initialized = false;
   
   public AbstractController() {
     startTime = System.currentTimeMillis();
-//    sensorManager = SensorManager.getInstance(this); // this method is overloaded, so we may leave the "this" keyword after this call.
     sensorManager = new SensorManager(this);
     movementManager = new MovementManager(this);
+//    sensorManager = SensorManager.getInstance(this); // this method is overloaded, so we may leave the "this" keyword after this call.
     behaviours = new ArrayList<Behaviour>();
     addBehaviours();
+    new Thread(sensorManager).start();
+    initialized = true;
   }
 
   @Override
   public void doWork() throws Exception {
-    updateStatus();
+	  if (!initialized) return;
+	  updateStatus();
     runBehaviour();
   }
   

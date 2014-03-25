@@ -52,7 +52,7 @@ public class SensorManager implements Runnable{
 			};
 		
 		// Initialize the observer thread.
-		new Thread( this ).start();
+//		new Thread( this ).start();
 	}
 	
 	public static SensorManager getInstance( AbstractController rc ) {
