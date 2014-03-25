@@ -46,9 +46,7 @@ public class MovementManager {
     long start = controller.getLeftWheelPosition();
     long end = start + distance;
     controller.setMotorSpeeds(currentSpeed, currentSpeed);
-    while (Math.abs(controller.getLeftWheelPosition()) < end && !crashing()) {
-      // if (closeToWall())
-      // break;
+    while (Math.abs(controller.getLeftWheelPosition()) < end ){ 
       controller.sleep(1);
     }
     // stop motors until next forward-call
@@ -61,11 +59,6 @@ public class MovementManager {
     updateLocation(distance);
     updateLevelKnowledge();
 
-    // // add event to history if the robot actually traveled
-    // if (distance > 0) {
-    // RobotEvent e = new RobotEvent(state, RobotAction.FORWARD, distance, speed);
-    // Singleton.getInstance().getHistory().addEvent(e);
-    // }
   }
 
   public void rotate(int degrees, Direction direction) {
@@ -134,13 +127,6 @@ public class MovementManager {
     return (a < (b + delta) && a > (b - delta));
   }
 
-  private boolean crashing() {
-    boolean crash = getAverageDistance(SensorManager.SENSOR_FRONT_LEFT) > 1000 || getAverageDistance(SensorManager.SENSOR_FRONT_RIGHT) > 1000;
-    if (crash)
-      Logger.getInstance().log("Avoiding crash!");
-    return crash;
-  }
-
   // draw where the robot has been dirving
   private void updateRobotTail() {
     Logger.getInstance().updateRobotLocation(getCurrentLocation().getNormalized());
@@ -150,7 +136,6 @@ public class MovementManager {
 
   // update the robots knowledge of its surroundings
   private void updateLevelKnowledge() {
-    // updateMap();
     updateRobotTail();
   }
 
@@ -182,6 +167,4 @@ public class MovementManager {
     int direction = (int) (diff % 1080) / 3;
     return direction;
   }
-
-
 }
