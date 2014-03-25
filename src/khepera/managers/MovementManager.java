@@ -106,18 +106,6 @@ public class MovementManager {
     Logger.getInstance().setStatus("Rotating: False");
   }
 
-  private int getAverageDistance(int sensorID) {
-    double accuracy = 5;
-    double avg = 0;
-    int v = 0;
-    for (int i = 0; i < accuracy; i++) {
-      v = controller.getDistanceValue(sensorID);
-      avg += (v / accuracy);
-      // sleep(1);
-    }
-    return (int) avg;
-  }
-
   private void stop() {
     controller.setMotorSpeeds(0, 0);
   }
