@@ -21,7 +21,6 @@ public class Move extends State
 		shouldTransition = true;
 		
 		if (sensorManager.isWallInFront()){
-			System.err.println("WALL NIGA!");
 			nextTransition = collisionTransition; 
 			shouldTransition = true;
 		}
@@ -30,6 +29,7 @@ public class Move extends State
 	@Override
 	public void resetState()
 	{
+		System.out.println("Restting move");
 		nextTransition = 0;
 	}
 }

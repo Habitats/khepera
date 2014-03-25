@@ -5,7 +5,6 @@ import khepera.managers.MovementManager;
 
 public class Turn extends State {
 
-	int nextTransition = 0;
 	int doneTransition;
 	MovementManager.Direction direction;
 	
@@ -16,12 +15,15 @@ public class Turn extends State {
 
   @Override
   public void doWork() {
-	  //TODO: get access to movementmanager
-
+	  movementManager.rotate(90, direction);
+	  nextTransition = doneTransition;
+	  System.out.println("Next transition is: " + nextTransition);
+	  shouldTransition = true;
   }
 
   @Override
   public void resetState() {
+	  System.out.println("Resetting turn");
 	  nextTransition = 0;
   }
 }
