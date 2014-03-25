@@ -3,6 +3,7 @@ package khepera.behaviour;
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
 import khepera.state.Move;
+import khepera.state.PickUpBall;
 import khepera.state.Turn;
 
 public class ExampleBehaviour extends Behaviour {
@@ -15,6 +16,7 @@ public class ExampleBehaviour extends Behaviour {
 	public ExampleBehaviour(int priority, SensorManager sensorManager, MovementManager movementManager) {
 		super(priority, sensorManager, movementManager);
 		addState(new Move(50, 1, 0));
+		addState(new PickUpBall(2, 2));
 		addState(new Turn(MovementManager.Direction.LEFT, 0));
 	}
 

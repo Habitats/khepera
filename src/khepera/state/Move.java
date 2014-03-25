@@ -17,18 +17,15 @@ public class Move extends State
 	{
 		//Call moving this babe forward
 		movementManager.forward(distanceToMove);
-		nextTransition = movementDoneTransition;
-		shouldTransition = true;
+		setTransitionFlag(movementDoneTransition);
 		
 		if (sensorManager.isWallInFront()){
-			nextTransition = collisionTransition; 
-			shouldTransition = true;
+			setTransitionFlag(collisionTransition);
 		}
 	}
 
 	@Override
 	public void resetState()
 	{
-		nextTransition = 0;
 	}
 }

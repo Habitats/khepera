@@ -11,19 +11,19 @@ public abstract class Behaviour implements Comparable<Behaviour>{
 	public int priority;
 	private int currentState = 0;
 	private ArrayList<State> states;
-	private MovementManager mover;
-	private SensorManager senser;
+	private MovementManager movementManager;
+	protected SensorManager sensorManager;
 	
 	public Behaviour(int priority, SensorManager sensorManager, MovementManager movementManager) {
-		this.mover = movementManager;
-		this.senser = sensorManager;
+		this.movementManager = movementManager;
+		this.sensorManager = sensorManager;
 		this.priority = priority;
 		states = new ArrayList<State>();
 	}
 	
 	public void addState(State state) {
 		System.out.println("Setting managers...");
-		state.setManagers(mover, senser);
+		state.setManagers(movementManager, sensorManager);
 		states.add(state);
 	}	
 	

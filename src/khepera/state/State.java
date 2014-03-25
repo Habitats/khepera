@@ -7,8 +7,8 @@ public abstract class State {
 	
 	protected MovementManager movementManager;
 	protected SensorManager sensorManager;
-	protected int nextTransition = 0;
-	protected boolean shouldTransition = false;
+	private int nextTransition = 0;
+	private boolean shouldTransition = false;
 	
 	/**
 	 * Method invoked automagically, it sets the movement and sensor managers for the state.
@@ -37,6 +37,11 @@ public abstract class State {
 		return nextTransition;
 	}
 
+	protected void setTransitionFlag(int nextState) {
+		this.nextTransition = nextState; 
+		this.shouldTransition = true;
+	}
+	
 	/**
 	 * This method should invoke methods from the managers to make the robot do stuff, and it should also set transition flags (shouldTransition and nextTransition) when necessary.
 	 */
@@ -51,5 +56,8 @@ public abstract class State {
 	  resetState();
   }
   
+  /**
+   * Should be used by the user to wipe any data in the state model that needs wiping
+   */
   protected abstract void resetState();
 }

@@ -16,12 +16,10 @@ public class Turn extends State {
   @Override
   public void doWork() {
 	  movementManager.rotate(90, direction);
-	  nextTransition = doneTransition;
-	  shouldTransition = true;
+	  setTransitionFlag(doneTransition);
   }
 
   @Override
   public void resetState() {
-	  nextTransition = 0;
   }
 }
