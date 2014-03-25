@@ -194,10 +194,5 @@ public class MovementManager {
     controller.setGripperState(GRIP_CLOSED);
     controller.sleep(100);
   }
-  public boolean objectHeld(){
-    return controller.isObjectHeld();
-  }
-  public boolean objectPresent(){
-    return controller.isObjectPresent();
-  }
+  
 }

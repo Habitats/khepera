@@ -385,4 +385,11 @@ public class SensorManager implements Runnable{
 		
 		/*TODO IMPLEMENTATION*/
 	}
+	
+	public boolean isObjectHeld(){
+	    return controller.isObjectHeld();
+	  }
+	  public boolean isObjectPresent(){
+	    return controller.isObjectPresent();
+	  }
 }
