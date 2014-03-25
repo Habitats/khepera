@@ -1,5 +1,6 @@
 package khepera.managers;
 
+import edu.wsu.KheperaSimulator.KSGripperStates;
 import khepera.AbstractController;
 import khepera.Coord;
 import khepera.Logger;
@@ -10,6 +11,11 @@ public class MovementManager {
   public static final int SPEED_FORWARD = 5;
   public static final int SPEED_FORWARD_SLOW = 3;
   public static final int SPEED_ROTATE = 2;
+
+  public static final int GRIP_OPEN = KSGripperStates.GRIP_OPEN;
+  public static final int GRIP_CLOSED = KSGripperStates.GRIP_CLOSED;
+  public static final int ARM_DOWN = KSGripperStates.ARM_DOWN;
+  public static final int ARM_UP = KSGripperStates.ARM_UP;
 
   private int currentSpeed;
   protected double locationX = 0;
@@ -46,7 +52,7 @@ public class MovementManager {
     long start = controller.getLeftWheelPosition();
     long end = start + distance;
     controller.setMotorSpeeds(currentSpeed, currentSpeed);
-    while (Math.abs(controller.getLeftWheelPosition()) < end ){ 
+    while (Math.abs(controller.getLeftWheelPosition()) < end) {
       controller.sleep(1);
     }
     // stop motors until next forward-call
@@ -112,10 +118,10 @@ public class MovementManager {
     Direction dir;
     if ((d % (Math.PI / 4)) > (Math.PI / 8))
 
-    dir = Direction.RIGHT;
+      dir = Direction.RIGHT;
     else
       dir = Direction.LEFT;
-    rotate(1, dir,true);
+    rotate(1, dir, true);
   }
 
   private boolean goingVerticalOrHorizontal() {
@@ -166,5 +172,32 @@ public class MovementManager {
     diff /= 2;
     int direction = (int) (diff % 1080) / 3;
     return direction;
+  }
+
+  public void pickUpBall() {
+    controller.setGripperState(GRIP_OPEN);
+    controller.sleep(100);
+    controller.setArmState(ARM_DOWN);
+    controller.sleep(100);
+    controller.setGripperState(GRIP_CLOSED);
+    controller.sleep(100);
+    controller.setArmState(ARM_UP);
+    controller.sleep(100);
+  }
+  public void dropBall(){
+    controller.setArmState(ARM_DOWN);
+    controller.sleep(100);
+    controller.setGripperState(GRIP_OPEN);
+    controller.sleep(100);
+    controller.setArmState(ARM_UP);
+    controller.sleep(100);
+    controller.setGripperState(GRIP_CLOSED);
+    controller.sleep(100);
+  }
+  public boolean objectHeld(){
+    return controller.isObjectHeld();
+  }
+  public boolean objectPresent(){
+    return controller.isObjectPresent();
   }
 }
