@@ -19,9 +19,10 @@ public abstract class AbstractController extends RobotController {
     startTime = System.currentTimeMillis();
     sensorManager = new SensorManager(this);
     movementManager = new MovementManager(this);
-//    sensorManager = SensorManager.getInstance(this); // this method is overloaded, so we may leave the "this" keyword after this call.
     behaviours = new ArrayList<Behaviour>();
     addBehaviours();
+   
+    //Start the sensor manager
     new Thread(sensorManager).start();
     initialized = true;
   }

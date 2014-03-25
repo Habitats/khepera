@@ -1,8 +1,5 @@
 package khepera.state;
 
-import khepera.managers.MovementManager;
-import khepera.managers.SensorManager;
-
 public class Move extends State
 {
 	private int collisionTransition;
@@ -18,12 +15,18 @@ public class Move extends State
 	@Override
 	public void doWork()
 	{
-		movementManager.forward(distanceToMove);
+		getMover().forward(distanceToMove);
+		nextTransition = movementDoneTransition;
+		
+		if (sensorManager.isWallInFront()){
+			System.err.println("WALL NIGA!");
+			nextTransition = collisionTransition; 
+		}
 	}
 
 	@Override
 	public void resetState()
 	{
-		//Nothing needed here
+		nextTransition = 0;
 	}
 }

@@ -10,14 +10,18 @@ public abstract class State {
 	protected int nextTransition = 0;
 	
 	public void setManagers(MovementManager move, SensorManager sense) {
-		this.movementManager = movementManager;
-		this.sensorManager = sensorManager;
+		System.out.println("Managers set");
+		this.movementManager = move;
+		this.sensorManager = sense;
 	}
 	
 	public int shouldTransition() {
 		return nextTransition;
 	}
 
+	protected MovementManager getMover() {
+		return this.movementManager;
+	}
   public abstract void doWork();
 
   public abstract void resetState();

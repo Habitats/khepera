@@ -14,7 +14,7 @@ public class ExampleBehaviour extends Behaviour {
 	 */
 	public ExampleBehaviour(int priority, SensorManager sensorManager, MovementManager movementManager) {
 		super(priority, sensorManager, movementManager);
-		addState(new Move(50, 0, 1));
+		addState(new Move(50, 1, 0));
 		addState(new Turn(MovementManager.Direction.LEFT, -1));
 		System.out.println(movementManager);
 		System.out.println(sensorManager);
