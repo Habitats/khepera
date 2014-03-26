@@ -2,6 +2,7 @@ package khepera.behaviour;
 
 import java.util.ArrayList;
 
+import khepera.Logger;
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
 import khepera.state.State;
@@ -23,7 +24,7 @@ public abstract class Behaviour implements Comparable<Behaviour>{
 	}
 	
 	public void addState(State state) {
-		System.out.println("Setting managers...");
+		Logger.getInstance().log("Setting managers...");
 		state.setManagers(movementManager, sensorManager);
 		states.add(state);
 	}	
