@@ -10,7 +10,7 @@ public abstract class Behaviour implements Comparable<Behaviour>{
 	
 	private String name = "No Name";
 	public int priority;
-	private int currentState = 0;
+	protected int currentState = 0;
 	private ArrayList<State> states;
 	private MovementManager movementManager;
 	protected SensorManager sensorManager;
@@ -47,7 +47,7 @@ public abstract class Behaviour implements Comparable<Behaviour>{
 	/**
 	 * Resets the behaviour state machine.
 	 */
-	public void resetBehavior() {
+	public void resetBehaviour() {
 		currentState = 0;
 	}
 	

@@ -2,6 +2,7 @@ package khepera.behaviour;
 
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
+import khepera.state.CollisionSense;
 import khepera.state.Move;
 import khepera.state.Turn;
 
@@ -16,7 +17,7 @@ public class ExampleBehaviour extends Behaviour {
 		super(priority, sensorManager, movementManager);
 		setName("ExampleBehavior");
 		addState(new Move(50, 1, 0));
-		addState(new Turn(MovementManager.Direction.LEFT, 0));
+		addState(new Turn(MovementManager.Direction.RANDOM, 0));
 	}
 
 	@Override

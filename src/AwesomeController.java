@@ -1,4 +1,6 @@
 import khepera.AbstractController;
+import khepera.behaviour.CollectBehaviour;
+import khepera.behaviour.MoveToLightBehaviour;
 import khepera.behaviour.ExampleBehaviour;
 
 
@@ -16,8 +18,8 @@ public final class AwesomeController extends AbstractController {
 
   @Override
   protected void addBehaviours() {
-	addBehaviour(new ExampleBehaviour(0, sensorManager, movementManager));
-	addBehaviour(new CollectBehaviour(1, sensorManager, movementManager));
-	
+		addBehaviour(new ExampleBehaviour(0, sensorManager, movementManager));
+		addBehaviour(new CollectBehaviour(3, sensorManager, movementManager));
+		addBehaviour(new MoveToLightBehaviour(2, sensorManager, movementManager));
 	}
 }

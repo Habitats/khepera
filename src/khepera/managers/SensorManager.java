@@ -183,12 +183,13 @@ public class SensorManager implements Runnable{
 	/**
 	 * 
 	 * @return  An integer describing the sensor index related to a nearby light source. If none, it returns -1.
+	 * @param - int minimumProximity, will ignore all light values lower than this.
 	 */
-	public int isLightInProximity(){
-	    boolean lightInFrontLeft = (this.getLightSensorReading( SENSOR_FRONT_LEFT ) <= 90),
-	            lightInFrontRight = (this.getLightSensorReading( SENSOR_FRONT_RIGHT ) <= 90),
-	            lightOnLeft = (this.getLightSensorReading( SENSOR_LEFT ) <= 90),
-	            lightOnRight = (this.getLightSensorReading( SENSOR_RIGHT ) <= 90);
+	public int isLightInProximity(int minimumProximity){
+	    boolean lightInFrontLeft = (this.getLightSensorReading( SENSOR_FRONT_LEFT ) <= minimumProximity),
+	            lightInFrontRight = (this.getLightSensorReading( SENSOR_FRONT_RIGHT ) <= minimumProximity),
+	            lightOnLeft = (this.getLightSensorReading( SENSOR_LEFT ) <= minimumProximity),
+	            lightOnRight = (this.getLightSensorReading( SENSOR_RIGHT ) <= minimumProximity);
 	    
 	    if( lightInFrontLeft ) return 2;
 	    if( lightInFrontRight) return 3;
@@ -207,10 +208,12 @@ public class SensorManager implements Runnable{
 	    // Read the light sensors
 	    int     lightSensorFrontLeft = this.getLightSensorReading( SENSOR_FRONT_LEFT ) - 50, // Minus 50 because of their noise model
                 lightSensorFrontRight = this.getLightSensorReading( SENSOR_FRONT_RIGHT ) - 50,
+                lightSensorDiagLeft = this.getLightSensorReading( SENSOR_DIAGONAL_LEFT ) - 50,
+                lightSensoDiagRight = this.getLightSensorReading( SENSOR_DIAGONAL_RIGHT ) - 50,
                 lightSensorLeft = this.getLightSensorReading( SENSOR_LEFT ) - 50,
                 lightSensorRight = this.getLightSensorReading( SENSOR_RIGHT ) - 50;
 	    
-	    int[]  lightMeasurements = new int[]{ lightSensorLeft, -1, lightSensorFrontLeft, lightSensorFrontRight, -1, lightSensorRight };
+	    int[]  lightMeasurements = new int[]{ lightSensorLeft, lightSensorDiagLeft, lightSensorFrontLeft, lightSensorFrontRight, lightSensoDiagRight, lightSensorRight };
 	    int    minValue = Integer.MAX_VALUE,
 	           idSensor = -1;
 	    

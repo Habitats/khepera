@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import khepera.behaviour.Behaviour;
+import khepera.behaviour.CollisionAvoidance;
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
 import edu.wsu.KheperaSimulator.RobotController;
@@ -12,6 +13,7 @@ public abstract class AbstractController extends RobotController {
   protected SensorManager sensorManager;
   protected MovementManager movementManager;
   private long startTime;
+  private Behaviour lastRunBehaviour = null;
   private ArrayList<Behaviour> behaviours;
   private boolean initialized = false;
   
@@ -20,6 +22,9 @@ public abstract class AbstractController extends RobotController {
     sensorManager = new SensorManager(this);
     movementManager = new MovementManager(this);
     behaviours = new ArrayList<Behaviour>();
+    lastRunBehaviour = new CollisionAvoidance(Integer.MAX_VALUE, sensorManager, movementManager); 
+    addBehaviour(lastRunBehaviour);
+    
     addBehaviours();
    
     //Start the sensor manager
@@ -54,7 +59,13 @@ public abstract class AbstractController extends RobotController {
 	  
 	  for(Behaviour b : behaviours) {
 		  if (b.shouldRun()) {
+			  if(b != lastRunBehaviour) {
+				  Logger.getInstance().log("Changing to new behaviour: " + b.getName());
+				  lastRunBehaviour.resetBehaviour();
+				  lastRunBehaviour = b;
+			  }
 			  b.doWork();
+			  break;
 		  }
 	  }
   }
