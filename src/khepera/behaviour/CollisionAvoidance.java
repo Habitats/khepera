@@ -1,5 +1,6 @@
 package khepera.behaviour;
 
+import khepera.Logger;
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
 import khepera.state.CollisionSense;
@@ -33,13 +34,13 @@ public class CollisionAvoidance extends Behaviour{
 		boolean crashing = false;
 		for (int i = 0; i < 5; i++) {
 			if (sensorManager.getDistanceSensorReading(i) > 1000) {
-				System.out.println("Crashing");
+				Logger.getInstance().setStatus("CRASHING",11);
 				crashing = true;
 				break;
 			}
 		}
 		if (!crashing) {
-			System.out.println("NOT CRASHING");
+			Logger.getInstance().setStatus("NOT CRASHING",11);
 			lastSensedFree = System.currentTimeMillis();
 		}
 		if (started && !crashing) {

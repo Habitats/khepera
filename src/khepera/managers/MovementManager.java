@@ -29,24 +29,33 @@ public class MovementManager {
   }
 
   public enum Direction {
-    LEFT, RIGHT, RANDOM;
+    LEFT, RIGHT, RANDOM, FORWARD, BACKWARD;
   }
 
   public MovementManager(AbstractController abstractController) {
     this.controller = abstractController;
   }
 
-  public void forward(int steps) {
+  public void move(int steps, Direction direction) {
 
+    int speed = 0;
+    switch (direction) {
+      case BACKWARD:
+        speed = SPEED_FORWARD * -1;
+        break;
+      case FORWARD:
+        speed = SPEED_FORWARD;
+        break;
+    }
     int tick = (int) (Math.floor(steps / 20.));
     int rest = steps % 20;
     for (int i = 0; i < tick; i++) {
-      forward(20, SPEED_FORWARD);
+      move(20, speed);
     }
-    forward(rest, SPEED_FORWARD);
+    move(rest, speed);
   }
 
-  private void forward(long distance, int newSpeed) {
+  private void move(long distance, int newSpeed) {
     currentSpeed = newSpeed;
 
     long start = controller.getLeftWheelPosition();

@@ -1,5 +1,7 @@
 package khepera.state;
 
+import khepera.managers.MovementManager.Direction;
+
 public class Move extends State
 {
 	private int collisionTransition;
@@ -16,7 +18,7 @@ public class Move extends State
 	public void doWork()
 	{
 		//Call moving this babe forward
-		movementManager.forward(distanceToMove);
+		movementManager.move(distanceToMove,Direction.FORWARD);
 		setTransitionFlag(movementDoneTransition);
 		
 		if (sensorManager.isWallInFront() || sensorManager.isObjectInProximity() == 2 || sensorManager.isObjectInProximity() == 3){
