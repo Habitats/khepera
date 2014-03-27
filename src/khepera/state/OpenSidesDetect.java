@@ -1,5 +1,7 @@
 package khepera.state;
 
+import khepera.Logger;
+
 public class OpenSidesDetect extends State{
 	int[] transitions;
 	
@@ -19,10 +21,20 @@ public class OpenSidesDetect extends State{
 	@Override
 	public void doWork() {
 		int flag = 0;
-		if (sensorManager.isWallInFront()) flag += 1;
-		if (sensorManager.isWallAtRight()) flag += 2;
-		if (sensorManager.isWallAtLeft()) flag += 4;
+		if (sensorManager.isWallInFront()) {
+			flag += 1;
+			Logger.getInstance().log("WALL IN FRONT");
+		}
+		if (sensorManager.isWallAtRight()) {
+			flag += 2;
+			Logger.getInstance().log("WALL TO THE RIGHT");
+		}
+		if (sensorManager.isWallAtLeft()) {
+			flag += 4;
+			Logger.getInstance().log("WALL TO THE LEFT");
+		}
 		setTransitionFlag(transitions[flag]);
+		System.out.println("FLAG: " + flag);
 	}
 
 	@Override

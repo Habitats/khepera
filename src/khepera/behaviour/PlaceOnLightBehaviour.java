@@ -29,11 +29,15 @@ public class PlaceOnLightBehaviour extends Behaviour{
 			return false;
 		}
 		
+		if(sensorManager.getLightSensorReading(SensorManager.SENSOR_DIAGONAL_LEFT) < 100 
+				&& sensorManager.getLightSensorReading(SensorManager.SENSOR_DIAGONAL_RIGHT) < 100) {
+			return true;
+		}
+		
 		boolean objectInFront = sensorManager.isObjectInProximity() == 2 || sensorManager.isObjectInProximity() == 3;
 		if(!objectInFront) {
 			return false;
 		}
-		
 		return true;
 	}
 }

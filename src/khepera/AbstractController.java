@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import khepera.behaviour.Behaviour;
-import khepera.behaviour.CollisionAvoidance;
+import khepera.behaviour.CollisionRecovery;
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
 import edu.wsu.KheperaSimulator.RobotController;
@@ -22,7 +22,7 @@ public abstract class AbstractController extends RobotController {
     sensorManager = new SensorManager(this);
     movementManager = new MovementManager(this);
     behaviours = new ArrayList<Behaviour>();
-    lastRunBehaviour = new CollisionAvoidance(2000000000, sensorManager, movementManager); 
+    lastRunBehaviour = new CollisionRecovery(2000000000, sensorManager, movementManager); 
     addBehaviour(lastRunBehaviour);
     
     addBehaviours();
