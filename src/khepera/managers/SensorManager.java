@@ -289,7 +289,7 @@ public class SensorManager implements Runnable{
  	
  	
 	@Override
-  public void run() {
+	public void run() {
 		// This methods runs until the SensorManager.close() has been called.
 		// It will continuously read sensor values, and estimate the distance between
 		// the robot and a object.
@@ -351,6 +351,7 @@ public class SensorManager implements Runnable{
 				// We fill the buffer with our best estimate.
 				
 				int[] interval = this.classifyDistance( distanceSensorBuffer[ SENSOR_FRONT_LEFT ] );
+				Logger.getInstance().setStatus("SensorManager.run() INFO: has NOT found accurate distance.",15);
 				
 				bufferedDistanceInterval[0] = interval[0];
 				bufferedDistanceInterval[1] = interval[1];
@@ -388,6 +389,8 @@ public class SensorManager implements Runnable{
 					
 					bufferedDistanceInterval[0] = interval[0];
 					bufferedDistanceInterval[1] = interval[0];
+					
+					Logger.getInstance().setStatus("SensorManager.run() INFO: has found accurate distance to an object in front.",15);
 				}
 				
 //				System.err.println("position: "+bufferedDistanceInterval[0]+", "+bufferedDistanceInterval[1]);
@@ -400,7 +403,6 @@ public class SensorManager implements Runnable{
 			// Set the buffered values to signify that we haven't got any distance information.
 			bufferedDistanceInterval[0] = -1;
 			bufferedDistanceInterval[1] = -1; 
-			Logger.getInstance().setStatus("SensorManager.run() INFO: has found accurate distance to an object in front.",15);
 		}
 		
 		distanceSensorBuffer[8] = bufferedDistanceInterval[0];
