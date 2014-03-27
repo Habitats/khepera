@@ -59,15 +59,19 @@ public class MovementManager {
     currentSpeed = newSpeed;
 
     long start = controller.getLeftWheelPosition();
-    long end = start + distance;
+    long end = start + (long)Math.signum(newSpeed) * distance;
+    System.out.println(currentSpeed);
     controller.setMotorSpeeds(currentSpeed, currentSpeed);
     
     
     long lastWheelPos = start;
     long stuckCounter = 0;
-    while (Math.abs(controller.getLeftWheelPosition()) < end) {
+    while (Math.abs(controller.getLeftWheelPosition()) - Math.abs(end) < 0) {
     	if (lastWheelPos == controller.getLeftWheelPosition()) {
-    		if (++stuckCounter > 10) break;
+    		if (++stuckCounter > 2000){ 
+    			System.out.println("BREAKING MOVEMENT");
+    			break;
+    		}
     	} 
     	else {
     		stuckCounter = 0;
