@@ -1,13 +1,13 @@
 package khepera.state;
 
 
-public class PickUpBall extends State {
+public class PickUpObject extends State {
 
 	int success;
 	int failure;
 	int transition = 0;
 	
-  public PickUpBall(int onSuccessTransition, int onFailureTransition) {
+  public PickUpObject(int onSuccessTransition, int onFailureTransition) {
     this.success = onSuccessTransition;
     this.failure = onFailureTransition;
   }

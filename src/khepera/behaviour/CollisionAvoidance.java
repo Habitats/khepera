@@ -8,7 +8,7 @@ import khepera.state.Turn;
 
 public class CollisionAvoidance extends Behaviour{
 	
-	private final int timeThreshold = 5000;
+	private final int timeThreshold = 2000;
 	private long lastSensedFree;
 	boolean started, finished;
 	

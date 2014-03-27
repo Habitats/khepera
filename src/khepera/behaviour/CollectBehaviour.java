@@ -2,7 +2,7 @@ package khepera.behaviour;
 
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
-import khepera.state.PickUpBall;
+import khepera.state.PickUpObject;
 
 public class CollectBehaviour extends Behaviour{
 
@@ -12,7 +12,7 @@ public class CollectBehaviour extends Behaviour{
 			MovementManager movementManager) {
 		super(priority, sensorManager, movementManager);
 		
-		addState(new PickUpBall(0, 0));
+		addState(new PickUpObject(0, 0));
 		setName("CollectBehaviour");
 	}
 	
@@ -23,7 +23,7 @@ public class CollectBehaviour extends Behaviour{
 		if (holding) return false;
 		
 		//Ignore objects if there is a light nearby
-		if (sensorManager.isLightInProximity(50) > -1) return false;
+		if (sensorManager.isLightInProximity(100) > -1) return false;
 		
 		if(trying) {
 			System.out.println("Failed to pick shit up");
