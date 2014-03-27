@@ -4,6 +4,7 @@ import khepera.managers.SensorManager;
 
 /**
  * Finds any lights close to the robots front or sides, and has transitions to treat the acoordingly.
+ * It will align lights to be almost directly on it's sides before reporting them to be there.
  * @author Olav
  *
  */
@@ -17,6 +18,7 @@ public class FindNearestLight extends State{
 	noLight;
 	
 	int minimumProximity;
+	int lastSense = 600;
 	
 	public FindNearestLight(int minimumProximity, int noLightTransition, int inFrontTransition, int onLeftTransition, int onRightTransition, int diagonalLeft, int diagonalRight) {
 		this.inFront = inFrontTransition;
@@ -35,23 +37,59 @@ public class FindNearestLight extends State{
 		if (sensorManager.isLightInProximity(minimumProximity) < 0) setTransitionFlag(noLight);
 		
 		int nearestLight = sensorManager.getNearestLightSource();
+
+		int diag;
+		int side;
+		int diff;
 		switch (nearestLight) {
+		
 			case SensorManager.SENSOR_FRONT_LEFT:
 			case SensorManager.SENSOR_FRONT_RIGHT:
 				transition = inFront;
 				break;
+				
 			case SensorManager.SENSOR_LEFT:
-				transition = onLeft;
+				diag = sensorManager.getLightSensorReading(SensorManager.SENSOR_DIAGONAL_LEFT);
+				side = sensorManager.getLightSensorReading(SensorManager.SENSOR_LEFT);
+				diff = diag - side;
+				if (side < 250) {
+					if (diff > side) {
+						transition = onLeft;
+					}
+					else {
+						transition = diagonalLeft;
+					}
+				}
+				else {
+					transition = onLeft;
+				}
 				break;
+				
 			case SensorManager.SENSOR_RIGHT:
-				transition = onRight;
+				diag = sensorManager.getLightSensorReading(SensorManager.SENSOR_DIAGONAL_RIGHT);
+				side = sensorManager.getLightSensorReading(SensorManager.SENSOR_RIGHT);
+				diff = diag - side;
+				if (side < 250) {
+					if (diff > side) {
+						transition = onRight;
+					}
+					else {
+						transition = diagonalRight;
+					}
+				}
+				else {
+					transition = onRight;
+				}
 				break;
+				
 			case SensorManager.SENSOR_DIAGONAL_LEFT:
 				transition = diagonalLeft;
 				break;
+				
 			case SensorManager.SENSOR_DIAGONAL_RIGHT:
 				transition = diagonalRight;
 				break;
+				
 			default:
 				break;
 		}
@@ -61,6 +99,7 @@ public class FindNearestLight extends State{
 
 	@Override
 	protected void resetState() {
+		lastSense = 600;
 	}
 
 }
