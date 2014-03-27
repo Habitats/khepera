@@ -28,7 +28,6 @@ public class CollisionAvoidance extends Behaviour{
 	
 	@Override
 	public boolean shouldRun() {
-		System.out.println("Crashtest, dummy");
 		if (started && !finished) return true;
 		
 		boolean crashing = false;
