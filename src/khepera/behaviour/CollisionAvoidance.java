@@ -22,8 +22,14 @@ public class CollisionAvoidance extends Behaviour{
 		started = false;
 		finished = false;
 		
-		addState(new Move(10, MovementManager.Direction.BACKWARD, 1, 0));
-		addState(new Turn(MovementManager.Direction.RANDOM, 0));
+		addState(new Turn(MovementManager.Direction.RANDOM, 1));
+		addState(new Move(10, MovementManager.Direction.BACKWARD, 0, 0));
+	}
+	
+	@Override
+	public void doWork() {
+		System.out.println("RUNNING AVOIDANCE");
+		super.doWork();
 	}
 	
 	@Override
@@ -32,8 +38,7 @@ public class CollisionAvoidance extends Behaviour{
 		
 		boolean crashing = false;
 		for (int i = 0; i < 5; i++) {
-			if (sensorManager.getDistanceSensorReading(i) > 1000) {
-				System.out.println("CRASHING");
+			if (sensorManager.getDistanceSensorReading(i) > 1010) {
 				Logger.getInstance().setStatus("CRASHING",11);
 				crashing = true;
 				break;
@@ -47,8 +52,9 @@ public class CollisionAvoidance extends Behaviour{
 			finished = true;
 			return false;
 		}
-		if (lastSensedFree - System.currentTimeMillis() > timeThreshold) {
+		if (System.currentTimeMillis() - lastSensedFree > timeThreshold) {
 			started = true;
+			System.out.println("STARTING AVOIDANCE");
 		}
 		return started;
 	}

@@ -22,7 +22,7 @@ public abstract class AbstractController extends RobotController {
     sensorManager = new SensorManager(this);
     movementManager = new MovementManager(this);
     behaviours = new ArrayList<Behaviour>();
-    lastRunBehaviour = new CollisionAvoidance(Integer.MAX_VALUE, sensorManager, movementManager); 
+    lastRunBehaviour = new CollisionAvoidance(2000000000, sensorManager, movementManager); 
     addBehaviour(lastRunBehaviour);
     
     addBehaviours();

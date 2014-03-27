@@ -61,8 +61,19 @@ public class MovementManager {
     long start = controller.getLeftWheelPosition();
     long end = start + distance;
     controller.setMotorSpeeds(currentSpeed, currentSpeed);
+    
+    
+    long lastWheelPos = start;
+    long stuckCounter = 0;
     while (Math.abs(controller.getLeftWheelPosition()) < end) {
-      controller.sleep(1);
+    	if (lastWheelPos == controller.getLeftWheelPosition()) {
+    		if (++stuckCounter > 10) break;
+    	} 
+    	else {
+    		stuckCounter = 0;
+    		lastWheelPos = controller.getLeftWheelPosition();
+    	}
+    	controller.sleep(1);
     }
     // stop motors until next forward-call
     stop();
