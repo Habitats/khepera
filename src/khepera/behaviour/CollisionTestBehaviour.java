@@ -11,7 +11,6 @@ public class CollisionTestBehaviour extends Behaviour{
 		super(priority, sensorManager, movementManager);
 		setName("CollisionTest");
 		addState(new Move(100, MovementManager.Direction.FORWARD, 0, 0));
-		addState(new Turn(MovementManager.Direction.RANDOM, 0));
 	}
 
 	@Override

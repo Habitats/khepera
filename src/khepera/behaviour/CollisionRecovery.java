@@ -24,10 +24,10 @@ public class CollisionRecovery extends Behaviour{
 		started = false;
 		
 		addState(new Move(50, MovementManager.Direction.BACKWARD, 1, 1));
-		addState(new OpenSidesDetect(4, 3, 2, 4, 3, 2, 4, 4));
-		addState(new Turn(Direction.LEFT, 1));
-		addState(new Turn(Direction.RIGHT, 1));
-		addState(new Turn(MovementManager.Direction.RANDOM, 1));
+		addState(new OpenSidesDetect(4, 3, 2, 4, 3, 2, 0, 4));
+		addState(new Turn(Direction.LEFT, 1, 0));
+		addState(new Turn(Direction.RIGHT, 1, 0));
+		addState(new Turn(MovementManager.Direction.RANDOM, 1, 0));
 	}
 	
 	@Override

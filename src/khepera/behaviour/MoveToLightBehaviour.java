@@ -19,9 +19,9 @@ public class MoveToLightBehaviour extends Behaviour{
 		super(priority, sensorManager, movementManager);
 		setName("MoveToLightBehavior");
 		
-		addState(new FindNearestLight(400, 3, 3, 1, 2, 3, 3));
-		addState(new Turn(MovementManager.Direction.LEFT, 3));
-		addState(new Turn(MovementManager.Direction.RIGHT, 3));
+		addState(new FindNearestLight(100, 3, 3, 1, 2, 3, 3));
+		addState(new Turn(MovementManager.Direction.LEFT, 3, 1));
+		addState(new Turn(MovementManager.Direction.RIGHT, 3, 1));
 		addState(new Move(100, MovementManager.Direction.FORWARD, 1, 0));
 	}
 	

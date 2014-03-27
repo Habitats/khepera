@@ -53,7 +53,7 @@ public class FindNearestLight extends State{
 				side = sensorManager.getLightSensorReading(SensorManager.SENSOR_LEFT);
 				diff = diag - side;
 				if (side < 200) {
-					if (diff > side * 3) {
+					if (diff > side * 2) {
 						transition = onLeft;
 					}
 					else {
@@ -70,7 +70,7 @@ public class FindNearestLight extends State{
 				side = sensorManager.getLightSensorReading(SensorManager.SENSOR_RIGHT);
 				diff = diag - side;
 				if (side < 200) {
-					if (diff > side * 3) {
+					if (diff > side * 2) {
 						transition = onRight;
 					}
 					else {
