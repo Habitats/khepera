@@ -1,5 +1,6 @@
 package khepera.state;
 
+import khepera.managers.MovementManager;
 import khepera.managers.MovementManager.Direction;
 
 public class Move extends State
@@ -8,7 +9,7 @@ public class Move extends State
 	private int movementDoneTransition;
 	private int distanceToMove;
 	
-	public Move(int distanceToMove, int collisionTransition, int movementDoneTransition) {
+	public Move(int distanceToMove, MovementManager.Direction dir, int collisionTransition, int movementDoneTransition) {
 		this.distanceToMove = distanceToMove;
 		this.collisionTransition = collisionTransition;
 		this.movementDoneTransition = movementDoneTransition;

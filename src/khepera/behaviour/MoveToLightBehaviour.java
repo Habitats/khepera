@@ -22,7 +22,7 @@ public class MoveToLightBehaviour extends Behaviour{
 		addState(new FindNearestLight(400, 3, 3, 1, 2, 3, 3));
 		addState(new Turn(MovementManager.Direction.LEFT, 3));
 		addState(new Turn(MovementManager.Direction.RIGHT, 3));
-		addState(new Move(200, 1, 0));
+		addState(new Move(200, MovementManager.Direction.FORWARD, 1, 0));
 	}
 	
 	int ticker = 0;

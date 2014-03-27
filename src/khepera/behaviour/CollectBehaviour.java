@@ -16,7 +16,6 @@ public class CollectBehaviour extends Behaviour{
 		setName("CollectBehaviour");
 	}
 	
-	
 	@Override
 	public boolean shouldRun() {
 		//Returns if something is already held in the gripper

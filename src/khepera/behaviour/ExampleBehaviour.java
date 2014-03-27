@@ -16,7 +16,7 @@ public class ExampleBehaviour extends Behaviour {
 	public ExampleBehaviour(int priority, SensorManager sensorManager, MovementManager movementManager) {
 		super(priority, sensorManager, movementManager);
 		setName("ExampleBehavior");
-		addState(new Move(50, 1, 0));
+		addState(new Move(50, MovementManager.Direction.FORWARD, 1, 0));
 		addState(new Turn(MovementManager.Direction.RANDOM, 0));
 	}
 
