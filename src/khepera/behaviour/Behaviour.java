@@ -13,7 +13,7 @@ public abstract class Behaviour implements Comparable<Behaviour>{
 	public int priority;
 	protected int currentState = 0;
 	private ArrayList<State> states;
-	private MovementManager movementManager;
+	protected MovementManager movementManager;
 	protected SensorManager sensorManager;
 	
 	public Behaviour(int priority, SensorManager sensorManager, MovementManager movementManager) {

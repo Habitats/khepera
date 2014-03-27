@@ -18,6 +18,7 @@ public class CollectBehaviour extends Behaviour{
 	
 	@Override
 	public boolean shouldRun() {
+
 		//Returns if something is already held in the gripper
 		boolean holding = sensorManager.isObjectHeld();
 		if (holding) return false;

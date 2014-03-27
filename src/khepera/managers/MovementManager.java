@@ -39,41 +39,48 @@ public class MovementManager {
   public void move(int steps, Direction direction) {
 
     int speed = 0;
+    int tick = (int) (Math.floor(steps / 20.));
+    int rest = steps % 20;
+    int smallStep = 20;
     switch (direction) {
       case BACKWARD:
         speed = SPEED_FORWARD * -1;
+        smallStep *= -1;
+        rest *= -1;
         break;
       case FORWARD:
         speed = SPEED_FORWARD;
         break;
     }
-    int tick = (int) (Math.floor(steps / 20.));
-    int rest = steps % 20;
     for (int i = 0; i < tick; i++) {
-      move(20, speed);
+      move(smallStep, speed, direction);
     }
-    move(rest, speed);
+    move(rest, speed, direction);
   }
 
-  private void move(long distance, int newSpeed) {
+  private void move(long distance, int newSpeed, Direction direction) {
     currentSpeed = newSpeed;
 
     long start = controller.getLeftWheelPosition();
     long end = start + distance;
     controller.setMotorSpeeds(currentSpeed, currentSpeed);
-    
-    
+
     long lastWheelPos = start;
     long stuckCounter = 0;
-    while (Math.abs(controller.getLeftWheelPosition()) < end) {
-    	if (lastWheelPos == controller.getLeftWheelPosition()) {
-    		if (++stuckCounter > 10) break;
-    	} 
-    	else {
-    		stuckCounter = 0;
-    		lastWheelPos = controller.getLeftWheelPosition();
-    	}
-    	controller.sleep(1);
+    while (true) {
+      if (controller.getLeftWheelPosition() < end && direction == Direction.BACKWARD) {
+        break;
+      } else if (controller.getLeftWheelPosition() > end && direction == Direction.FORWARD) {
+        break;
+      }
+      if (lastWheelPos == controller.getLeftWheelPosition()) {
+        if (++stuckCounter > 10)
+          break;
+      } else {
+        stuckCounter = 0;
+        lastWheelPos = controller.getLeftWheelPosition();
+      }
+      controller.sleep(1);
     }
     // stop motors until next forward-call
     stop();
