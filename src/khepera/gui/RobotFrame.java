@@ -11,24 +11,21 @@ import khepera.managers.MovementManager.RobotState;
 
 public class RobotFrame extends JFrame {
 
-  private StatusPanel statusPanel;
-  private StatusPanel statusPanel2;
+  private StatusView statusView;
 
   private LevelPanel levelPanel;
 
   public RobotFrame(GuiController controller) {
     setName("Robot Management");
     levelPanel = new LevelPanel();
-    statusPanel = new StatusPanel();
-    statusPanel2 = new StatusPanel();
+    statusView = new StatusView();
 
-    controller.addStatusView(statusPanel);
-    controller.addStatusView(statusPanel2);
+    controller.addStatusView(statusView);
 
     setLayout(new GridBagLayout());
 
     add(levelPanel, new GBC(0, 0));
-    add(statusPanel, new GBC(1, 0));
+    add(statusView, new GBC(1, 0));
 
     buildFrame(this);
   }
@@ -49,8 +46,8 @@ public class RobotFrame extends JFrame {
     frame.setVisible(true);
   }
 
-  public StatusPanel getStatusPanel() {
-    return statusPanel;
+  public StatusView getStatusPanel() {
+    return statusView;
   }
 
   public LevelPanel getLevelPanel() {

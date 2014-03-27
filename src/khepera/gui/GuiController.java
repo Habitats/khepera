@@ -14,6 +14,7 @@ public class GuiController {
 
   public GuiController() {
     statusViews = new ArrayList<StatusView>();
+
     statusModel = new StatusModel();
 
     robotFrame = new RobotFrame(this);
