@@ -61,6 +61,7 @@ public abstract class AbstractController extends RobotController {
 		  if (b.shouldRun()) {
 			  if(b != lastRunBehaviour) {
 				  Logger.getInstance().log("Changing to new behaviour: " + b.getName());
+				  Logger.getInstance().setStatus("Behavior: " + b.getName(),13);
 				  lastRunBehaviour.resetBehaviour();
 				  lastRunBehaviour = b;
 			  }
