@@ -3,6 +3,11 @@ package khepera.gui;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+/**
+ * Helper class for gridbaglayout
+ * @author Patrick 
+ *
+ */
 public class GBC extends GridBagConstraints {
 
   private static final long serialVersionUID = 1L;

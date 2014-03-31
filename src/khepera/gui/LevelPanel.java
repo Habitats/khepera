@@ -16,7 +16,14 @@ import javax.swing.JPanel;
 import khepera.Coord;
 
 
+/**
+ * Class to represent the robots view of the map
+ * 
+ * @author Patrick
+ * 
+ */
 public class LevelPanel extends JPanel {
+  private static final long serialVersionUID = 1L;
 
   final int HEIGHT = 500;
   final int WIDTH = 500;
@@ -24,11 +31,14 @@ public class LevelPanel extends JPanel {
   private Polygon p;
 
   // direction
-  private double d = 0;
+  private double direction = 0;
 
   private List<Coord> tail;
   private List<Coord> something;
 
+  /**
+   * Default constructor, initialization of the panel happens here.
+   */
   public LevelPanel() {
     Dimension size = new Dimension(WIDTH, HEIGHT);
     setPreferredSize(size);
@@ -44,6 +54,11 @@ public class LevelPanel extends JPanel {
     this.p = createArrowPoly();
   }
 
+  /**
+   * Helper method for creation of the directional arrow.
+   * 
+   * @return - a polygon that looks like an arrow
+   */
   private Polygon createArrowPoly() {
     int posX = WIDTH - 70;
     int posY = HEIGHT - 70;
@@ -60,21 +75,43 @@ public class LevelPanel extends JPanel {
     return p;
   }
 
-  public void direction(double e) {
-    this.d = e;
+  /**
+   * Set the direction the robot is facing.
+   * 
+   * @param direction - the direction in radians
+   */
+  public void direction(double direction) {
+    this.direction = direction;
     repaint();
   }
 
-  public void addTail(Coord c) {
-    tail.add(c);
+  /**
+   * Add a tail element to show the robots path
+   * 
+   * @param coordinate - the tail coordinate
+   */
+  public void addTail(Coord coordinate) {
+    tail.add(coordinate);
     repaint();
   }
 
-  public void addSomething(Coord c) {
-    something.add(c);
+  /**
+   * Add a "something" element to show "something". This can be used to draw a specified color
+   * wherever you want on the map.
+   * 
+   * @param coordinate - where to draw
+   */
+  public void addSomething(Coord coordinate) {
+    something.add(coordinate);
     repaint();
   }
 
+  /**
+   * Helper method for drawing the actual path of the robot. It iterates through an arraylist with
+   * coordnates and draws every one of them.
+   * 
+   * @param g - the graphics element to draw on.
+   */
   private void drawTail(Graphics g) {
     synchronized (tail) {
       if (tail.size() > 0) {
@@ -86,6 +123,11 @@ public class LevelPanel extends JPanel {
     }
   }
 
+  /**
+   * Helper method for drawing the actual robot
+   * 
+   * @param g - the graphics element to draw on
+   */
   private void drawRobot(Graphics g) {
     synchronized (tail) {
       if (tail.size() > 0) {
@@ -96,6 +138,11 @@ public class LevelPanel extends JPanel {
     }
   }
 
+  /**
+   * Helper method for drawing "something"
+   * 
+   * @param g - the graphics element to draw on
+   */
   public void drawSomething(Graphics g) {
     synchronized (something) {
       for (Coord c : something) {
@@ -105,16 +152,24 @@ public class LevelPanel extends JPanel {
     }
   }
 
+  /**
+   * Helper method for drawing the directional arrow
+   * 
+   * @param g - the graphics element to draw on
+   */
   private void drawArrow(Graphics g) {
     // rotate the polygon
     Rectangle rect = p.getBounds();
     AffineTransform at = new AffineTransform();
-    at.rotate(d, rect.getX() + rect.width / 2, rect.getY() + rect.height / 2);
+    at.rotate(direction, rect.getX() + rect.width / 2, rect.getY() + rect.height / 2);
     g.setColor(Color.cyan);
     Graphics2D g2d = (Graphics2D) g;
     g2d.fill(at.createTransformedShape(p));
   }
 
+  /**
+   * Paining happens here.
+   */
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
@@ -123,7 +178,5 @@ public class LevelPanel extends JPanel {
     drawTail(g);
     drawRobot(g);
     drawArrow(g);
-
   }
-
 }

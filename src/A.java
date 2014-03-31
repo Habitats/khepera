@@ -1,11 +1,8 @@
 import khepera.AbstractController;
 import khepera.behaviour.CollectBehaviour;
-import khepera.behaviour.CollisionTestBehaviour;
 import khepera.behaviour.ExploreBehaviour;
 import khepera.behaviour.MoveToLightBehaviour;
-import khepera.behaviour.ExampleBehaviour;
 import khepera.behaviour.PlaceOnLightBehaviour;
-import khepera.state.PutDownObject;
 
 
 /**

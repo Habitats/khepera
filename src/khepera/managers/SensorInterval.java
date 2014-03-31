@@ -1,5 +1,10 @@
 package khepera.managers;
 
+/**
+ * Helper class for the sensor manager
+ * @author Jørgen
+ *
+ */
 public class SensorInterval {
 	
 	// Denoting the max and min distance between an object

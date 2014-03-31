@@ -3,7 +3,6 @@ package khepera.behaviour;
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
 import khepera.state.Move;
-import khepera.state.Turn;
 
 public class CollisionTestBehaviour extends Behaviour{
 	
