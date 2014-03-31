@@ -1,8 +1,6 @@
 package khepera.state;
 
-import khepera.Logger;
 import khepera.managers.MovementManager.Direction;
-import khepera.managers.SensorManager;
 
 /**
  * This state rotates the robot by 90 degrees in the direction fed into the constructor. 
