@@ -9,12 +9,23 @@ import javax.swing.WindowConstants;
 import khepera.Coord;
 import khepera.managers.MovementManager.RobotState;
 
+/**
+ * Class to represent the actual frame of the GUI
+ * 
+ * @author Patrick
+ * 
+ */
 public class RobotFrame extends JFrame {
 
   private StatusView statusView;
 
   private LevelPanel levelPanel;
 
+  /**
+   * Constructor that initializes the frame
+   * 
+   * @param controller - the gui controller needs to be passed here in order to set the views
+   */
   public RobotFrame(GuiController controller) {
     setName("Robot Management");
     levelPanel = new LevelPanel();
@@ -30,20 +41,60 @@ public class RobotFrame extends JFrame {
     buildFrame(this);
   }
 
+  /**
+   * Helper method for building the frame
+   * 
+   * @param frame - the frame to be built
+   */
   private void buildFrame(JFrame frame) {
-
     frame.getContentPane().setBackground(Color.black);
 
     frame.setTitle("Status Panel");
     frame.pack();
 
-    // frame.setLocationRelativeTo(frame.getRootPane());
     frame.setLocation(0, 0);
-    // frame.setSize(new Dimension(800, 500));
     frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-    // frame.setResizable(false);
     frame.setVisible(true);
+  }
+
+  /**
+   * Set the direction the robot is facing
+   * 
+   * @param direction - the direction in radians
+   */
+  public void direction(double direction) {
+    levelPanel.direction(direction);
+  }
+
+  /**
+   * Method to draw the robots path
+   * 
+   * @param coordinate - coordinate to draw
+   * @param state - the robots internal state
+   */
+  public void drawRobotTail(Coord coordinate, RobotState state) {
+    Color tailColor = null;
+    if (state == RobotState.GOING_HOME)
+      tailColor = Color.orange;
+    else if (state == RobotState.LOOKING_FOR_BALL)
+      tailColor = Color.red;
+    else if (state == RobotState.IDLE)
+      tailColor = Color.blue;
+    coordinate.setColor(tailColor);
+
+    levelPanel.addTail(coordinate);
+  }
+
+  /**
+   * Method for drawing "something". This could be anything witha color as long as you supply a
+   * coordinate.
+   * 
+   * @param coordinate
+   */
+  public void drawSomething(Coord coordinate) {
+    coordinate.setColor(Color.green);
+    levelPanel.addSomething(coordinate);
   }
 
   public StatusView getStatusPanel() {
@@ -52,28 +103,5 @@ public class RobotFrame extends JFrame {
 
   public LevelPanel getLevelPanel() {
     return levelPanel;
-  }
-
-  // TODO Auto-generated method stub
-  public void direction(double directionInRadians) {
-    levelPanel.direction(directionInRadians);
-  }
-
-  public void drawRobotTail(Coord c, RobotState state) {
-    Color tailColor = null;
-    if (state == RobotState.GOING_HOME)
-      tailColor = Color.orange;
-    else if (state == RobotState.LOOKING_FOR_BALL)
-      tailColor = Color.red;
-    else if (state == RobotState.IDLE)
-      tailColor = Color.blue;
-    c.setColor(tailColor);
-
-    levelPanel.addTail(c);
-  }
-
-  public void drawSomething(Coord c) {
-    c.setColor(Color.green);
-    levelPanel.addSomething(c);
   }
 }
