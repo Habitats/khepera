@@ -15,7 +15,7 @@ import khepera.Logger;
  * Class to handle communication between the states and the actual robot controller. Everything that
  * deals with sensors should be handled in this class.
  * 
- * @author Jørgen
+ * @author Jorgen
  * 
  */
 public class SensorManager implements Runnable {
