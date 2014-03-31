@@ -2,7 +2,6 @@ package khepera.behaviour;
 
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
-import khepera.state.CollisionSense;
 import khepera.state.FindNearestLight;
 import khepera.state.Move;
 import khepera.state.Turn;
