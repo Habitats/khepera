@@ -16,6 +16,7 @@ import khepera.managers.MovementManager.RobotState;
  * 
  */
 public class RobotFrame extends JFrame {
+  private static final long serialVersionUID = 1L;
 
   private StatusView statusView;
 

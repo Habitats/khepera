@@ -23,6 +23,7 @@ import khepera.Coord;
  * 
  */
 public class LevelPanel extends JPanel {
+  private static final long serialVersionUID = 1L;
 
   final int HEIGHT = 500;
   final int WIDTH = 500;

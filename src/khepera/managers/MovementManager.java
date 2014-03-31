@@ -69,6 +69,7 @@ public class MovementManager {
    * @param steps - the distance to move
    * @param direction - the direction to move in
    */
+  @SuppressWarnings("incomplete-switch")
   public void move(int steps, Direction direction) {
 
     int speed = 0;
@@ -162,6 +163,7 @@ public class MovementManager {
    *        robot will automatically rotate to the nearest axis. Ie., rotate(80) will rotate 90
    *        degrees, rotate(20) will not rotate at all.
    */
+  @SuppressWarnings("incomplete-switch")
   public void rotate(int degrees, Direction direction, boolean enableCorrection) {
 
     Logger.getInstance().setStatus("Rotating: True");

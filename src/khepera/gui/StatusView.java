@@ -15,6 +15,8 @@ import javax.swing.JPanel;
  * 
  */
 public class StatusView extends JPanel {
+  private static final long serialVersionUID = 1L;
+
   private JLabel statusLabel;
   private ArrayList<JLabel> labels;
   public static final int MAX_NUMBER_OF_STATUS_FIELDS = 16;

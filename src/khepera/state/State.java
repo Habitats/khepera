@@ -1,5 +1,6 @@
 package khepera.state;
 
+import khepera.Logger;
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
 
@@ -16,7 +17,7 @@ public abstract class State {
 	 * @param sense - SensorManager instance used by the controller.
 	 */
 	public void setManagers(MovementManager move, SensorManager sense) {
-		System.out.println("Managers set");
+		Logger.getInstance().log("Managers set");
 		this.movementManager = move;
 		this.sensorManager = sense;
 	}

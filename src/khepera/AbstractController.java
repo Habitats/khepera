@@ -59,7 +59,7 @@ public abstract class AbstractController extends RobotController {
    * Adds a behaviour to the controller. The priority of the behaviour should not exceed
    * 2'000'000'000.
    * 
-   * @param b
+   * @param b - behaviour
    */
   protected void addBehaviour(Behaviour b) {
     behaviours.add(b);
