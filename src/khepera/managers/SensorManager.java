@@ -444,4 +444,8 @@ public class SensorManager implements Runnable {
   public boolean isObjectPresent() {
     return controller.isObjectPresent();
   }
+
+public long getWheelPosition() {
+	return controller.getLeftWheelPosition();
+}
 }
