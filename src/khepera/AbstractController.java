@@ -22,7 +22,7 @@ public abstract class AbstractController extends RobotController {
     sensorManager = new SensorManager(this);
     movementManager = new MovementManager(this);
     behaviours = new ArrayList<Behaviour>();
-    lastRunBehaviour = new CollisionRecovery(2000000000, sensorManager, movementManager); 
+    lastRunBehaviour = new CollisionRecovery(1999999999, sensorManager, movementManager); 
     addBehaviour(lastRunBehaviour);
     
     addBehaviours();
@@ -46,6 +46,10 @@ public abstract class AbstractController extends RobotController {
    */
   protected abstract void addBehaviours();
   
+  /**
+   * Adds a behaviour to the controller. The priority of the behaviour should not exceed 2'000'000'000.
+   * @param b
+   */
   protected void addBehaviour(Behaviour b) {
 	  behaviours.add(b);
 	  Collections.sort(behaviours);

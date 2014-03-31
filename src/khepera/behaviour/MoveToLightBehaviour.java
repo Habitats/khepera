@@ -31,10 +31,10 @@ public class MoveToLightBehaviour extends Behaviour{
 	public boolean shouldRun() {
 		int nearestLight = sensorManager.isLightInProximity(400);
 		boolean holding = sensorManager.isObjectHeld();
-		if (ticker++ == 0) {
-			System.out.println("Nearest: " + nearestLight);
-			System.out.println("Crrent state: " + currentState);
-		}
+//		if (ticker++ == 0) {
+//			System.out.println("Nearest: " + nearestLight);
+//			System.out.println("Crrent state: " + currentState);
+//		}
 		ticker %= 50;
 //		System.out.println("Holding:" + holding);
 		return (nearestLight > -1 && holding);

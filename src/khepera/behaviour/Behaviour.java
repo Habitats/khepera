@@ -16,7 +16,16 @@ public abstract class Behaviour implements Comparable<Behaviour>{
 	protected MovementManager movementManager;
 	protected SensorManager sensorManager;
 	
+	/**
+	 * Creates a new behaviour
+	 * @param priority - must be < 2'000'000'000
+	 * @param sensorManager
+	 * @param movementManager
+	 */
 	public Behaviour(int priority, SensorManager sensorManager, MovementManager movementManager) {
+		if(!(priority < 2000000000)) {
+			throw new IllegalArgumentException();
+		}
 		this.movementManager = movementManager;
 		this.sensorManager = sensorManager;
 		this.priority = priority;

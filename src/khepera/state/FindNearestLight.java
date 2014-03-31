@@ -93,7 +93,7 @@ public class FindNearestLight extends State{
 			default:
 				break;
 		}
-		System.out.println("NEAREST LIGHT FOUND AT: " + transition);
+//		System.out.println("NEAREST LIGHT FOUND AT: " + transition);
 		setTransitionFlag(transition);
 	}
 

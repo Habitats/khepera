@@ -183,18 +183,22 @@ public class SensorManager implements Runnable{
 	/**
 	 * 
 	 * @return  An integer describing the sensor index related to a nearby light source. If none, it returns -1.
-	 * @param - int minimumProximity, will ignore all light values lower than this.
+	 * @param - int minimumProximity, will ignore all light values higher than this.
 	 */
 	public int isLightInProximity(int minimumProximity){
 	    boolean lightInFrontLeft = (this.getLightSensorReading( SENSOR_FRONT_LEFT ) <= minimumProximity),
 	            lightInFrontRight = (this.getLightSensorReading( SENSOR_FRONT_RIGHT ) <= minimumProximity),
 	            lightOnLeft = (this.getLightSensorReading( SENSOR_LEFT ) <= minimumProximity),
-	            lightOnRight = (this.getLightSensorReading( SENSOR_RIGHT ) <= minimumProximity);
+	            lightOnRight = (this.getLightSensorReading( SENSOR_RIGHT ) <= minimumProximity),
+	    		lightOnDiagonalRight = (this.getLightSensorReading( SENSOR_DIAGONAL_RIGHT ) <= minimumProximity),
+	    		lightOnDiagonalLeft = (this.getLightSensorReading( SENSOR_DIAGONAL_LEFT ) <= minimumProximity);
 	    
 	    if( lightInFrontLeft ) return 2;
 	    if( lightInFrontRight) return 3;
 	    if( lightOnLeft ) return 0;
 	    if( lightOnRight ) return 5;
+	    if( lightOnDiagonalRight ) return 4;
+	    if( lightOnDiagonalLeft ) return 1;
 	    
 	    return -1;
 	}
