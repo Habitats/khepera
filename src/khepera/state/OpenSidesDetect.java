@@ -2,6 +2,11 @@ package khepera.state;
 
 import khepera.Logger;
 
+/**
+ * This state will detect what sides are not blocked by walls or objects.
+ * @author Olav
+ *
+ */
 public class OpenSidesDetect extends State{
 	int[] transitions;
 	

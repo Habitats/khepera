@@ -7,6 +7,11 @@ import khepera.state.Move;
 import khepera.state.PickUpObject;
 import khepera.state.Turn;
 
+/**
+ * This behaviour will just pick up an object if it detects that one is straight in front of it.
+ * @author Olav
+ *
+ */
 public class CollectBehaviour extends Behaviour{
 
 	boolean trying = false;

@@ -5,7 +5,7 @@ import khepera.managers.SensorManager;
 import khepera.state.PutDownObject;
 
 /**
- * This behaviour will put a held object down if it is close to a light and facing an object (Hopefully a light)
+ * This behaviour will put a held object down if it is close to a light and facing an object (Hopefully a light).
  * @author Olav
  *
  */

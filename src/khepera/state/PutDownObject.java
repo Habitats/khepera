@@ -1,6 +1,10 @@
 package khepera.state;
 
-
+/**
+ * This state simply puts down anything in the gripper.
+ * @author Olav
+ *
+ */
 public class PutDownObject extends State {
 
 	int done;

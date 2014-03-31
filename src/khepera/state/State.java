@@ -37,7 +37,11 @@ public abstract class State {
 	public int getTransition() {
 		return nextTransition;
 	}
-
+	
+	/**
+	 * Call this method with the index of the state you want to run on the next doWork() iteration. If this method is not called, the state will not be changed, and will be run again.
+	 * @param nextState
+	 */
 	protected void setTransitionFlag(int nextState) {
 		this.nextTransition = nextState; 
 		this.shouldTransition = true;
@@ -58,7 +62,7 @@ public abstract class State {
   }
   
   /**
-   * Should be used by the user to wipe any data in the state model that needs wiping
+   * Can be used by the user to wipe any data in the state model that needs wiping. Else leave it empty.
    */
   protected abstract void resetState();
 }

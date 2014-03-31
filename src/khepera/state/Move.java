@@ -28,23 +28,6 @@ public class Move extends State {
     }
   }
 
-  /**
-   * Helper method to test the movement state
-   */
-  @SuppressWarnings("unused")
-  private void motionTest() {
-    movementManager.move(2000, Direction.FORWARD);
-    movementManager.move(3000, Direction.BACKWARD);
-    movementManager.rotate(90, Direction.RIGHT);
-    movementManager.move(500, Direction.FORWARD);
-    movementManager.move(500, Direction.BACKWARD);
-    movementManager.rotate(90, Direction.RIGHT);
-    movementManager.move(2000, Direction.FORWARD);
-    movementManager.move(1000, Direction.BACKWARD);
-    movementManager.rotate(90, Direction.RIGHT);
-    movementManager.rotate(180, Direction.LEFT);
-  }
-
   @Override
   public void resetState() {}
 }

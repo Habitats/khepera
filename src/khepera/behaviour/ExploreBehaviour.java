@@ -8,7 +8,11 @@ import khepera.state.ObjectDetect;
 import khepera.state.OpenSidesDetect;
 import khepera.state.RandomState;
 import khepera.state.Turn;
-
+/**
+ * This behaviour moves around at random, and looks for objects. If it finds an object, it will turn towards it.
+ * @author Olav
+ *
+ */
 public class ExploreBehaviour extends Behaviour{
 
 	public ExploreBehaviour(int priority, SensorManager sensorManager,

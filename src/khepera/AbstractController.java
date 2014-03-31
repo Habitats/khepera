@@ -66,6 +66,9 @@ public abstract class AbstractController extends RobotController {
     Collections.sort(behaviours);
   }
 
+  /**
+   * This method is invoked on every doWork() iteration. It will select the proper behaviour to be run, according to priority and shouldRun() functions.
+   */
   private void runBehaviour() {
     if (behaviours.size() == 0) {
       Logger.getInstance().error("No behaviours added to the controller...");

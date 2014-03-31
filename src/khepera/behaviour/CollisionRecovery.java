@@ -8,6 +8,12 @@ import khepera.state.Move;
 import khepera.state.OpenSidesDetect;
 import khepera.state.Turn;
 
+/**
+ * This class is added to the behaviour list by default.
+ * This behaviour kicks in if it detects that the robot is stuck, and will do its best to correct the robot to a place where it can move freely again.
+ * @author Olav
+ *
+ */
 public class CollisionRecovery extends Behaviour{
 	
 	private final int timeThreshold = 1000;

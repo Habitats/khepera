@@ -4,6 +4,12 @@ import khepera.Logger;
 import khepera.managers.MovementManager.Direction;
 import khepera.managers.SensorManager;
 
+/**
+ * This state rotates the robot by 90 degrees in the direction fed into the constructor. 
+ * It will detect that the robot is stuck if it gets stuck.
+ * @author Olav
+ *
+ */
 public class Turn extends State {
 
 	int doneTransition;

@@ -1,5 +1,10 @@
 package khepera.state;
 
+/**
+ * This state tries to find objects at its front or its side. 
+ * @author Olav
+ *
+ */
 public class ObjectDetect extends State{
 	
 	
@@ -33,8 +38,6 @@ public class ObjectDetect extends State{
 
 	@Override
 	protected void resetState() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

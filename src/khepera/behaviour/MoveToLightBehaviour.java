@@ -8,7 +8,7 @@ import khepera.state.Move;
 import khepera.state.Turn;
 
 /**
- * Behaivour that moves to any light it detects with its sensors.
+ * Behaivour that moves to any light it detects with its sensors. It will stop once it is standing by the light source and is facing it.
  * @author Olav
  *
  */
