@@ -15,8 +15,8 @@ import khepera.state.PutDownObject;
  * @author Patrick
  * 
  */
-public final class AwesomeController extends AbstractController {
-  public AwesomeController() {
+public final class A extends AbstractController {
+  public A() {
     super();
   }
 
