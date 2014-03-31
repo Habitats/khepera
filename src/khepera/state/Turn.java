@@ -1,8 +1,6 @@
 package khepera.state;
 
-import khepera.Logger;
 import khepera.managers.MovementManager.Direction;
-import khepera.managers.SensorManager;
 
 public class Turn extends State {
 
