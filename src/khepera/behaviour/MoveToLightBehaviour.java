@@ -2,6 +2,7 @@ package khepera.behaviour;
 
 import khepera.managers.MovementManager;
 import khepera.managers.SensorManager;
+import khepera.managers.MovementManager.Direction;
 import khepera.state.CollisionSense;
 import khepera.state.FindNearestLight;
 import khepera.state.Move;
@@ -20,9 +21,10 @@ public class MoveToLightBehaviour extends Behaviour{
 		setName("MoveToLightBehavior");
 		
 		addState(new FindNearestLight(100, 3, 3, 1, 2, 3, 3));
-		addState(new Turn(MovementManager.Direction.LEFT, 3, 1));
-		addState(new Turn(MovementManager.Direction.RIGHT, 3, 1));
-		addState(new Move(100, MovementManager.Direction.FORWARD, 1, 0));
+		addState(new Turn(MovementManager.Direction.LEFT, 3, 3));
+		addState(new Turn(MovementManager.Direction.RIGHT, 3, 3));
+		addState(new Move(100, MovementManager.Direction.FORWARD, 4, 0));
+		addState(new Turn(Direction.RANDOM, 0, 3));
 	}
 	
 	int ticker = 0;

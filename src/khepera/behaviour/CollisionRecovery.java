@@ -25,11 +25,16 @@ public class CollisionRecovery extends Behaviour{
 		started = false;
 		
 		addState(new Move(40, MovementManager.Direction.BACKWARD, 1, 1));
-		addState(new OpenSidesDetect(5, 3, 2, 0, 3, 5, 0, 4));
-		addState(new Turn(Direction.LEFT, 1, 0));
-		addState(new Turn(Direction.RIGHT, 1, 0));
+		addState(new OpenSidesDetect(5, 3, 2, 0, 5, 5, 0, 4));
+		addState(new Turn(Direction.LEFT, 1, 5));
+		addState(new Turn(Direction.RIGHT, 1, 5));
 		addState(new Turn(MovementManager.Direction.RANDOM, 1, 0));
-		addState(new Move(30, MovementManager.Direction.FORWARD, 1, 1));
+		addState(new Move(40, MovementManager.Direction.FORWARD, 6, 6));
+		addState(new OpenSidesDetect(5, 3, 2, 0, 3, 2, 0, 4));
+		addState(new Move(40, MovementManager.Direction.BACKWARD, 6, 6));
+		addState(new OpenSidesDetect(5, 3, 2, 0, 10, 9, 0, 4));
+		addState(new Turn(Direction.LEFT, 1, 8));
+		addState(new Turn(Direction.RIGHT, 1, 8));
 	}
 	
 	@Override
@@ -50,10 +55,11 @@ public class CollisionRecovery extends Behaviour{
 		}
 		
 		if (started && !crashing) {
-//			if (currentState == 0 || currentState == 1) {
-//				currentState = 1;
-//				return true;
-//			}
+			if (currentState == 0 || currentState == 1) {
+				currentState = 3;
+				started = false;
+				return true;
+			}
 			
 			currentState = 0;
 			started = false;

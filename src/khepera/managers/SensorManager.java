@@ -104,7 +104,9 @@ public class SensorManager implements Runnable{
 		return (objectInFront && extendedFront);
 	}
 	
-	
+	public long getWheelPosition() {
+		return controller.getLeftWheelPosition();
+	}
 	
 	
 	/**

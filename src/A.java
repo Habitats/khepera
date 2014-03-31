@@ -25,7 +25,7 @@ public final class A extends AbstractController {
 		addBehaviour(new ExploreBehaviour(0, sensorManager, movementManager));
 		addBehaviour(new MoveToLightBehaviour(2, sensorManager, movementManager));
 		addBehaviour(new CollectBehaviour(6, sensorManager, movementManager));
-		addBehaviour(new PlaceOnLightBehaviour(8, sensorManager, movementManager));
+		addBehaviour(new PlaceOnLightBehaviour(5, sensorManager, movementManager));
 		
 //		addBehaviour(new CollisionTestBehaviour(0, sensorManager, movementManager));
 		

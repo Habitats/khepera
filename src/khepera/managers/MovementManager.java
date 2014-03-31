@@ -117,8 +117,25 @@ public class MovementManager {
     }
 
     controller.setMotorSpeeds(SPEED_ROTATE * d, -SPEED_ROTATE * d);
-    while (Math.abs(controller.getLeftWheelPosition() - start) / 3 < Math.abs(degrees)) {
-      controller.sleep(1);
+    long lastPos = start;
+    int counter = 0;
+    long nowPos = controller.getLeftWheelPosition();
+    
+    while (Math.abs(nowPos - start) / 3 < Math.abs(degrees)) {
+    	if (lastPos == nowPos) {
+    		counter++;
+    	}
+    	else {
+    		counter = 0;
+    		lastPos = nowPos;
+    	}
+    	
+    	if (counter > 20) {
+    		stop();
+    		return;
+    	}
+    	controller.sleep(1);
+    	nowPos = controller.getLeftWheelPosition();
       updateLevelKnowledge();
     }
     // stop rotation

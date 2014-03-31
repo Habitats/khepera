@@ -23,13 +23,18 @@ public class Turn extends State {
 	  
 	  //TODO: IMPLEMENT ROTATION BLOCK DETECTION!
 	  
-	  if (sensorManager.getDistanceSensorReading(SensorManager.SENSOR_DIAGONAL_LEFT) > 1000
-			  || (sensorManager.getDistanceSensorReading(SensorManager.SENSOR_DIAGONAL_RIGHT) > 1000)) {
-		  Logger.getInstance().log("Turning was blocked");
+//	  if (sensorManager.getDistanceSensorReading(SensorManager.SENSOR_DIAGONAL_LEFT) > 1000
+//			  || (sensorManager.getDistanceSensorReading(SensorManager.SENSOR_DIAGONAL_RIGHT) > 1000)) {
+//		  Logger.getInstance().log("Turning was blocked");
+//		  setTransitionFlag(turningBlocked);
+//		  return;
+//	  }
+	  long startPos = sensorManager.getWheelPosition();
+	  movementManager.rotate(90, direction);
+	  if (startPos == sensorManager.getWheelPosition()) {
 		  setTransitionFlag(turningBlocked);
 		  return;
 	  }
-	  movementManager.rotate(90, direction);
 	  setTransitionFlag(doneTransition);
   }
 
